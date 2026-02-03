@@ -1,21 +1,22 @@
-// Example usage:
-// Insert this line in the <head> of your index.html file after any external dependencies:
-// <script src="/scripts.js" defer></script>
-// Make sure to include the defer keyword.
-
-// Listen for when the HTML document has been completely parsed and all deferred scripts have downloaded and executed.
+// Prevent errors from script trying to access missing elements
 document.addEventListener("DOMContentLoaded", (event) => {
-  // The DOMContentLoaded event is queued before stylesheets, images, subframes, and async scripts finish loading,
-  // but after deferred scripts, which do wait for stylesheets to load, meaning your own javascript will run last.
 
-  // Load Feather icons.
+  // -------------------------------------------------------------------------------------------------------------------
+  // Feather icons
+  // -------------------------------------------------------------------------------------------------------------------
+
+  // Replace all data-feather elements with corresponding SVG icons
   feather.replace();
 
-  // Select dark mode toggle switch.
+  // Select dark mode toggle switch
   const toggle = document.querySelector("#dark-mode-toggle");
   const switchIcon = document.querySelector("#switch-icon");
 
-  // Detect browser dark mode preference and style dark mode toggle switch icon to match.
+  // -------------------------------------------------------------------------------------------------------------------
+  // Dark mode
+  // -------------------------------------------------------------------------------------------------------------------
+
+  // Detect browser dark mode preference and style dark mode toggle switch icon to match
   const theBrowserPrefersDarkMode = () => {
     return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
   };
@@ -74,8 +75,12 @@ document.addEventListener("DOMContentLoaded", (event) => {
     root.style.setProperty("--body-text", "var(--purple-0)");
   };
 
-  // As soon as you scroll, hide the bouncing arrow encouraging you to scroll down.
-  // Prevent the bouncing arrow touching the buttons if the screen height is too small.
+  // -------------------------------------------------------------------------------------------------------------------
+  // Downa arrow
+  // -------------------------------------------------------------------------------------------------------------------
+
+  // As soon as you scroll, hide the bouncing arrow encouraging you to scroll down
+  // Prevent the bouncing arrow touching the buttons if the screen height is too small
   const buttons = document.querySelector(".buttons");
   const downArrow = document.querySelector("#down-arrow");
 
