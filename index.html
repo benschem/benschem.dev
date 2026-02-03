@@ -1,119 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- Meta -->
     <meta charset="UTF-8" />
-    <meta
-      http-equiv="X-UA-Compatible"
-      content="IE=edge"
-    />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0"
-    />
-    <meta
-      name="description"
-      content="Profile for Ben Schembri, a software developer from Melbourne Australia."
-    />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Profile for Ben Schembri, a software developer from Melbourne Australia." />
+
+    <!-- Title -->
     <title>Ben Schembri</title>
-    <link
-      rel="stylesheet"
-      href="styles.css"
-    />
-    <link
-      rel="icon"
-      href="favicon.ico"
-      type="image/x-icon"
-    />
-    <script
-      src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"
-      defer
-    ></script>
-    <script
-      src="scripts.js"
-      defer
-    ></script>
-    <script
-      defer
-      data-domain="benschem.dev"
-      src="https://analytics.rocketzip.com.au/js/script.hash.outbound-links.js"
-    ></script>
+
+    <!-- Links -->
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+
+    <!-- Javascript -->
+
+    <!-- Feather Icons - https://github.com/feathericons/feather -->
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js" defer ></script>
+
+    <!-- Load Feather Icons, handle dark mode, hide "scroll down" arrow on scroll -->
+    <script src="scripts.js" defer></script>
+
+    <!-- My own Plausible Analytics -->
+    <script defer data-domain="benschem.dev" src="https://analytics.rocketzip.com.au/js/script.hash.outbound-links.js"></script>
   </head>
+
   <body>
-    <div
-      id="top"
-      class="above-the-fold flex-column"
-      style="position: relative"
-    >
-      <button
-        id="dark-mode-toggle"
-        aria-label="Toggle dark mode"
-      >
-        <i
-          id="switch-icon"
-          data-feather="sun"
-        ></i>
+    <!-- Header section -->
+    <div id="top" class="above-the-fold flex-column" style="position: relative">
+
+      <!-- Dark mode toggle -->
+      <button id="dark-mode-toggle" aria-label="Toggle dark mode">
+        <i id="switch-icon" data-feather="sun"></i>
       </button>
 
+      <!-- Profile picture -->
       <figure>
-        <img
-          class="avatar"
-          src="img/profile.webp"
-          width="200"
-          height="200"
-          alt="An AI generated profile picture that's supposed to be Ben working on some code on his laptop."
-        />
+        <img class="avatar" src="img/profile.webp" width="200" height="200" alt="An AI generated profile picture that's supposed to be Ben working on some code on his laptop."/>
         <figcaption>*This is what AI thinks I look like.</figcaption>
       </figure>
+
+      <!-- Heading -->
       <h1 class="text-align-center">Hello, my name is <strong>Ben Schembri</strong></h1>
+
+      <!-- Subtext -->
       <p class="text-align-center">
         I'm a Software Developer at
-        <a
-          href="https://rocketzip.com.au"
-          target="_blank"
-          >Rocketzip</a
-        >
+        <a href="https://rocketzip.com.au" target="_blank">
+          Rocketzip
+        </a>
         who also teaches at
-        <a
-          href="https://www.lewagon.com/melbourne"
-          target="_blank"
-          >a web development bootcamp</a
-        >
+        <a href="https://www.lewagon.com/melbourne" target="_blank">
+          a web development bootcamp
+        </a>
         in Melbourne, Australia.
       </p>
+
+      <!-- Call to action buttons -->
       <div class="buttons">
-        <a
-          class="btn btn-primary"
-          href="#connect"
-          >Connect</a
-        >
-        <a
-          class="btn btn-secondary"
-          href="#websites"
-          >Put me to work</a
-        >
+        <a class="btn btn-primary" href="#connect">Connect</a>
+        <a class="btn btn-secondary" href="#websites">Put me to work</a>
       </div>
-      <a
-        href="#websites"
-        aria-label="Scroll down"
-        ><i
-          id="down-arrow"
-          data-feather="chevrons-down"
-        ></i
-      ></a>
+
+      <!-- "Scroll down" arrow -->
+      <a href="#websites" aria-label="Scroll down">
+        <i id="down-arrow" data-feather="chevrons-down"></i>
+      </a>
     </div>
+
+    <!-- Main content -->
     <div class="below-the-fold stack-large">
+
+      <!-- Hero section -->
       <section id="websites">
+
+        <!-- Image -->
         <figure>
-          <img
-            class="hero-img"
-            src="img/designer.webp"
-            width="400"
-            height="400"
-            alt="An AI generated image of web designer working at a desk being harassed by a client in a suit."
-          />
+          <img class="hero-img" src="img/designer.webp" width="400" height="400" alt="An AI generated image of web designer working at a desk being harassed by a client in a suit."/>
           <figcaption>*What AI thinks I look like working with clients.</figcaption>
         </figure>
+
+        <!-- Card -->
         <div class="card">
+          <!-- Text -->
           <h2>I make websites</h2>
           <h3>Clients say:</h3>
           <p>
@@ -121,35 +91,30 @@
             bigger? Exactly like that, but different. Can we go back to the first version? I think we need to start from
             scratch.
           </p>
+
+          <!-- Call to action buttons -->
           <div class="buttons">
-            <a
-              href="https://rocketzip.com.au"
-              target="_blank"
-              class="btn btn-primary"
-              >Get yours</a
-            >
-            <a
-              href="https://rocketzip.com.au/pricing"
-              target="_blank"
-              class="btn btn-secondary"
-              >How much</a
-            >
+            <a href="https://rocketzip.com.au" target="_blank" class="btn btn-primary">
+              Get yours
+            </a>
+            <a href="https://rocketzip.com.au/pricing" target="_blank" class="btn btn-secondary">
+              How much
+            </a>
           </div>
         </div>
       </section>
 
+      <!-- Hero section (reversed) -->
       <section>
+        <!-- Image -->
         <figure>
-          <img
-            class="hero-img"
-            src="img/teacher.webp"
-            width="400"
-            height="400"
-            alt="An AI generated image of a despondent web developer staring at a laptop while a friend excitedly pitches a terrible app idea to him."
-          />
+          <img class="hero-img" src="img/teacher.webp" width="400" height="400" alt="An AI generated image of a despondent web developer staring at a laptop while a friend excitedly pitches a terrible app idea to him."/>
           <figcaption>*What AI thinks I look like teaching students.</figcaption>
         </figure>
+
+        <!-- Card -->
         <div class="card">
+          <!-- Text -->
           <h2>I teach web development</h2>
           <h3>Students say:</h3>
           <p>
@@ -157,34 +122,30 @@
             too hard. I got that code from ChatGPT, I don't know how it works. I'm having connection issues. No, I
             didn't read the instructions.
           </p>
+
+          <!-- Call to action buttons -->
           <div class="buttons">
-            <a
-              href="https://www.lewagon.com/melbourne"
-              target="_blank"
-              class="btn btn-primary"
-              >Where I teach</a
-            >
-            <a
-              href="students/how-this-site-is-built.html"
-              class="btn btn-secondary"
-              >For students</a
-            >
+            <a href="https://www.lewagon.com/melbourne" target="_blank" class="btn btn-primary">
+              Where I teach
+            </a>
+            <a href="students/how-this-site-is-built.html" class="btn btn-secondary">
+              For students
+            </a>
           </div>
         </div>
       </section>
 
+      <!-- Hero section -->
       <section>
+        <!-- Image -->
         <figure>
-          <img
-            class="hero-img"
-            src="img/freelancer.webp"
-            width="400"
-            height="400"
-            alt="An AI generated image of a frustrated web developer holding his head in his hands while a business executive in a suit harasses him to work harder."
-          />
+          <img class="hero-img" src="img/freelancer.webp" width="400" height="400" alt="An AI generated image of a frustrated web developer holding his head in his hands while a business executive in a suit harasses him to work harder."/>
           <figcaption>*What AI thinks I look like working with businesses.</figcaption>
         </figure>
+
+        <!-- Card -->
         <div class="card">
+          <!-- Text -->
           <h2>I build software</h2>
           <h3>Businesses say:</h3>
           <p>
@@ -192,35 +153,30 @@
             you. We'd be a big name to have in your portfolio. We can promote you to our contacts. I got your invoice,
             it seems really high.
           </p>
+
+          <!-- Call to action buttons -->
           <div class="buttons">
-            <a
-              href="https://rocketzip.com.au/contact"
-              target="_blank"
-              class="btn btn-primary"
-              >Hire me</a
-            >
-            <a
-              href="https://au.linkedin.com/in/benschembri"
-              target="_blank"
-              class="btn btn-secondary"
-              >Employ me</a
-            >
+            <a href="https://rocketzip.com.au/contact" target="_blank" class="btn btn-primary">
+              Hire me
+            </a>
+            <a href="https://au.linkedin.com/in/benschembri" target="_blank" class="btn btn-secondary">
+              Employ me
+            </a>
           </div>
         </div>
       </section>
 
+      <!-- Hero section reversed -->
       <section>
+        <!-- Image -->
         <figure>
-          <img
-            class="hero-img"
-            src="img/startup.webp"
-            width="400"
-            height="400"
-            alt="An AI generated image of a despondent web developer staring at a laptop while a friend excitedly pitches a terrible app idea to him."
-          />
+          <img class="hero-img" src="img/startup.webp" width="400" height="400" alt="An AI generated image of a despondent web developer staring at a laptop while a friend excitedly pitches a terrible app idea to him." />
           <figcaption>*What AI thinks I look like when someone pitches an idea.</figcaption>
         </figure>
+
+        <!-- Card -->
         <div class="card">
+          <!-- Text -->
           <h2>I'm an entrepreneur</h2>
           <h3>Friends and family say:</h3>
           <p>
@@ -228,82 +184,75 @@
             worth a lot. Sorry, I can't tell you what it is, then you could just do it without me. Should be fairly easy
             though. I'll handle the admin side.
           </p>
+
+          <!-- Call to action buttons -->
           <div class="buttons">
-            <a
-              href="https://rocketzip.com.au/contact"
-              target="_blank"
-              class="btn btn-primary"
-              >Share idea</a
-            >
-            <a
-              href="https://www.lewagon.com/melbourne"
-              target="_blank"
-              class="btn btn-secondary"
-              >Learn to code</a
-            >
+            <a href="https://rocketzip.com.au/contact" target="_blank" class="btn btn-primary" >
+              Share idea
+            </a>
+            <a href="https://www.lewagon.com/melbourne" target="_blank" class="btn btn-secondary">
+              Learn to code
+            </a>
           </div>
         </div>
       </section>
     </div>
 
+    <!-- Footer -->
     <footer id="connect">
+      <!-- Heading -->
       <h2>Connect</h2>
+
+      <!-- Social links with icons -->
       <ul class="stack-small">
         <li>
-          <a
-            href="https://rocketzip.com.au"
-            target="_blank"
-            ><i data-feather="layout"></i>Rocketzip</a
-          >
+          <a href="https://rocketzip.com.au" target="_blank">
+            <i data-feather="layout"></i>
+            Rocketzip
+          </a>
         </li>
         <li>
-          <a
-            href="https://au.linkedin.com/in/benschembri"
-            target="_blank"
-            ><i data-feather="linkedin"></i>LinkedIn</a
-          >
+          <a href="https://au.linkedin.com/in/benschembri" target="_blank">
+            <i data-feather="linkedin"></i>
+            LinkedIn
+          </a>
         </li>
         <li>
-          <a
-            href="https://github.com/benschem"
-            target="_blank"
-            ><i data-feather="github"></i>Github</a
-          >
+          <a href="https://github.com/benschem" target="_blank" ><i data-feather="github"></i>
+            Github
+          </a>
         </li>
         <li>
-          <a
-            href="https://x.com/benschem"
-            target="_blank"
-            ><i data-feather="twitter"></i>X / Twitter</a
-          >
+          <a href="https://x.com/benschem" target="_blank" >
+            <i data-feather="twitter"></i>
+            X / Twitter
+          </a>
         </li>
         <li>
-          <a
-            href="https://www.instagram.com/benschem/"
-            target="_blank"
-            ><i data-feather="instagram"></i>Instagram</a
-          >
+          <a href="https://www.instagram.com/benschem/" target="_blank">
+            <i data-feather="instagram"></i>
+            Instagram
+          </a>
         </li>
         <li>
-          <a
-            href="https://www.facebook.com/schembri.ben"
-            target="_blank"
-            ><i data-feather="facebook"></i>Facebook</a
-          >
+          <a href="https://www.facebook.com/schembri.ben" target="_blank">
+            <i data-feather="facebook"></i>
+            Facebook
+          </a>
         </li>
         <li>
-          <a
-            href="https://open.spotify.com/user/schem35?si=58f26190ffa64a53"
-            target="_blank"
-            ><i data-feather="music"></i>Spotify</a
-          >
+          <a href="https://open.spotify.com/user/schem35?si=58f26190ffa64a53" target="_blank">
+            <i data-feather="music"></i>
+            Spotify
+          </a>
         </li>
       </ul>
-      <a
-        id="back-to-top"
-        href="#top"
-        >Back to top<i data-feather="chevrons-up"></i
-      ></a>
+
+      <!-- Back to top button -->
+      <a id="back-to-top" href="#top" >
+        Back to top
+        <i data-feather="chevrons-up"></i>
+      </a>
     </footer>
   </body>
 </html>
