@@ -141,11 +141,8 @@ body {
 ::view-transition-old(root),
 ::view-transition-new(root) {
   animation-duration: 0.3s;
-}
 
-@media (prefers-reduced-motion: reduce) {
-  ::view-transition-old(root),
-  ::view-transition-new(root) {
+  @media (prefers-reduced-motion: reduce) {
     animation-duration: 0s;
   }
 }
@@ -241,10 +238,10 @@ section {
   justify-content: center;
   align-items: start;
   padding: 1rem;
-}
 
-section:nth-of-type(even) {
-  flex-direction: row-reverse;
+  &:nth-of-type(even) {
+    flex-direction: row-reverse;
+  }
 }
 
 /* -------------------------------------------------------------------------- */
@@ -266,56 +263,56 @@ section:nth-of-type(even) {
   background-color: var(--color-alt-light);
   border: none;
   border-radius: 99rem;
-}
 
-#dark-mode-toggle::after {
-  content: "";
-  position: absolute;
-  right: 2rem;
-  padding: 1rem;
-  border-radius: 50%;
-  background-color: var(--color-medium);
-  transition:
-    transform 0.2s ease,
-    background-color 0.2s ease;
-}
+  &::after {
+    content: "";
+    position: absolute;
+    right: 2rem;
+    padding: 1rem;
+    border-radius: 50%;
+    background-color: var(--color-medium);
+    transition:
+      transform 0.2s ease,
+      background-color 0.2s ease;
 
-@media (prefers-reduced-motion: reduce) {
-  #dark-mode-toggle::after {
-    transition: none;
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
   }
-}
 
-#dark-mode-toggle:hover::after {
-  background-color: var(--color-light);
-}
+  &:hover::after {
+    background-color: var(--color-light);
+  }
 
-html[data-theme="dark"] #dark-mode-toggle::after {
-  transform: translateX(2rem);
-}
+  & svg {
+    width: 1rem;
+    height: 1rem;
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
 
-#dark-mode-toggle svg {
-  width: 1rem;
-  height: 1rem;
-  position: relative;
-  z-index: 1;
-  flex-shrink: 0;
-}
+    &:first-child {
+      color: var(--body-text);
+    }
 
-#dark-mode-toggle svg:first-child {
-  color: var(--body-text);
-}
+    &:last-child {
+      color: var(--color-alt);
+    }
+  }
 
-#dark-mode-toggle svg:last-child {
-  color: var(--color-alt);
-}
+  html[data-theme="dark"] & {
+    &::after {
+      transform: translateX(2rem);
+    }
 
-html[data-theme="dark"] #dark-mode-toggle svg:first-child {
-  color: var(--background-alt);
-}
+    & svg:first-child {
+      color: var(--background-alt);
+    }
 
-html[data-theme="dark"] #dark-mode-toggle svg:last-child {
-  color: var(--black);
+    & svg:last-child {
+      color: black;
+    }
+  }
 }
 
 /* -------------------------------------------------------------------------- */
@@ -358,7 +355,7 @@ figcaption {
 
 #down-arrow {
   position: absolute;
-  bottom: 0px;
+  bottom: 0;
   right: 50%;
   cursor: pointer;
   color: var(--body-text);
@@ -379,15 +376,11 @@ figcaption {
   }
 
   to {
-    transform: translateY(0px);
+    transform: translateY(0);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  #down-arrow {
-    animation: none;
-  }
-
   :root {
     scroll-behavior: auto;
   }
@@ -395,11 +388,11 @@ figcaption {
 
 .card {
   max-width: 65ch;
-}
 
-.card > * {
-  text-align: left;
-  text-wrap: pretty;
+  & > * {
+    text-align: left;
+    text-wrap: pretty;
+  }
 }
 
 .hero-img {
@@ -436,31 +429,31 @@ figcaption {
 .btn-primary {
   color: black;
   background-color: var(--color-medium);
-}
 
-.btn-primary:visited {
-  color: black;
-}
+  &:visited {
+    color: black;
+  }
 
-.btn-primary:hover {
-  color: black;
-  background-color: var(--color-light);
+  &:hover {
+    color: black;
+    background-color: var(--color-light);
+  }
 }
 
 .btn-secondary {
   background-color: transparent;
   color: var(--color-alt);
   border: 1px solid var(--color-alt);
-}
 
-.btn-secondary:visited {
-  color: var(--color-alt);
-}
+  &:visited {
+    color: var(--color-alt);
+  }
 
-.btn-secondary:hover {
-  color: var(--color-alt);
-  border-color: var(--color-alt-light);
-  background-color: var(--color-alt-light);
+  &:hover {
+    color: var(--color-alt);
+    border-color: var(--color-alt-light);
+    background-color: var(--color-alt-light);
+  }
 }
 
 .buttons {
@@ -481,15 +474,15 @@ a {
   text-decoration-color: var(--color-medium);
   text-decoration-style: dotted;
   cursor: pointer;
-}
 
-a:visited {
-  color: var(--body-text);
-  text-decoration-color: var(--color-medium);
-}
+  &:visited {
+    color: var(--body-text);
+    text-decoration-color: var(--color-medium);
+  }
 
-a:hover {
-  color: var(--color-medium);
+  &:hover {
+    color: var(--color-medium);
+  }
 }
 
 /* -------------------------------------------------------------------------- */
@@ -499,31 +492,31 @@ a:hover {
 footer {
   padding: 4rem 2rem;
   background-color: var(--color-alt-light);
-}
 
-footer h2 {
-  color: black;
-}
+  & h2 {
+    color: black;
+  }
 
-footer a {
-  color: black;
-  display: flex;
-  gap: 1rem;
-  width: max-content;
-  font-size: var(--font-size-fluid-1);
-  text-decoration-color: var(--color-dark);
-}
+  & a {
+    color: black;
+    display: flex;
+    gap: 1rem;
+    width: max-content;
+    font-size: var(--font-size-fluid-1);
+    text-decoration-color: var(--color-dark);
 
-footer a:visited {
-  color: black;
-  text-decoration-color: var(--color-dark);
-}
+    &:visited {
+      color: black;
+      text-decoration-color: var(--color-dark);
+    }
 
-footer a:hover {
-  color: var(--color-dark);
-}
+    &:hover {
+      color: var(--color-dark);
+    }
+  }
 
-#back-to-top {
-  position: absolute;
-  right: 20px;
+  & #back-to-top {
+    position: absolute;
+    right: 20px;
+  }
 }
