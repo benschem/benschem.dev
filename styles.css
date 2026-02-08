@@ -138,6 +138,18 @@ body {
   background-color: var(--background);
 }
 
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.3s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 0s;
+  }
+}
+
 /* -------------------------------------------------------------------------- */
 /*                                  TEXT                                      */
 /* -------------------------------------------------------------------------- */

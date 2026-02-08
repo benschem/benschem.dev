@@ -40,7 +40,13 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
   toggle.addEventListener("click", () => {
     const newTheme = root.dataset.theme === "dark" ? "light" : "dark";
-    applyTheme(newTheme);
+
+    if (document.startViewTransition) {
+      document.startViewTransition(() => applyTheme(newTheme));
+    } else {
+      applyTheme(newTheme);
+    }
+
     setStoredTheme(newTheme);
   });
 
