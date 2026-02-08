@@ -461,6 +461,15 @@ figcaption {
   gap: 0.5rem;
 }
 
+:focus-visible {
+  outline: 3px solid var(--color-medium);
+  outline-offset: 3px;
+}
+
+.btn:focus-visible {
+  outline-offset: 6px;
+}
+
 /* -------------------------------------------------------------------------- */
 /*                                  LINKS                                     */
 /* -------------------------------------------------------------------------- */
