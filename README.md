@@ -1,22 +1,37 @@
-# Profile Example
+# Ben's Profile Page
 
-## The content
+An intentionally simple static website - plain HTML and vanilla CSS, with a sprinkling of Javascript.
+It's [hosted](https://benschem.dev) on Github pages because it's free and easy.
 
-This is a static website, meaning it's delivered to the web browser exactly as it's stored. It's made using regular HTML and CSS, with a sprinkling of Javascript to make the dark mode toggle switch and to hide the down arrow on scroll. The site is hosted on [Github pages](https://github.com/benschem/profile).
+```
+index.html
+styles.css
+scripts.js
+```
 
-## The styling
+### Javascript
 
-The CSS that styles my index page is composed of two parts - a _Normalise_ section, which aims to render elements more intuitively and consistently, and a _Page Styling_ section, which is where the magic happens.
+Used for progressive enhancement:
 
-I have tried to use modern CSS techniques and attempted to follow best practises regarding responsiveness. I hope this can serve as a good inspiration and example for you to follow with your own profile.
+- Loads an external script to render the footer icons
+- Handles the dark mode toggle
+- Handles the "scroll down" arrow.
 
-## The icons
+### CSS
 
-I used [Feather Icons](https://feathericons.com/), a collection of simple, free, open-source icons. At it's core, Feather is a collection of SVG files that get inserted into the page with Javascript. I've chosen to load Feather from a CDN provider via a <script> tag in the head of my HTML.
+- Vanilla CSS
+- Semantic styling rather than utility classes
+- A normalise section
 
-## The images
+### The icons
 
-The images are all AI generated using [Bing Image Creator](https://www.bing.com/images/create) and [Adobe Firefly](https://www.adobe.com/au/products/firefly/features/text-to-image.html). I used [Photopea](https://www.photopea.com/) to resize the images and convert them to .webp to make the filesizes as small as possible so they load faster.
+The social icons in the footer use [Feather Icons](https://github.com/feathericons/feather).
+
+- Open source project
+- Call it with `feather.replace()`
+- Replaces elements that have a `data-feather` attribute with a corresponding SVG icon
+
+Downsides of this are negligble/none as the script loading is deferred, the CDN is plenty fast enough, and given the icons are in the footer - no impact to the user.
 
 ## What are all those other files?
 
