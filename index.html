@@ -10,6 +10,14 @@
     <!-- Title -->
     <title>Ben Schembri</title>
 
+    <!-- Prevent flash of wrong theme -->
+    <script>
+      (() => {
+        const theme = localStorage.getItem("theme");
+        if (theme) document.documentElement.dataset.theme = theme;
+      })();
+    </script>
+
     <!-- Links -->
     <link rel="stylesheet" href="styles.css" />
     <link rel="icon" href="favicon.ico" type="image/x-icon" />
@@ -31,8 +39,9 @@
     <header id="top" class="above-the-fold flex-column" style="position: relative">
 
       <!-- Dark mode toggle -->
-      <button id="dark-mode-toggle" aria-label="Toggle dark mode">
-        <i id="switch-icon" data-feather="sun"></i>
+      <button id="dark-mode-toggle" aria-label="Toggle dark mode" type="button" role="switch" aria-checked="false">
+        <i data-feather="sun" aria-hidden="true"></i>
+        <i data-feather="moon" aria-hidden="true"></i>
       </button>
 
       <!-- Profile picture -->

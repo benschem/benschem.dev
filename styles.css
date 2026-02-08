@@ -3,7 +3,9 @@
 /* -------------------------------------------------------------------------- */
 
 /* Use a more-intuitive box-sizing model */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -13,14 +15,19 @@
 }
 
 /* Display images etc in a more intuitive way */
-img, picture, video, canvas, svg {
+img,
+picture,
+video,
+canvas,
+svg {
   display: block;
   max-width: 100%;
   height: auto;
 }
 
 /* Remove default list styling */
-ul, ol {
+ul,
+ol {
   list-style: none;
   padding: 0px;
   margin: 0px;
@@ -32,7 +39,12 @@ body {
 }
 
 /* 1.5 line-height is a bit much for headings though */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   line-height: 1.2;
 }
 
@@ -40,64 +52,50 @@ h1, h2, h3, h4, h5, h6 {
 /*                                  THEME                                     */
 /* -------------------------------------------------------------------------- */
 
-/* Variables */
 :root {
-  --orange-0: #fff4e6;
-  --orange-1: #ffe8cc;
-  --orange-2: #ffd8a8;
+  color-scheme: light dark;
+
+  /* Colours */
   --orange-3: #ffc078;
   --orange-4: #ffa94d;
-  --orange-5: #ff922b;
   --orange-6: #fd7e14;
-  --orange-7: #f76707;
   --orange-8: #e8590c;
-  --orange-9: #d9480f;
-  --orange-10: #bf400d;
-  --orange-11: #99330b;
-  --orange-12: #802b09;
 
   --purple-0: #f8f0fc;
-  --purple-1: #f3d9fa;
   --purple-2: #eebefa;
-  --purple-3: #e599f7;
   --purple-4: #da77f2;
-  --purple-5: #cc5de8;
-  --purple-6: #be4bdb;
-  --purple-7: #ae3ec9;
   --purple-8: #9c36b5;
-  --purple-9: #862e9c;
   --purple-10: #702682;
-  --purple-11: #5a1e69;
   --purple-12: #44174f;
+
+  /* Theme tokens  */
+  --color-light: var(--orange-3);
+  --color-medium: var(--orange-4);
+  --color-dark: var(--orange-8);
+
+  --color-alt: var(--purple-8);
+  --color-alt-light: var(--purple-2);
+
+  --background: var(--purple-0);
+  --background-alt: var(--purple-8);
 
   --radius-1: 2px;
   --radius-3: 1rem;
+
+  /* Font */
+  --body-text: black;
 
   --font-size-fluid-1: clamp(1rem, 4vw, 1.5rem);
   --font-size-fluid-2: clamp(1.5rem, 6vw, 2.5rem);
   --font-size-fluid-3: clamp(2rem, 9vw, 3.5rem);
 
   --font-system-ui: system-ui, sans-serif;
-  --font-classical-humanist: Optima, Candara, 'Noto Sans', source-sans-pro, sans-serif;
+  --font-classical-humanist: Optima, Candara, "Noto Sans", source-sans-pro, sans-serif;
 
+  /* Scroll */
   scroll-behavior: smooth;
 }
 
-/* Light theme */
-@media (prefers-color-scheme: light) {
-  :root {
-    --color-alt: var(--purple-8);
-    --color-alt-light: var(--purple-2);
-    --color-light: var(--orange-3);
-    --color-medium: var(--orange-4);
-    --color-dark: var(--orange-8);
-    --background: var(--purple-0);
-    --background-alt: var(--purple-8);
-    --body-text: black;
-  }
-}
-
-/* Dark theme */
 @media (prefers-color-scheme: dark) {
   :root {
     --color-alt: var(--purple-4);
@@ -111,6 +109,31 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
+/* User preferences always win */
+html[data-theme="light"] {
+  color-scheme: light;
+  --color-alt: var(--purple-8);
+  --color-alt-light: var(--purple-2);
+  --color-light: var(--orange-3);
+  --color-medium: var(--orange-4);
+  --color-dark: var(--orange-8);
+  --background: var(--purple-0);
+  --background-alt: var(--purple-8);
+  --body-text: black;
+}
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --color-alt: var(--purple-4);
+  --color-alt-light: var(--purple-2);
+  --color-light: var(--orange-3);
+  --color-medium: var(--orange-4);
+  --color-dark: var(--orange-6);
+  --background: var(--purple-12);
+  --background-alt: var(--purple-10);
+  --body-text: var(--purple-0);
+}
+
 body {
   background-color: var(--background);
 }
@@ -119,12 +142,17 @@ body {
 /*                                  TEXT                                      */
 /* -------------------------------------------------------------------------- */
 
-h1, h2, h3, p {
+h1,
+h2,
+h3,
+p {
   cursor: default;
   margin-block-end: 1em;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   font-family: var(--font-classical-humanist);
   font-weight: 900;
   color: var(--body-text);
@@ -215,13 +243,69 @@ section:nth-of-type(even) {
   top: 15px;
   right: 20px;
   cursor: pointer;
-  background-color: var(--background-color);
-  border: none; color: var(--body-text);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-inline: 0.5rem;
+  width: 4rem;
+  height: 2rem;
+  background-color: var(--color-alt-light);
+  border: none;
+  border-radius: 99rem;
 }
 
-.switch-icon {
-  fill: yellow;
+#dark-mode-toggle::after {
+  content: "";
+  position: absolute;
+  right: 2rem;
+  padding: 1rem;
+  border-radius: 50%;
+  background-color: var(--color-medium);
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  #dark-mode-toggle::after {
+    transition: none;
+  }
+}
+
+#dark-mode-toggle:hover::after {
+  background-color: var(--color-light);
+}
+
+html[data-theme="dark"] #dark-mode-toggle::after {
+  transform: translateX(2rem);
+}
+
+#dark-mode-toggle svg {
+  width: 1rem;
+  height: 1rem;
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+}
+
+#dark-mode-toggle svg:first-child {
+  color: var(--body-text);
+}
+
+#dark-mode-toggle svg:last-child {
+  color: var(--color-alt);
+}
+
+html[data-theme="dark"] #dark-mode-toggle svg:first-child {
+  color: var(--background-alt);
+}
+
+html[data-theme="dark"] #dark-mode-toggle svg:last-child {
+  color: var(--black);
+}
+
+/* -------------------------------------------------------------------------- */
 
 .avatar {
   border-radius: 50%;
@@ -302,21 +386,19 @@ figcaption {
   padding: 0.5rem 1.75rem;
   border-radius: var(--radius-3);
   text-decoration: none;
-  text-wrap:nowrap;
+  text-wrap: nowrap;
 
   font-size: var(--font-size-fluid-1);
   font-family: var(--font-system-ui);
   font-weight: 900;
   text-transform: uppercase;
   text-align: center;
-
 }
 
 .btn-primary {
   color: black;
   background-color: var(--color-medium);
 }
-
 
 .btn-primary:visited {
   color: black;
@@ -348,7 +430,6 @@ figcaption {
   gap: 0.5rem;
 }
 
-
 /* -------------------------------------------------------------------------- */
 /*                                  LINKS                                     */
 /* -------------------------------------------------------------------------- */
@@ -364,7 +445,6 @@ a {
   cursor: pointer;
 }
 
-
 a:visited {
   color: var(--body-text);
   text-decoration-color: var(--color-medium);
@@ -373,7 +453,6 @@ a:visited {
 a:hover {
   color: var(--color-medium);
 }
-
 
 /* -------------------------------------------------------------------------- */
 /*                                  FOOTER                                    */

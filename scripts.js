@@ -8,72 +8,54 @@ document.addEventListener("DOMContentLoaded", (event) => {
   // Replace all data-feather elements with corresponding SVG icons
   feather.replace();
 
-  // Select dark mode toggle switch
-  const toggle = document.querySelector("#dark-mode-toggle");
-  const switchIcon = document.querySelector("#switch-icon");
-
   // -------------------------------------------------------------------------------------------------------------------
   // Dark mode
   // -------------------------------------------------------------------------------------------------------------------
 
-  // Detect browser dark mode preference and style dark mode toggle switch icon to match
-  const theBrowserPrefersDarkMode = () => {
-    return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const THEME_KEY = "theme"; // value: "light" || "dark"
+
+  const toggle = document.querySelector("#dark-mode-toggle");
+  const root = document.documentElement;
+  const media = window.matchMedia("(prefers-color-scheme: dark)");
+
+  const getSystemTheme = () => {
+    return media.matches ? "dark" : "light";
   };
 
-  let darkMode;
-  if (theBrowserPrefersDarkMode()) {
-    darkMode = true;
-    switchIcon.style.fill = "none";
-  } else {
-    darkMode = false;
-    switchIcon.style.fill = "var(--color-light)";
-  }
+  const getStoredTheme = () => {
+    return localStorage.getItem(THEME_KEY);
+  };
 
-  // When the icon is clicked, toggle dark mode
+  const setStoredTheme = (theme) => {
+    localStorage.setItem(THEME_KEY, theme);
+  };
+
+  const initialTheme = getStoredTheme() || getSystemTheme();
+
+  const applyTheme = (theme) => {
+    root.dataset.theme = theme;
+    toggle.setAttribute("aria-checked", String(theme === "dark"));
+  };
+
+  applyTheme(initialTheme);
+
   toggle.addEventListener("click", () => {
-    if (darkMode) {
-      turnOffDarkMode();
-    } else {
-      turnOnDarkMode();
-    }
+    const newTheme = root.dataset.theme === "dark" ? "light" : "dark";
+    applyTheme(newTheme);
+    setStoredTheme(newTheme);
   });
 
-  const turnOffDarkMode = () => {
-    applyLightColors();
-    darkMode = false;
-    switchIcon.style.fill = "var(--color-light)";
-  };
+  media.addEventListener("change", () => {
+    const theme = getSystemTheme();
 
-  const turnOnDarkMode = () => {
-    applyDarkColors();
-    darkMode = true;
-    switchIcon.style.fill = "none";
-  };
+    if (document.startViewTransition) {
+      document.startViewTransition(() => applyTheme(theme));
+    } else {
+      applyTheme(theme);
+    }
 
-  const root = document.querySelector(":root");
-
-  const applyLightColors = () => {
-    root.style.setProperty("--color-alt", "var(--purple-6)");
-    root.style.setProperty("--color-alt-light", "var(--purple-2)");
-    root.style.setProperty("--color-light", "var(--orange-3)");
-    root.style.setProperty("--color-medium", "var(--orange-4)");
-    root.style.setProperty("--color-dark", "var(--orange-8)");
-    root.style.setProperty("--background", "var(--purple-0)");
-    root.style.setProperty("--background-alt", "var(--purple-8)");
-    root.style.setProperty("--body-text", "black");
-  };
-
-  const applyDarkColors = () => {
-    root.style.setProperty("--color-alt", "var(--purple-6)");
-    root.style.setProperty("--color-alt-light", "var(--purple-2)");
-    root.style.setProperty("--color-light", "var(--orange-3)");
-    root.style.setProperty("--color-medium", "var(--orange-4)");
-    root.style.setProperty("--color-dark", "var(--orange-6)");
-    root.style.setProperty("--background", "var(--purple-12)");
-    root.style.setProperty("--background-alt", "var(--purple-10)");
-    root.style.setProperty("--body-text", "var(--purple-0)");
-  };
+    setStoredTheme(theme)
+  });
 
   // -------------------------------------------------------------------------------------------------------------------
   // Downa arrow
