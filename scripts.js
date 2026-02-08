@@ -1,6 +1,5 @@
 // Prevent errors from script trying to access missing elements
 document.addEventListener("DOMContentLoaded", (event) => {
-
   // -------------------------------------------------------------------------------------------------------------------
   // Feather icons
   // -------------------------------------------------------------------------------------------------------------------
@@ -54,50 +53,44 @@ document.addEventListener("DOMContentLoaded", (event) => {
       applyTheme(theme);
     }
 
-    setStoredTheme(theme)
+    setStoredTheme(theme);
   });
 
   // -------------------------------------------------------------------------------------------------------------------
-  // Downa arrow
+  // Down arrow
   // -------------------------------------------------------------------------------------------------------------------
 
   // As soon as you scroll, hide the bouncing arrow encouraging you to scroll down
-  // Prevent the bouncing arrow touching the buttons if the screen height is too small
-  const buttons = document.querySelector(".buttons");
   const downArrow = document.querySelector("#down-arrow");
 
-  const showArrow = () => {
-    downArrow.style.display = "block";
+  const updateArrowVisibilty = () => {
+    downArrow.hidden = window.scrollY > 10;
   };
 
-  const hideArrow = () => {
-    downArrow.style.display = "none";
-  };
+  updateArrowVisibilty();
 
-  const toggleArrowVisibility = () => {
+  window.addEventListener("scroll", updateArrowVisibilty, { passive: true });
+
+  // Prevent the bouncing arrow touching the buttons if the screen height is too small
+  const buttons = document.querySelector(".buttons");
+
+  const checkArrowOverlap = () => {
     const downArrowRect = downArrow.getBoundingClientRect();
     const buttonsRect = buttons.getBoundingClientRect();
 
-    const scrolledAllTheWayUp = window.scrollY === 0;
+    const arrowOverlapsButtons = downArrowRect.bottom >= buttonsRect.top && downArrowRect.top <= buttonsRect.bottom;
 
-    const arrowOverlapsButtons =
-      downArrowRect.bottom > buttonsRect.top &&
-      downArrowRect.top < buttonsRect.bottom &&
-      downArrowRect.right > buttonsRect.left &&
-      downArrowRect.left < buttonsRect.right;
-
-    if (!scrolledAllTheWayUp || arrowOverlapsButtons) {
-      hideArrow();
+    if (arrowOverlapsButtons) {
+      downArrow.hidden = true;
     } else {
-      showArrow();
+      updateArrowVisibilty();
     }
   };
 
-  toggleArrowVisibility();
+  checkArrowOverlap();
 
-  window.addEventListener("scroll", toggleArrowVisibility);
-  window.addEventListener("resize", toggleArrowVisibility);
-  downArrow.addEventListener("animationstart", toggleArrowVisibility);
-  downArrow.addEventListener("animationend", toggleArrowVisibility);
-  downArrow.addEventListener("animationiteration", toggleArrowVisibility);
+  window.addEventListener("resize", checkArrowOverlap);
+  downArrow.addEventListener("animationstart", checkArrowOverlap);
+  downArrow.addEventListener("animationend", checkArrowOverlap);
+  downArrow.addEventListener("animationiteration", checkArrowOverlap);
 });

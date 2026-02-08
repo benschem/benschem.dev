@@ -345,6 +345,10 @@ figcaption {
   animation-timing-function: ease-in;
 }
 
+#down-arrow[hidden] {
+  display: none;
+}
+
 @keyframes bounce-down {
   from {
     transform: translateY(-20px);
