@@ -36,46 +36,37 @@
 
   <body>
     <!-- Header section -->
-    <header id="top" class="above-the-fold flex-column">
+    <header id="top" class="above-the-fold">
 
-      <!-- Dark mode toggle -->
-      <button id="dark-mode-toggle" aria-label="Toggle dark mode" type="button" role="switch" aria-checked="false">
-        <i data-feather="sun" aria-hidden="true"></i>
-        <i data-feather="moon" aria-hidden="true"></i>
-      </button>
+      <div class="content">
+        <!-- Dark mode toggle -->
+        <button id="dark-mode-toggle" aria-label="Toggle dark mode" type="button" role="switch" aria-checked="false">
+          <i data-feather="sun" aria-hidden="true"></i>
+          <i data-feather="moon" aria-hidden="true"></i>
+        </button>
 
-      <!-- Profile picture -->
-      <figure>
-        <img class="avatar" src="img/profile.webp" width="200" height="200" loading="eager" fetchpriority="high" alt="An AI generated profile picture that's supposed to be Ben working on some code on his laptop."/>
-        <figcaption>*This is what AI thinks I look like.</figcaption>
-      </figure>
+        <!-- Profile picture -->
+        <img class="avatar" src="img/profile.webp" width="200" height="200" alt="An AI generated profile picture that's supposed to be Ben working on some code on his laptop."/>
 
-      <!-- Heading -->
-      <h1>Hello, my name is <strong>Ben Schembri</strong></h1>
+        <!-- Heading -->
+        <h1>Ben Schembri</h1>
 
-      <!-- Subtext -->
-      <p>
-        I'm a Software Developer at
-        <a href="https://rocketzip.com.au" target="_blank" rel="noopener">
-          Rocketzip
+        <!-- Subtext -->
+        <p>
+         I'm a <strong>Software Engineer</strong> & <strong>Educator</strong>. I build clean, maintainable software and teach the next generation of devs how to do the same. I’m a fan of Ruby on Rails, Eleventy, and setting up my own servers. I try to write code that my future self and teammates won't hate me for. If you need someone who can bridge the gap between complex logic and "actually explaining it to people," we should talk.
+        </p>
+
+        <!-- Call to action buttons -->
+        <div class="buttons">
+          <a class="btn btn-primary" href="#connect">Connect</a>
+          <a class="btn btn-secondary" href="#websites">Put me to work</a>
+        </div>
+
+        <!-- "Scroll down" arrow -->
+        <a href="#websites" aria-label="Scroll down">
+          <i id="down-arrow" data-feather="chevrons-down"></i>
         </a>
-        who also teaches at
-        <a href="https://www.lewagon.com/melbourne" target="_blank" rel="noopener">
-          a web development bootcamp
-        </a>
-        in Melbourne, Australia.
-      </p>
-
-      <!-- Call to action buttons -->
-      <div class="buttons">
-        <a class="btn btn-primary" href="#connect">Connect</a>
-        <a class="btn btn-secondary" href="#websites">Put me to work</a>
       </div>
-
-      <!-- "Scroll down" arrow -->
-      <a id="down-arrow" href="#websites" aria-label="Scroll down">
-        <i data-feather="chevrons-down"></i>
-      </a>
     </header>
 
     <!-- Main content -->
@@ -85,10 +76,7 @@
       <section id="websites">
 
         <!-- Image -->
-        <figure>
-          <img class="hero-img" src="img/designer.webp" width="400" height="400" loading="lazy" decoding="async" alt="An AI generated image of web designer working at a desk being harassed by a client in a suit."/>
-          <figcaption>*What AI thinks I look like working with clients.</figcaption>
-        </figure>
+        <img class="hero-img" src="img/designer.webp" width="400" height="400" alt="An AI generated image of web designer working at a desk being harassed by a client in a suit."/>
 
         <!-- Card -->
         <div class="card">
@@ -116,10 +104,7 @@
       <!-- Hero section (reversed) -->
       <section>
         <!-- Image -->
-        <figure>
-          <img class="hero-img" src="img/teacher.webp" width="400" height="400" loading="lazy" decoding="async" alt="An AI generated image of a despondent web developer staring at a laptop while a friend excitedly pitches a terrible app idea to him."/>
-          <figcaption>*What AI thinks I look like teaching students.</figcaption>
-        </figure>
+        <img class="hero-img" src="img/teacher.webp" width="400" height="400" alt="An AI generated image of a despondent web developer staring at a laptop while a friend excitedly pitches a terrible app idea to him."/>
 
         <!-- Card -->
         <div class="card">
@@ -147,10 +132,7 @@
       <!-- Hero section -->
       <section>
         <!-- Image -->
-        <figure>
-          <img class="hero-img" src="img/freelancer.webp" width="400" height="400" loading="lazy" decoding="async" alt="An AI generated image of a frustrated web developer holding his head in his hands while a business executive in a suit harasses him to work harder."/>
-          <figcaption>*What AI thinks I look like working with businesses.</figcaption>
-        </figure>
+        <img class="hero-img" src="img/freelancer.webp" width="400" height="400" alt="An AI generated image of a frustrated web developer holding his head in his hands while a business executive in a suit harasses him to work harder."/>
 
         <!-- Card -->
         <div class="card">
@@ -178,10 +160,7 @@
       <!-- Hero section reversed -->
       <section>
         <!-- Image -->
-        <figure>
-          <img class="hero-img" src="img/startup.webp" width="400" height="400" loading="lazy" decoding="async" alt="An AI generated image of a despondent web developer staring at a laptop while a friend excitedly pitches a terrible app idea to him." />
-          <figcaption>*What AI thinks I look like when someone pitches an idea.</figcaption>
-        </figure>
+        <img class="hero-img" src="img/startup.webp" width="400" height="400" alt="An AI generated image of a despondent web developer staring at a laptop while a friend excitedly pitches a terrible app idea to him." />
 
         <!-- Card -->
         <div class="card">
