@@ -234,7 +234,6 @@ strong {
   margin-block-start: 8rem;
   margin-block-end: 8rem;
   max-width: 100vw;
-}
 
   & > * + * {
     margin-block-start: 12rem;
@@ -378,7 +377,7 @@ header {
   animation-timing-function: ease-in;
 }
 
-#down-arrow[hidden] {
+#down-arrow[data-hidden="true"] {
   display: none;
 }
 

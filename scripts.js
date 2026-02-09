@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   const downArrow = document.querySelector("#down-arrow");
 
   const updateArrowVisibilty = () => {
-    downArrow.hidden = window.scrollY > 10;
+    downArrow.dataset.hidden = window.scrollY > 10;
   };
 
   updateArrowVisibilty();
