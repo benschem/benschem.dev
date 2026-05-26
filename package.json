@@ -15,7 +15,10 @@
     "lint": "astro check"
   },
   "dependencies": {
-    "astro": "^6.3.7"
+    "@astrojs/check": "^0.9.9",
+    "@astrojs/mdx": "^5.0.6",
+    "astro": "^6.3.7",
+    "typescript": "^6.0.3"
   },
   "devDependencies": {
     "prettier": "3.8.3",
