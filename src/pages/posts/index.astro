@@ -1,0 +1,38 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PostList from "../../components/PostList.astro";
+
+const posts = (
+  await getCollection("posts", ({ data }) =>
+    import.meta.env.PROD ? !data.draft : true,
+  )
+).sort((a, b) => b.data.published.valueOf() - a.data.published.valueOf());
+
+const dateFormat = new Intl.DateTimeFormat("en-AU", { dateStyle: "long" });
+---
+
+<BaseLayout title="Posts — Ben Schembri" description="Writing by Ben Schembri.">
+  <div class="posts">
+    <h1>Posts</h1>
+    <p>
+      A collection of my thoughts on different topics related to software
+      development.
+    </p>
+
+    <PostList />
+  </div>
+</BaseLayout>
+
+<style>
+  .posts {
+    margin-inline: auto;
+    padding-inline: 1rem;
+    padding-block: 4rem;
+    max-width: 60rem;
+
+    & p {
+      margin-bottom: 2rem;
+    }
+  }
+</style>

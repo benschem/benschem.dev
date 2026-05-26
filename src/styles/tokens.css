@@ -1,0 +1,400 @@
+/* -------------------------------------------------------------------------- */
+/*  Role tokens — registered so palette switches animate smoothly.            */
+/*  Without @property, custom-property colours snap on change.                 */
+/* -------------------------------------------------------------------------- */
+
+@property --surface-reading {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: white;
+}
+@property --surface-raised {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: white;
+}
+@property --ink-body {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: black;
+}
+@property --ink-heading {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: black;
+}
+@property --accent {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: black;
+}
+@property --accent-soft {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: black;
+}
+@property --alt {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: black;
+}
+@property --alt-soft {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: black;
+}
+@property --alt-strong {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: black;
+}
+@property --burst-centre {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: white;
+}
+@property --burst-mid {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: white;
+}
+@property --burst-edge {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: white;
+}
+
+:root {
+  color-scheme: light dark;
+
+  --radius-1: 2px;
+  --radius-3: 1rem;
+
+  /* Decorative borders that scale with viewport - floor and ceiling clamped */
+  --border-accent: clamp(1rem, 0.4rem + 3vmin, 4rem);
+  --border-thick: clamp(1rem, 0.6rem + 2vmin, 2rem);
+  --border-thin: clamp(0.5rem, 0.4rem + 1vmin, 1rem);
+
+  /* https://utopia.fyi/type/calculator/ */
+  --font-size-fluid--2: clamp(0.7813rem, 0.7736rem + 0.0341vw, 0.8rem);
+  --font-size-fluid--1: clamp(0.9375rem, 0.9119rem + 0.1136vw, 1rem);
+  --font-size-fluid-0: clamp(1.125rem, 1.0739rem + 0.2273vw, 1.25rem);
+  --font-size-fluid-1: clamp(1.35rem, 1.2631rem + 0.3864vw, 1.5625rem);
+  --font-size-fluid-2: clamp(1.62rem, 1.4837rem + 0.6057vw, 1.9531rem);
+  --font-size-fluid-3: clamp(1.944rem, 1.7405rem + 0.9044vw, 2.4414rem);
+  --font-size-fluid-4: clamp(2.3328rem, 2.0387rem + 1.3072vw, 3.0518rem);
+  --font-size-fluid-5: clamp(2.7994rem, 2.384rem + 1.8461vw, 3.8147rem);
+
+  --font-system-ui: system-ui, sans-serif;
+  --font-classical-humanist:
+    Optima, Candara, "Noto Sans", source-sans-pro, sans-serif;
+
+  scroll-behavior: smooth;
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Palettes — each defines seeds, then derives role tokens via OKLCH         */
+/*  relative-colour syntax. Adding a theme = copy a block, change the seeds.  */
+/* -------------------------------------------------------------------------- */
+
+:root,
+:root[data-palette="default"] {
+  /* Warm orange + violet — the original v2 vibe */
+  --seed-surface: light-dark(oklch(99% 0.008 60), oklch(20% 0.015 60));
+  --seed-raised: light-dark(oklch(96% 0.02 60), oklch(26% 0.03 60));
+  --seed-accent: light-dark(oklch(70% 0.18 50), oklch(72% 0.18 50));
+  --seed-alt: light-dark(oklch(45% 0.22 310), oklch(80% 0.14 310));
+
+  --surface-reading: var(--seed-surface);
+  --surface-raised: var(--seed-raised);
+  --ink-body: light-dark(oklch(15% 0.02 60), oklch(95% 0.02 60));
+  --ink-heading: light-dark(
+    oklch(from var(--seed-accent) calc(l - 0.15) c h),
+    oklch(from var(--seed-accent) calc(l + 0.06) c h)
+  );
+  --accent: var(--seed-accent);
+  --accent-soft: oklch(
+    from var(--seed-accent) calc(l + 0.15) calc(c - 0.06) h
+  );
+  --alt: var(--seed-alt);
+  --alt-soft: oklch(from var(--seed-alt) calc(l + 0.3) calc(c - 0.1) h);
+  --alt-strong: oklch(from var(--seed-alt) calc(l - 0.15) c h);
+
+  --burst-centre: light-dark(white, oklch(from var(--seed-accent) 0.25 c h));
+  --burst-mid: var(--seed-accent);
+  --burst-edge: oklch(from var(--seed-accent) calc(l - 0.25) c h);
+}
+
+:root[data-palette="lagoon"] {
+  /* Teal surface + coral alt. */
+  --seed-surface: light-dark(oklch(99% 0.008 200), oklch(22% 0.02 200));
+  --seed-raised: light-dark(oklch(95% 0.025 200), oklch(28% 0.04 200));
+  --seed-accent: light-dark(oklch(60% 0.14 200), oklch(70% 0.13 200));
+  --seed-alt: light-dark(oklch(60% 0.18 25), oklch(78% 0.16 25));
+
+  --surface-reading: var(--seed-surface);
+  --surface-raised: var(--seed-raised);
+  --ink-body: light-dark(oklch(15% 0.02 200), oklch(95% 0.02 200));
+  --ink-heading: light-dark(
+    oklch(from var(--seed-accent) calc(l - 0.15) c h),
+    oklch(from var(--seed-accent) calc(l + 0.06) c h)
+  );
+  --accent: var(--seed-accent);
+  --accent-soft: oklch(
+    from var(--seed-accent) calc(l + 0.15) calc(c - 0.06) h
+  );
+  --alt: var(--seed-alt);
+  --alt-soft: oklch(from var(--seed-alt) calc(l + 0.3) calc(c - 0.1) h);
+  --alt-strong: oklch(from var(--seed-alt) calc(l - 0.15) c h);
+
+  --burst-centre: light-dark(white, oklch(from var(--seed-accent) 0.22 c h));
+  --burst-mid: var(--seed-accent);
+  --burst-edge: oklch(from var(--seed-accent) calc(l - 0.25) c h);
+}
+
+:root[data-palette="noir"] {
+  /* Pure neutral surface + a single saturated red accent. */
+  --seed-surface: light-dark(oklch(99% 0 0), oklch(15% 0 0));
+  --seed-raised: light-dark(oklch(94% 0 0), oklch(22% 0 0));
+  --seed-accent: light-dark(oklch(55% 0.22 25), oklch(70% 0.22 25));
+  --seed-alt: light-dark(oklch(30% 0 0), oklch(80% 0 0));
+
+  --surface-reading: var(--seed-surface);
+  --surface-raised: var(--seed-raised);
+  --ink-body: light-dark(oklch(15% 0 0), oklch(95% 0 0));
+  --ink-heading: light-dark(
+    oklch(from var(--seed-accent) calc(l - 0.15) c h),
+    oklch(from var(--seed-accent) calc(l + 0.06) c h)
+  );
+  --accent: var(--seed-accent);
+  --accent-soft: oklch(
+    from var(--seed-accent) calc(l + 0.15) calc(c - 0.06) h
+  );
+  --alt: var(--seed-alt);
+  --alt-soft: oklch(from var(--seed-alt) calc(l + 0.3) c h);
+  --alt-strong: oklch(from var(--seed-alt) calc(l - 0.15) c h);
+
+  --burst-centre: light-dark(white, oklch(15% 0 0));
+  --burst-mid: light-dark(oklch(85% 0 0), oklch(30% 0 0));
+  --burst-edge: light-dark(oklch(60% 0 0), oklch(20% 0 0));
+}
+
+:root[data-palette="forest"] {
+  /* Deep forest green + warm gold. */
+  --seed-surface: light-dark(oklch(99% 0.008 145), oklch(20% 0.015 145));
+  --seed-raised: light-dark(oklch(96% 0.02 145), oklch(26% 0.03 145));
+  --seed-accent: light-dark(oklch(55% 0.15 145), oklch(72% 0.14 145));
+  --seed-alt: light-dark(oklch(60% 0.16 85), oklch(80% 0.14 85));
+
+  --surface-reading: var(--seed-surface);
+  --surface-raised: var(--seed-raised);
+  --ink-body: light-dark(oklch(15% 0.02 145), oklch(95% 0.02 145));
+  --ink-heading: light-dark(
+    oklch(from var(--seed-accent) calc(l - 0.15) c h),
+    oklch(from var(--seed-accent) calc(l + 0.06) c h)
+  );
+  --accent: var(--seed-accent);
+  --accent-soft: oklch(
+    from var(--seed-accent) calc(l + 0.15) calc(c - 0.06) h
+  );
+  --alt: var(--seed-alt);
+  --alt-soft: oklch(from var(--seed-alt) calc(l + 0.3) calc(c - 0.1) h);
+  --alt-strong: oklch(from var(--seed-alt) calc(l - 0.15) c h);
+
+  --burst-centre: light-dark(white, oklch(from var(--seed-accent) 0.22 c h));
+  --burst-mid: var(--seed-accent);
+  --burst-edge: oklch(from var(--seed-accent) calc(l - 0.25) c h);
+}
+
+:root[data-palette="plum"] {
+  /* Wine / burgundy + mustard. */
+  --seed-surface: light-dark(oklch(99% 0.008 10), oklch(20% 0.015 10));
+  --seed-raised: light-dark(oklch(96% 0.02 10), oklch(26% 0.03 10));
+  --seed-accent: light-dark(oklch(48% 0.18 10), oklch(68% 0.16 10));
+  --seed-alt: light-dark(oklch(60% 0.16 85), oklch(80% 0.14 85));
+
+  --surface-reading: var(--seed-surface);
+  --surface-raised: var(--seed-raised);
+  --ink-body: light-dark(oklch(15% 0.02 10), oklch(95% 0.02 10));
+  --ink-heading: light-dark(
+    oklch(from var(--seed-accent) calc(l - 0.1) c h),
+    oklch(from var(--seed-accent) calc(l + 0.1) c h)
+  );
+  --accent: var(--seed-accent);
+  --accent-soft: oklch(
+    from var(--seed-accent) calc(l + 0.18) calc(c - 0.06) h
+  );
+  --alt: var(--seed-alt);
+  --alt-soft: oklch(from var(--seed-alt) calc(l + 0.3) calc(c - 0.1) h);
+  --alt-strong: oklch(from var(--seed-alt) calc(l - 0.15) c h);
+
+  --burst-centre: light-dark(white, oklch(from var(--seed-accent) 0.2 c h));
+  --burst-mid: var(--seed-accent);
+  --burst-edge: oklch(from var(--seed-accent) calc(l - 0.2) c h);
+}
+
+:root[data-palette="sky"] {
+  /* Sky blue + sunset orange. */
+  --seed-surface: light-dark(oklch(99% 0.008 240), oklch(20% 0.015 240));
+  --seed-raised: light-dark(oklch(96% 0.02 240), oklch(26% 0.03 240));
+  --seed-accent: light-dark(oklch(58% 0.17 240), oklch(72% 0.15 240));
+  --seed-alt: light-dark(oklch(60% 0.18 40), oklch(78% 0.16 40));
+
+  --surface-reading: var(--seed-surface);
+  --surface-raised: var(--seed-raised);
+  --ink-body: light-dark(oklch(15% 0.02 240), oklch(95% 0.02 240));
+  --ink-heading: light-dark(
+    oklch(from var(--seed-accent) calc(l - 0.15) c h),
+    oklch(from var(--seed-accent) calc(l + 0.06) c h)
+  );
+  --accent: var(--seed-accent);
+  --accent-soft: oklch(
+    from var(--seed-accent) calc(l + 0.15) calc(c - 0.06) h
+  );
+  --alt: var(--seed-alt);
+  --alt-soft: oklch(from var(--seed-alt) calc(l + 0.3) calc(c - 0.1) h);
+  --alt-strong: oklch(from var(--seed-alt) calc(l - 0.15) c h);
+
+  --burst-centre: light-dark(white, oklch(from var(--seed-accent) 0.22 c h));
+  --burst-mid: var(--seed-accent);
+  --burst-edge: oklch(from var(--seed-accent) calc(l - 0.25) c h);
+}
+
+:root[data-palette="rose"] {
+  /* Dusty rose + sage. */
+  --seed-surface: light-dark(oklch(99% 0.008 10), oklch(20% 0.015 10));
+  --seed-raised: light-dark(oklch(96% 0.02 10), oklch(26% 0.03 10));
+  --seed-accent: light-dark(oklch(62% 0.16 10), oklch(75% 0.13 10));
+  --seed-alt: light-dark(oklch(50% 0.1 150), oklch(75% 0.1 150));
+
+  --surface-reading: var(--seed-surface);
+  --surface-raised: var(--seed-raised);
+  --ink-body: light-dark(oklch(15% 0.02 10), oklch(95% 0.02 10));
+  --ink-heading: light-dark(
+    oklch(from var(--seed-accent) calc(l - 0.15) c h),
+    oklch(from var(--seed-accent) calc(l + 0.06) c h)
+  );
+  --accent: var(--seed-accent);
+  --accent-soft: oklch(
+    from var(--seed-accent) calc(l + 0.15) calc(c - 0.06) h
+  );
+  --alt: var(--seed-alt);
+  --alt-soft: oklch(from var(--seed-alt) calc(l + 0.3) calc(c - 0.05) h);
+  --alt-strong: oklch(from var(--seed-alt) calc(l - 0.15) c h);
+
+  --burst-centre: light-dark(white, oklch(from var(--seed-accent) 0.22 c h));
+  --burst-mid: var(--seed-accent);
+  --burst-edge: oklch(from var(--seed-accent) calc(l - 0.25) c h);
+}
+
+:root[data-palette="sand"] {
+  /* Warm sand / wheat + terracotta. */
+  --seed-surface: light-dark(oklch(98% 0.012 80), oklch(22% 0.02 80));
+  --seed-raised: light-dark(oklch(94% 0.025 80), oklch(28% 0.035 80));
+  --seed-accent: light-dark(oklch(58% 0.12 75), oklch(74% 0.12 75));
+  --seed-alt: light-dark(oklch(55% 0.18 40), oklch(74% 0.16 40));
+
+  --surface-reading: var(--seed-surface);
+  --surface-raised: var(--seed-raised);
+  --ink-body: light-dark(oklch(18% 0.02 80), oklch(95% 0.02 80));
+  --ink-heading: light-dark(
+    oklch(from var(--seed-accent) calc(l - 0.15) c h),
+    oklch(from var(--seed-accent) calc(l + 0.06) c h)
+  );
+  --accent: var(--seed-accent);
+  --accent-soft: oklch(
+    from var(--seed-accent) calc(l + 0.15) calc(c - 0.04) h
+  );
+  --alt: var(--seed-alt);
+  --alt-soft: oklch(from var(--seed-alt) calc(l + 0.3) calc(c - 0.1) h);
+  --alt-strong: oklch(from var(--seed-alt) calc(l - 0.15) c h);
+
+  --burst-centre: light-dark(white, oklch(from var(--seed-accent) 0.24 c h));
+  --burst-mid: var(--seed-accent);
+  --burst-edge: oklch(from var(--seed-accent) calc(l - 0.25) c h);
+}
+
+:root[data-palette="mint"] {
+  /* Fresh mint + coral. */
+  --seed-surface: light-dark(oklch(99% 0.008 170), oklch(20% 0.015 170));
+  --seed-raised: light-dark(oklch(96% 0.02 170), oklch(26% 0.03 170));
+  --seed-accent: light-dark(oklch(60% 0.13 170), oklch(74% 0.12 170));
+  --seed-alt: light-dark(oklch(62% 0.18 25), oklch(78% 0.16 25));
+
+  --surface-reading: var(--seed-surface);
+  --surface-raised: var(--seed-raised);
+  --ink-body: light-dark(oklch(15% 0.02 170), oklch(95% 0.02 170));
+  --ink-heading: light-dark(
+    oklch(from var(--seed-accent) calc(l - 0.15) c h),
+    oklch(from var(--seed-accent) calc(l + 0.06) c h)
+  );
+  --accent: var(--seed-accent);
+  --accent-soft: oklch(
+    from var(--seed-accent) calc(l + 0.15) calc(c - 0.06) h
+  );
+  --alt: var(--seed-alt);
+  --alt-soft: oklch(from var(--seed-alt) calc(l + 0.3) calc(c - 0.1) h);
+  --alt-strong: oklch(from var(--seed-alt) calc(l - 0.15) c h);
+
+  --burst-centre: light-dark(white, oklch(from var(--seed-accent) 0.22 c h));
+  --burst-mid: var(--seed-accent);
+  --burst-edge: oklch(from var(--seed-accent) calc(l - 0.25) c h);
+}
+
+:root[data-palette="grape"] {
+  /* Saturated purple + lime. */
+  --seed-surface: light-dark(oklch(99% 0.008 300), oklch(20% 0.015 300));
+  --seed-raised: light-dark(oklch(96% 0.02 300), oklch(26% 0.03 300));
+  --seed-accent: light-dark(oklch(52% 0.22 300), oklch(72% 0.2 300));
+  --seed-alt: light-dark(oklch(70% 0.18 120), oklch(82% 0.18 120));
+
+  --surface-reading: var(--seed-surface);
+  --surface-raised: var(--seed-raised);
+  --ink-body: light-dark(oklch(15% 0.02 300), oklch(95% 0.02 300));
+  --ink-heading: light-dark(
+    oklch(from var(--seed-accent) calc(l - 0.15) c h),
+    oklch(from var(--seed-accent) calc(l + 0.06) c h)
+  );
+  --accent: var(--seed-accent);
+  --accent-soft: oklch(
+    from var(--seed-accent) calc(l + 0.18) calc(c - 0.06) h
+  );
+  --alt: var(--seed-alt);
+  --alt-soft: oklch(from var(--seed-alt) calc(l + 0.2) calc(c - 0.08) h);
+  --alt-strong: oklch(from var(--seed-alt) calc(l - 0.15) c h);
+
+  --burst-centre: light-dark(white, oklch(from var(--seed-accent) 0.2 c h));
+  --burst-mid: var(--seed-accent);
+  --burst-edge: oklch(from var(--seed-accent) calc(l - 0.25) c h);
+}
+
+/* User light/dark override — color-scheme drives all the light-dark() calls
+   inside each palette block, so this is the only switch needed. */
+:root[data-mode="light"] {
+  color-scheme: light;
+}
+:root[data-mode="dark"] {
+  color-scheme: dark;
+}
+
+/* Smooth crossfades between palettes. Scoped to the themed surfaces so we
+   don't pay for transitions on the entire DOM. */
+html,
+header,
+main,
+footer,
+.avatar,
+.callout,
+.sunburst stop {
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease,
+    stop-color 0.3s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition-duration: 0s !important;
+  }
+}

@@ -1,0 +1,108 @@
+---
+import { getCollection } from "astro:content";
+
+interface Props {
+  limit?: number;
+}
+
+const { limit } = Astro.props;
+
+const allPosts = (
+  await getCollection("posts", ({ data }) =>
+    import.meta.env.PROD ? !data.draft : true,
+  )
+).sort((a, b) => b.data.published.valueOf() - a.data.published.valueOf());
+
+const posts = limit ? allPosts.slice(0, limit) : allPosts;
+const hasMore = limit !== undefined && allPosts.length > limit;
+
+const dateFormat = new Intl.DateTimeFormat("en-AU", { dateStyle: "long" });
+---
+
+<div class="posts">
+{
+  posts.length === 0 ? (
+    <p>Nothing here yet.</p>
+  ) : (
+    <ol class="post-list" reversed>
+      {posts.map((post) => (
+        <li>
+          <a href={`/posts/${post.id}`}>
+            <h2>{post.data.title}</h2>
+          </a>
+          <a href={`/posts/${post.id}`}>
+            <time datetime={post.data.published.toISOString()}>
+              {dateFormat.format(post.data.published)}
+            </time>
+          </a>
+          <a href={`/posts/${post.id}`}>
+            <p>{post.data.description}</p>
+          </a>
+        </li>
+      ))}
+    </ol>
+  )
+}
+{
+  hasMore && (
+    <a class="view-all" href="/posts">
+      View all posts <span aria-hidden="true">&rarr;</span>
+    </a>
+  )
+}
+</div>
+
+<style>
+  .post-list {
+    list-style: none;
+    padding: 2rem;
+    display: grid;
+    gap: 2rem;
+
+    & li {
+      padding-inline-start: 1rem;
+      padding-block-end: 2rem;
+      border-block-end: 1px solid var(--accent);
+    }
+
+    & li:first-child {
+      padding-block-start: 2rem;
+      border-block-start: 1px solid var(--accent);
+    }
+
+    & a {
+      text-decoration: none;
+    }
+
+    & a > *:hover {
+      cursor: pointer;
+    }
+
+    & h2 {
+      margin-block-end: 0.25em;
+    }
+
+    & time {
+      display: block;
+      font-size: var(--font-size-fluid--1);
+      color: var(--alt);
+      margin-block-end: 0.5rem;
+      font-variant-caps: all-small-caps;
+      letter-spacing: 0.05em;
+    }
+  }
+
+  .view-all {
+    display: block;
+    margin-block: 2rem;
+    padding-inline-start: 3rem;
+    font-variant-caps: all-small-caps;
+    letter-spacing: 0.05em;
+    color: var(--ink-heading);
+    text-decoration: none;
+  }
+
+  .view-all:hover {
+    text-decoration: underline;
+  }
+</style>

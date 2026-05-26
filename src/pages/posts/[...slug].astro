@@ -1,0 +1,169 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import TableOfContents from "../../components/TableOfContents.astro";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("posts", ({ data }) =>
+    import.meta.env.PROD ? !data.draft : true,
+  );
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content, headings } = await render(post);
+
+const dateFormat = new Intl.DateTimeFormat("en-AU", { dateStyle: "long" });
+const published = post.data.published;
+const updated = post.data.updated;
+const showUpdated =
+  updated !== undefined && updated.valueOf() !== published.valueOf();
+---
+
+<BaseLayout
+  title={`${post.data.title} — Ben Schembri`}
+  description={post.data.description}
+  ogType="article"
+  pubDate={published}
+  updatedDate={updated}
+>
+  <article class="post">
+    <a href="/posts" class="back-link">← Posts</a>
+
+    <header class="post-header">
+      <h1>{post.data.title}</h1>
+      <p class="meta">
+        Published <time datetime={published.toISOString()}
+          >{dateFormat.format(published)}</time
+        >
+        {
+          showUpdated && (
+            <>
+              {" · "}Updated{" "}
+              <time datetime={updated!.toISOString()}>
+                {dateFormat.format(updated!)}
+              </time>
+            </>
+          )
+        }
+      </p>
+    </header>
+
+    <TableOfContents headings={headings} />
+
+    <div class="post-body">
+      <Content />
+    </div>
+
+    {
+      post.data.changelog && post.data.changelog.length > 0 && (
+        <section class="changelog" aria-labelledby="changelog-heading">
+          <h2 id="changelog-heading">Changelog</h2>
+          <ul>
+            {post.data.changelog.map((entry) => (
+              <li>
+                <time datetime={entry.date.toISOString()}>
+                  {dateFormat.format(entry.date)}
+                </time>
+                {" — "}
+                {entry.change}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+  </article>
+</BaseLayout>
+
+<style>
+  .post {
+    margin-inline: auto;
+    padding-inline: 1rem;
+    padding-block: 4rem;
+    max-width: 72ch;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-block-end: 2rem;
+    font-size: var(--font-size-fluid--1);
+  }
+
+  .post-header {
+    margin-block-end: 3rem;
+  }
+
+  .meta {
+    font-size: var(--font-size-fluid--1);
+    color: var(--alt);
+    font-variant-caps: all-small-caps;
+    letter-spacing: 0.05em;
+  }
+
+  .post-body {
+    line-height: 1.7;
+  }
+
+  .post-body :global(h2),
+  .post-body :global(h3) {
+    margin-block-start: 2.5em;
+    margin-block-end: 0.5em;
+  }
+
+  .post-body :global(p) {
+    margin-block-end: 1.25em;
+  }
+
+  /* Drop cap on the first top-level paragraph of the post body. Direct-child
+     combinator keeps it out of any nested elements like <Callout>. */
+  .post-body > :global(p:first-of-type::first-letter) {
+    font-family: var(--font-classical-humanist);
+    font-weight: 900;
+    color: var(--alt);
+    float: left;
+    font-size: 4em;
+    line-height: 0.85;
+    padding-inline-end: 0.1em;
+    padding-block-start: 0.05em;
+  }
+
+  .post-body :global(pre) {
+    padding: 1rem;
+    border-radius: var(--radius-3);
+    overflow-x: auto;
+    font-size: 0.9em;
+  }
+
+  .post-body :global(:not(pre) > code) {
+    padding: 0.125em 0.375em;
+    background-color: var(--alt-soft);
+    border-radius: 0.25em;
+    font-size: 0.9em;
+  }
+
+  .changelog {
+    margin-block-start: 4rem;
+    padding-block-start: 2rem;
+    border-block-start: 1px solid var(--accent);
+  }
+
+  .changelog ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .changelog li {
+    margin-block-end: 0.5rem;
+    font-size: var(--font-size-fluid--1);
+  }
+
+  .changelog time {
+    font-variant-caps: all-small-caps;
+    letter-spacing: 0.05em;
+    color: var(--alt);
+  }
+</style>

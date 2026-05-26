@@ -1,0 +1,157 @@
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.3s;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation-duration: 0s;
+  }
+}
+
+h1,
+h2,
+h3,
+p {
+  cursor: default;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-classical-humanist);
+  font-weight: 700;
+  color: var(--ink-body);
+  text-wrap: balance;
+  margin-block-end: 0.5em;
+}
+
+h1 {
+  font-size: var(--font-size-fluid-4);
+}
+
+h2 {
+  font-size: var(--font-size-fluid-1);
+  color: var(--ink-heading);
+}
+
+h3 {
+  font-size: var(--font-size-fluid-0);
+  color: var(--ink-body);
+}
+
+p {
+  font-family: var(--font-system-ui);
+  font-weight: normal;
+  font-size: var(--font-size-fluid--1);
+  color: var(--ink-body);
+}
+
+strong {
+  font-weight: 900;
+  color: var(--accent);
+}
+
+a {
+  color: var(--ink-body);
+  font-family: var(--font-system-ui);
+  cursor: pointer;
+  text-decoration: underline wavy var(--accent);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 0.25em;
+
+  &:visited {
+    color: var(--ink-body);
+  }
+
+  &:hover {
+    color: var(--accent);
+  }
+}
+
+::selection {
+  background-color: var(--alt-soft);
+  color: var(--alt-strong);
+}
+
+.btn {
+  cursor: pointer;
+  display: inline-block;
+  padding: 0.5rem 1.75rem;
+  border-radius: var(--radius-3);
+  text-decoration: none;
+  text-wrap: nowrap;
+
+  font-size: var(--font-size-fluid--1);
+  font-family: var(--font-system-ui);
+  font-weight: 900;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.btn-primary {
+  color: black;
+  background-color: var(--accent);
+
+  &:visited {
+    color: black;
+  }
+
+  &:hover {
+    color: black;
+    background-color: var(--accent-soft);
+  }
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--alt);
+  border: 1px solid var(--alt);
+
+  &:visited {
+    color: var(--alt);
+  }
+}
+.btn-secondary:hover {
+  color: var(--alt-strong);
+  border-color: var(--alt-soft);
+  background-color: var(--alt-soft);
+}
+
+.buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Visually hidden until keyboard-focused — lets users skip past nav with Tab. */
+.skip-link {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+
+  &:focus {
+    position: fixed;
+    top: 0.5rem;
+    left: 0.5rem;
+    width: auto;
+    height: auto;
+    padding: 0.5rem 1rem;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+    z-index: 100;
+  }
+}
+
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.btn:focus-visible {
+  outline-offset: 6px;
+}

@@ -1,0 +1,55 @@
+---
+const themes = [
+  "default",
+  "forest",
+  "grape",
+  "lagoon",
+  "mint",
+  "noir",
+  "plum",
+  "rose",
+  "sand",
+  "sky",
+];
+---
+
+<button
+  type="button"
+  class="theme-switcher"
+  aria-label="Switch theme"
+  title="Theme: default"
+>
+  🎨
+</button>
+
+<script is:inline define:vars={{ themes }}>
+  const btn = document.querySelector(".theme-switcher");
+  const current = () => document.documentElement.dataset.palette ?? themes[0];
+
+  btn.title = `Theme: ${current()}`;
+
+  btn.addEventListener("click", () => {
+    const next = themes[(themes.indexOf(current()) + 1) % themes.length];
+    document.documentElement.dataset.palette = next;
+    localStorage.setItem("palette", next);
+    btn.title = `Theme: ${next}`;
+  });
+</script>
+
+<style>
+  .theme-switcher {
+    font-size: 1.25rem;
+    line-height: 1;
+    width: 2.25rem;
+    height: 2.25rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  .theme-switcher:hover {
+    background-color: var(--accent-soft);
+  }
+</style>

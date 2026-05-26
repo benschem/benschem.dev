@@ -1,17 +1,51 @@
 ---
-
+import PostList from "../components/PostList.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <title>Astro</title>
-  </head>
-  <body>
-    <h1>Astro</h1>
-  </body>
-</html>
+<BaseLayout
+  title="Ben Schembri"
+  description="Profile for Ben Schembri, a software developer from Melbourne Australia."
+>
+	<div class="grid">
+		<div class="home">
+			<h1>About Me</h1>
+			<p>I'm a Software Engineer and educator based in Melbourne, Australia.</p>
+			<p>
+				In my day job I work in the energy sector, helping to improve and maintain
+				real-time, distributed infrastructure for a large network of hardware
+				connected devices. Our product is used by consumers, businesses,
+				integration partners as well as our own internal teams. Availbility and
+				reliability are key and the stakes are high!
+			</p>
+			<p>
+				On the side I run a small studio building custom e-commerce stores for
+				Australian fashion and lifestyle brands that have outgrown Shopify. I also
+				do the odd marketing site for small businesses.
+			</p>
+			<p>
+				I sometimes teach web development at a coding bootcamp, taking students
+				from basic programming concepts through to developing their first
+				full-stack web apps.
+			</p>
+		</div>
+
+		<PostList limit={3} />
+	</div>
+</BaseLayout>
+<style>
+	.grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 1rem;
+	}
+  .home {
+    margin-inline: auto;
+    padding-inline: 1rem;
+    padding-block: 4rem;
+    max-width: 96ch;
+  }
+  p:not(:last-of-type) {
+    margin-block-end: 1rem;
+  }
+</style>
