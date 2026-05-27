@@ -65,7 +65,13 @@ a {
   &:hover {
     color: var(--accent);
   }
+  
+  /* Cursor pointer on anything inside a link */
+  & * {
+    cursor: pointer;
+  }
 }
+
 
 ::selection {
   background-color: var(--alt-soft);
