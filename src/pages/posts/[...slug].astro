@@ -160,14 +160,36 @@ const showUpdated =
     line-height: 1.7;
   }
 
-  .post-body :global(h2),
+  /* h2 opens a major section, h3 a subsection inside it. Giving h2 a clearly
+     larger top gap (and h3 a smaller one) makes that nesting legible when
+     several h3s stack under one h2 — without it the headings read as a flat
+     column. em keeps each gap proportional to the heading's own size. */
+  .post-body :global(h2) {
+    margin-block-start: 3em;
+    margin-block-end: 0.5em;
+  }
+
   .post-body :global(h3) {
-    margin-block-start: 2.5em;
+    margin-block-start: 1.75em;
     margin-block-end: 0.5em;
   }
 
   .post-body :global(p) {
     margin-block-end: 1.25em;
+  }
+
+  /* A paragraph that directly introduces a code block or list hugs it, so the
+     example reads as part of the lead-in sentence rather than a separate beat.
+     Margins collapse to the larger of the pair, so both sides are tightened:
+     the paragraph's bottom (:has) and the block's own top (+). */
+  .post-body :global(p:has(+ pre)),
+  .post-body :global(p:has(+ ul)),
+  .post-body :global(p:has(+ ol)) {
+    margin-block-end: 0.5em;
+  }
+
+  .post-body :global(p + pre) {
+    margin-block-start: 0.5em;
   }
 
   /* The global reset strips list-style + padding from every ul/ol, so the
