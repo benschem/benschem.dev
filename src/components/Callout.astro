@@ -5,10 +5,24 @@ interface Props {
 }
 
 const { variant = "info", title } = Astro.props;
+
+const icons = {
+  info: "🍏",
+  warning: "⚠️",
+} as const;
 ---
 
 <aside class:list={["callout", variant]} role="note">
-  {title && <p class="callout-title">{title}</p>}
+  {
+    title && (
+      <p class="callout-title">
+        <span class="callout-icon" aria-hidden="true">
+          {icons[variant]}
+        </span>
+        {title}
+      </p>
+    )
+  }
   <div class="callout-body"><slot /></div>
 </aside>
 
@@ -31,6 +45,10 @@ const { variant = "info", title } = Astro.props;
     font-size: var(--font-size-fluid-0);
     margin: 0 0 0.25em 0;
     color: var(--ink-heading);
+  }
+
+  .callout-icon {
+    margin-inline-end: 0.4em;
   }
 
   .callout.warning .callout-title {
