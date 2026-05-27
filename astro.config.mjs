@@ -9,4 +9,16 @@ export default defineConfig({
   output: "static",
   devToolbar: { enabled: false },
   integrations: [mdx()],
+  markdown: {
+    shikiConfig: {
+      // Emit both themes as CSS variables (no inline default). Our CSS picks
+      // between them with light-dark(), which reads color-scheme — driven by
+      // data-mode on <html>.
+      themes: {
+        light: "github-light",
+        dark: "github-dark",
+      },
+      defaultColor: false,
+    },
+  },
 });

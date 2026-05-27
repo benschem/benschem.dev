@@ -12,7 +12,8 @@
     "astro": "astro",
     "format:check": "prettier . --check",
     "format": "prettier . --write",
-    "lint": "astro check"
+    "lint": "astro check",
+    "check:contrast": "node scripts/check-contrast.mjs"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.9",

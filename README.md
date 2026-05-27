@@ -50,6 +50,13 @@ pnpm format:check
 # Astro check
 pnpm lint
 
+# WCAG contrast audit across every palette × light/dark. No arg = all palettes
+# (failures only). Pass a palette name to check one, `--all` to see every pair.
+# Useful when adding a new theme to src/styles/tokens.css.
+pnpm check:contrast
+pnpm check:contrast sky
+pnpm check:contrast sky --all
+
 # Run CLI commands like `astro add`
 pnpm astro ...`
 

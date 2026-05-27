@@ -102,7 +102,7 @@
   /* Warm orange + violet — the original v2 vibe */
   --seed-surface: light-dark(oklch(99% 0.008 60), oklch(20% 0.015 60));
   --seed-raised: light-dark(oklch(96% 0.02 60), oklch(26% 0.03 60));
-  --seed-accent: light-dark(oklch(70% 0.18 50), oklch(72% 0.18 50));
+  --seed-accent: light-dark(oklch(53% 0.18 50), oklch(72% 0.18 50));
   --seed-alt: light-dark(oklch(45% 0.22 310), oklch(80% 0.14 310));
 
   --surface-reading: var(--seed-surface);
@@ -117,8 +117,19 @@
     from var(--seed-accent) calc(l + 0.15) calc(c - 0.06) h
   );
   --alt: var(--seed-alt);
-  --alt-soft: oklch(from var(--seed-alt) calc(l + 0.3) calc(c - 0.1) h);
-  --alt-strong: oklch(from var(--seed-alt) calc(l - 0.15) c h);
+  /* Soft/strong flip direction with mode: in light, soft is a lighter pastel
+     and strong is a darker rich; in dark, soft becomes a darker tint and
+     strong a lighter brighter — so the strong-on-soft pair keeps high
+     contrast either way (the old single-direction calc clamped to white in
+     dark mode and the pair lost contrast). */
+  --alt-soft: light-dark(
+    oklch(from var(--seed-alt) calc(l + 0.3) calc(c - 0.1) h),
+    oklch(from var(--seed-alt) calc(l - 0.4) calc(c - 0.05) h)
+  );
+  --alt-strong: light-dark(
+    oklch(from var(--seed-alt) calc(l - 0.15) c h),
+    oklch(from var(--seed-alt) calc(l + 0.15) c h)
+  );
 
   --burst-centre: light-dark(white, oklch(from var(--seed-accent) 0.25 c h));
   --burst-mid: var(--seed-accent);
@@ -129,8 +140,8 @@
   /* Teal surface + coral alt. */
   --seed-surface: light-dark(oklch(99% 0.008 200), oklch(22% 0.02 200));
   --seed-raised: light-dark(oklch(95% 0.025 200), oklch(28% 0.04 200));
-  --seed-accent: light-dark(oklch(60% 0.14 200), oklch(70% 0.13 200));
-  --seed-alt: light-dark(oklch(60% 0.18 25), oklch(78% 0.16 25));
+  --seed-accent: light-dark(oklch(49% 0.14 200), oklch(70% 0.13 200));
+  --seed-alt: light-dark(oklch(50% 0.18 25), oklch(78% 0.16 25));
 
   --surface-reading: var(--seed-surface);
   --surface-raised: var(--seed-raised);
@@ -144,8 +155,14 @@
     from var(--seed-accent) calc(l + 0.15) calc(c - 0.06) h
   );
   --alt: var(--seed-alt);
-  --alt-soft: oklch(from var(--seed-alt) calc(l + 0.3) calc(c - 0.1) h);
-  --alt-strong: oklch(from var(--seed-alt) calc(l - 0.15) c h);
+  --alt-soft: light-dark(
+    oklch(from var(--seed-alt) calc(l + 0.3) calc(c - 0.1) h),
+    oklch(from var(--seed-alt) calc(l - 0.4) calc(c - 0.05) h)
+  );
+  --alt-strong: light-dark(
+    oklch(from var(--seed-alt) calc(l - 0.15) c h),
+    oklch(from var(--seed-alt) calc(l + 0.15) c h)
+  );
 
   --burst-centre: light-dark(white, oklch(from var(--seed-accent) 0.22 c h));
   --burst-mid: var(--seed-accent);
@@ -171,8 +188,14 @@
     from var(--seed-accent) calc(l + 0.15) calc(c - 0.06) h
   );
   --alt: var(--seed-alt);
-  --alt-soft: oklch(from var(--seed-alt) calc(l + 0.3) c h);
-  --alt-strong: oklch(from var(--seed-alt) calc(l - 0.15) c h);
+  --alt-soft: light-dark(
+    oklch(from var(--seed-alt) calc(l + 0.3) c h),
+    oklch(from var(--seed-alt) calc(l - 0.4) c h)
+  );
+  --alt-strong: light-dark(
+    oklch(from var(--seed-alt) calc(l - 0.15) c h),
+    oklch(from var(--seed-alt) calc(l + 0.15) c h)
+  );
 
   --burst-centre: light-dark(white, oklch(15% 0 0));
   --burst-mid: light-dark(oklch(85% 0 0), oklch(30% 0 0));
@@ -183,8 +206,8 @@
   /* Deep forest green + warm gold. */
   --seed-surface: light-dark(oklch(99% 0.008 145), oklch(20% 0.015 145));
   --seed-raised: light-dark(oklch(96% 0.02 145), oklch(26% 0.03 145));
-  --seed-accent: light-dark(oklch(55% 0.15 145), oklch(72% 0.14 145));
-  --seed-alt: light-dark(oklch(60% 0.16 85), oklch(80% 0.14 85));
+  --seed-accent: light-dark(oklch(50% 0.15 145), oklch(72% 0.14 145));
+  --seed-alt: light-dark(oklch(50% 0.16 85), oklch(80% 0.14 85));
 
   --surface-reading: var(--seed-surface);
   --surface-raised: var(--seed-raised);
@@ -198,8 +221,14 @@
     from var(--seed-accent) calc(l + 0.15) calc(c - 0.06) h
   );
   --alt: var(--seed-alt);
-  --alt-soft: oklch(from var(--seed-alt) calc(l + 0.3) calc(c - 0.1) h);
-  --alt-strong: oklch(from var(--seed-alt) calc(l - 0.15) c h);
+  --alt-soft: light-dark(
+    oklch(from var(--seed-alt) calc(l + 0.3) calc(c - 0.1) h),
+    oklch(from var(--seed-alt) calc(l - 0.4) calc(c - 0.05) h)
+  );
+  --alt-strong: light-dark(
+    oklch(from var(--seed-alt) calc(l - 0.15) c h),
+    oklch(from var(--seed-alt) calc(l + 0.15) c h)
+  );
 
   --burst-centre: light-dark(white, oklch(from var(--seed-accent) 0.22 c h));
   --burst-mid: var(--seed-accent);
@@ -211,7 +240,7 @@
   --seed-surface: light-dark(oklch(99% 0.008 10), oklch(20% 0.015 10));
   --seed-raised: light-dark(oklch(96% 0.02 10), oklch(26% 0.03 10));
   --seed-accent: light-dark(oklch(48% 0.18 10), oklch(68% 0.16 10));
-  --seed-alt: light-dark(oklch(60% 0.16 85), oklch(80% 0.14 85));
+  --seed-alt: light-dark(oklch(50% 0.16 85), oklch(80% 0.14 85));
 
   --surface-reading: var(--seed-surface);
   --surface-raised: var(--seed-raised);
@@ -225,8 +254,14 @@
     from var(--seed-accent) calc(l + 0.18) calc(c - 0.06) h
   );
   --alt: var(--seed-alt);
-  --alt-soft: oklch(from var(--seed-alt) calc(l + 0.3) calc(c - 0.1) h);
-  --alt-strong: oklch(from var(--seed-alt) calc(l - 0.15) c h);
+  --alt-soft: light-dark(
+    oklch(from var(--seed-alt) calc(l + 0.3) calc(c - 0.1) h),
+    oklch(from var(--seed-alt) calc(l - 0.4) calc(c - 0.05) h)
+  );
+  --alt-strong: light-dark(
+    oklch(from var(--seed-alt) calc(l - 0.15) c h),
+    oklch(from var(--seed-alt) calc(l + 0.15) c h)
+  );
 
   --burst-centre: light-dark(white, oklch(from var(--seed-accent) 0.2 c h));
   --burst-mid: var(--seed-accent);
@@ -237,8 +272,8 @@
   /* Sky blue + sunset orange. */
   --seed-surface: light-dark(oklch(99% 0.008 240), oklch(20% 0.015 240));
   --seed-raised: light-dark(oklch(96% 0.02 240), oklch(26% 0.03 240));
-  --seed-accent: light-dark(oklch(58% 0.17 240), oklch(72% 0.15 240));
-  --seed-alt: light-dark(oklch(60% 0.18 40), oklch(78% 0.16 40));
+  --seed-accent: light-dark(oklch(50% 0.17 240), oklch(72% 0.15 240));
+  --seed-alt: light-dark(oklch(50% 0.18 40), oklch(78% 0.16 40));
 
   --surface-reading: var(--seed-surface);
   --surface-raised: var(--seed-raised);
@@ -252,8 +287,14 @@
     from var(--seed-accent) calc(l + 0.15) calc(c - 0.06) h
   );
   --alt: var(--seed-alt);
-  --alt-soft: oklch(from var(--seed-alt) calc(l + 0.3) calc(c - 0.1) h);
-  --alt-strong: oklch(from var(--seed-alt) calc(l - 0.15) c h);
+  --alt-soft: light-dark(
+    oklch(from var(--seed-alt) calc(l + 0.3) calc(c - 0.1) h),
+    oklch(from var(--seed-alt) calc(l - 0.4) calc(c - 0.05) h)
+  );
+  --alt-strong: light-dark(
+    oklch(from var(--seed-alt) calc(l - 0.15) c h),
+    oklch(from var(--seed-alt) calc(l + 0.15) c h)
+  );
 
   --burst-centre: light-dark(white, oklch(from var(--seed-accent) 0.22 c h));
   --burst-mid: var(--seed-accent);
@@ -264,7 +305,7 @@
   /* Dusty rose + sage. */
   --seed-surface: light-dark(oklch(99% 0.008 10), oklch(20% 0.015 10));
   --seed-raised: light-dark(oklch(96% 0.02 10), oklch(26% 0.03 10));
-  --seed-accent: light-dark(oklch(62% 0.16 10), oklch(75% 0.13 10));
+  --seed-accent: light-dark(oklch(53% 0.16 10), oklch(75% 0.13 10));
   --seed-alt: light-dark(oklch(50% 0.1 150), oklch(75% 0.1 150));
 
   --surface-reading: var(--seed-surface);
@@ -279,8 +320,14 @@
     from var(--seed-accent) calc(l + 0.15) calc(c - 0.06) h
   );
   --alt: var(--seed-alt);
-  --alt-soft: oklch(from var(--seed-alt) calc(l + 0.3) calc(c - 0.05) h);
-  --alt-strong: oklch(from var(--seed-alt) calc(l - 0.15) c h);
+  --alt-soft: light-dark(
+    oklch(from var(--seed-alt) calc(l + 0.3) calc(c - 0.05) h),
+    oklch(from var(--seed-alt) calc(l - 0.4) calc(c - 0.05) h)
+  );
+  --alt-strong: light-dark(
+    oklch(from var(--seed-alt) calc(l - 0.15) c h),
+    oklch(from var(--seed-alt) calc(l + 0.15) c h)
+  );
 
   --burst-centre: light-dark(white, oklch(from var(--seed-accent) 0.22 c h));
   --burst-mid: var(--seed-accent);
@@ -291,8 +338,8 @@
   /* Warm sand / wheat + terracotta. */
   --seed-surface: light-dark(oklch(98% 0.012 80), oklch(22% 0.02 80));
   --seed-raised: light-dark(oklch(94% 0.025 80), oklch(28% 0.035 80));
-  --seed-accent: light-dark(oklch(58% 0.12 75), oklch(74% 0.12 75));
-  --seed-alt: light-dark(oklch(55% 0.18 40), oklch(74% 0.16 40));
+  --seed-accent: light-dark(oklch(50% 0.12 75), oklch(74% 0.12 75));
+  --seed-alt: light-dark(oklch(48% 0.18 40), oklch(74% 0.16 40));
 
   --surface-reading: var(--seed-surface);
   --surface-raised: var(--seed-raised);
@@ -306,8 +353,14 @@
     from var(--seed-accent) calc(l + 0.15) calc(c - 0.04) h
   );
   --alt: var(--seed-alt);
-  --alt-soft: oklch(from var(--seed-alt) calc(l + 0.3) calc(c - 0.1) h);
-  --alt-strong: oklch(from var(--seed-alt) calc(l - 0.15) c h);
+  --alt-soft: light-dark(
+    oklch(from var(--seed-alt) calc(l + 0.3) calc(c - 0.1) h),
+    oklch(from var(--seed-alt) calc(l - 0.4) calc(c - 0.05) h)
+  );
+  --alt-strong: light-dark(
+    oklch(from var(--seed-alt) calc(l - 0.15) c h),
+    oklch(from var(--seed-alt) calc(l + 0.15) c h)
+  );
 
   --burst-centre: light-dark(white, oklch(from var(--seed-accent) 0.24 c h));
   --burst-mid: var(--seed-accent);
@@ -318,8 +371,8 @@
   /* Fresh mint + coral. */
   --seed-surface: light-dark(oklch(99% 0.008 170), oklch(20% 0.015 170));
   --seed-raised: light-dark(oklch(96% 0.02 170), oklch(26% 0.03 170));
-  --seed-accent: light-dark(oklch(60% 0.13 170), oklch(74% 0.12 170));
-  --seed-alt: light-dark(oklch(62% 0.18 25), oklch(78% 0.16 25));
+  --seed-accent: light-dark(oklch(49% 0.13 170), oklch(74% 0.12 170));
+  --seed-alt: light-dark(oklch(50% 0.18 25), oklch(78% 0.16 25));
 
   --surface-reading: var(--seed-surface);
   --surface-raised: var(--seed-raised);
@@ -333,8 +386,14 @@
     from var(--seed-accent) calc(l + 0.15) calc(c - 0.06) h
   );
   --alt: var(--seed-alt);
-  --alt-soft: oklch(from var(--seed-alt) calc(l + 0.3) calc(c - 0.1) h);
-  --alt-strong: oklch(from var(--seed-alt) calc(l - 0.15) c h);
+  --alt-soft: light-dark(
+    oklch(from var(--seed-alt) calc(l + 0.3) calc(c - 0.1) h),
+    oklch(from var(--seed-alt) calc(l - 0.4) calc(c - 0.05) h)
+  );
+  --alt-strong: light-dark(
+    oklch(from var(--seed-alt) calc(l - 0.15) c h),
+    oklch(from var(--seed-alt) calc(l + 0.15) c h)
+  );
 
   --burst-centre: light-dark(white, oklch(from var(--seed-accent) 0.22 c h));
   --burst-mid: var(--seed-accent);
@@ -346,7 +405,7 @@
   --seed-surface: light-dark(oklch(99% 0.008 300), oklch(20% 0.015 300));
   --seed-raised: light-dark(oklch(96% 0.02 300), oklch(26% 0.03 300));
   --seed-accent: light-dark(oklch(52% 0.22 300), oklch(72% 0.2 300));
-  --seed-alt: light-dark(oklch(70% 0.18 120), oklch(82% 0.18 120));
+  --seed-alt: light-dark(oklch(50% 0.18 120), oklch(82% 0.18 120));
 
   --surface-reading: var(--seed-surface);
   --surface-raised: var(--seed-raised);
@@ -360,8 +419,14 @@
     from var(--seed-accent) calc(l + 0.18) calc(c - 0.06) h
   );
   --alt: var(--seed-alt);
-  --alt-soft: oklch(from var(--seed-alt) calc(l + 0.2) calc(c - 0.08) h);
-  --alt-strong: oklch(from var(--seed-alt) calc(l - 0.15) c h);
+  --alt-soft: light-dark(
+    oklch(from var(--seed-alt) calc(l + 0.3) calc(c - 0.08) h),
+    oklch(from var(--seed-alt) calc(l - 0.4) calc(c - 0.05) h)
+  );
+  --alt-strong: light-dark(
+    oklch(from var(--seed-alt) calc(l - 0.15) c h),
+    oklch(from var(--seed-alt) calc(l + 0.15) c h)
+  );
 
   --burst-centre: light-dark(white, oklch(from var(--seed-accent) 0.2 c h));
   --burst-mid: var(--seed-accent);

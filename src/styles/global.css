@@ -88,15 +88,21 @@ a {
 }
 
 .btn-primary {
-  color: black;
+  /* Flip ink colour with the accent's OKLCH lightness. The calc((0.6 - l) * 1000)
+     resolves to a large negative number when l > 0.6 (clamped to L=0 → black) and
+     a large positive number when l < 0.6 (clamped to L=1 → white) — so the text
+     stays readable on dark-accent palettes (noir red, plum wine, grape purple)
+     without per-palette overrides. Chroma=0 so we get pure black/white, not a
+     tinted version of the accent. */
+  color: oklch(from var(--accent) calc((0.6 - l) * 1000) 0 0);
   background-color: var(--accent);
 
   &:visited {
-    color: black;
+    color: oklch(from var(--accent) calc((0.6 - l) * 1000) 0 0);
   }
 
   &:hover {
-    color: black;
+    color: oklch(from var(--accent-soft) calc((0.6 - l) * 1000) 0 0);
     background-color: var(--accent-soft);
   }
 }
@@ -148,7 +154,7 @@ a {
 }
 
 :focus-visible {
-  outline: 3px solid var(--accent);
+  outline: 3px solid var(--ink-heading);
   outline-offset: 3px;
 }
 

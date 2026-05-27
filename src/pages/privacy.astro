@@ -1,0 +1,149 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const updated = new Date("2026-05-26");
+const dateFormat = new Intl.DateTimeFormat("en-AU", { dateStyle: "long" });
+---
+
+<BaseLayout
+  title="Privacy -- Ben Schembri"
+  description="What this site tracks, what it doesn't, and where the data lives."
+>
+  <article class="privacy">
+    <header class="page-head">
+      <p class="eyebrow">
+        Last updated <time datetime={updated.toISOString()}
+          >{dateFormat.format(updated)}</time
+        >
+      </p>
+      <h1>Privacy</h1>
+      <p class="lead">
+        This is my personal blog. I try to respect your privacy, and I don't
+        collect much data.
+      </p>
+    </header>
+
+    <h2>Analytics</h2>
+    <p>
+      I use <a href="https://plausible.io" rel="noopener">Plausible</a> to count
+      visits. It records the page URL, referrer, country, device type, and
+      browser — nothing that identifies you. No cookies. No cross-site tracking.
+      No profile-building.
+    </p>
+    <p>
+      My Plausible instance is self-hosted on infrastructure I run. The script
+      and event endpoint are served first-party from this domain and proxied
+      through to my server — no third-party requests leave your browser.
+    </p>
+
+    <h2>What I don't collect</h2>
+    <ul>
+      <li>No cookies of any kind</li>
+      <li>No advertising or marketing trackers</li>
+      <li>No third-party analytics (Google, Meta, etc.)</li>
+      <li>No forms, comments, or logins — there's nothing to submit</li>
+    </ul>
+
+    <h2>Hosting</h2>
+    <p>
+      This site is hosted on Cloudflare Pages, which keeps short-term access
+      logs (IP address, request path, user agent) for abuse prevention and
+      traffic shaping. I don't read those per-visitor and don't use them for
+      analytics.
+    </p>
+
+    <h2>Contact</h2>
+    <p>
+      Questions or requests? <a href="/connect">Get in touch</a>.
+    </p>
+  </article>
+</BaseLayout>
+
+<style>
+  .privacy {
+    max-width: 64ch;
+    margin-inline: auto;
+    padding-inline: clamp(1rem, 4vw, 2rem);
+    padding-block: clamp(2.5rem, 8vh, 5rem);
+    line-height: 1.7;
+  }
+
+  .page-head {
+    margin-block-end: 2.5rem;
+  }
+
+  .eyebrow {
+    font-family: var(--font-system-ui);
+    font-size: var(--font-size-fluid--1);
+    font-weight: 700;
+    font-variant-caps: all-small-caps;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    margin-block-end: 0.5rem;
+  }
+
+  .lead {
+    font-size: var(--font-size-fluid-0);
+    margin-block-start: 0.25rem;
+    max-width: 52ch;
+  }
+
+  h2 {
+    margin-block-start: 2.5em;
+    margin-block-end: 0.5em;
+  }
+
+  p {
+    margin-block-end: 1.25em;
+  }
+
+  ul {
+    padding-inline-start: 1.25rem;
+    margin-block-end: 1.25em;
+  }
+
+  li {
+    margin-block-end: 0.4em;
+  }
+
+  code {
+    padding: 0.125em 0.375em;
+    background-color: color-mix(
+      in oklch,
+      var(--alt) 15%,
+      var(--surface-reading)
+    );
+    color: var(--alt-strong);
+    border-radius: 0.25em;
+    font-size: 0.9em;
+  }
+
+  /* Matches the homepage hero stagger so navigating between pages feels
+     continuous. Time-based, so opacity:0 only applies when it will animate. */
+  @media (prefers-reduced-motion: no-preference) {
+    .page-head > * {
+      opacity: 0;
+      animation: rise 0.7s cubic-bezier(0.21, 0.6, 0.35, 1) both;
+    }
+    .page-head > :nth-child(1) {
+      animation-delay: 0.1s;
+    }
+    .page-head > :nth-child(2) {
+      animation-delay: 0.2s;
+    }
+    .page-head > :nth-child(3) {
+      animation-delay: 0.32s;
+    }
+  }
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(1.25rem);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>

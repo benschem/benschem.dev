@@ -4,16 +4,25 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import TableOfContents from "../../components/TableOfContents.astro";
 
 export async function getStaticPaths() {
-  const posts = await getCollection("posts", ({ data }) =>
-    import.meta.env.PROD ? !data.draft : true,
-  );
-  return posts.map((post) => ({
+  const posts = (
+    await getCollection("posts", ({ data }) =>
+      import.meta.env.PROD ? !data.draft : true,
+    )
+  ).sort((a, b) => b.data.published.valueOf() - a.data.published.valueOf());
+
+  return posts.map((post, i) => ({
     params: { slug: post.id },
-    props: { post },
+    props: {
+      post,
+      // Sorted newest-first. "Next" is the next thing to read in the archive
+      // (an older post); "Previous" is the post you'd have just come from.
+      prev: posts[i - 1],
+      next: posts[i + 1],
+    },
   }));
 }
 
-const { post } = Astro.props;
+const { post, prev, next } = Astro.props;
 const { Content, headings } = await render(post);
 
 const dateFormat = new Intl.DateTimeFormat("en-AU", { dateStyle: "long" });
@@ -31,25 +40,25 @@ const showUpdated =
   updatedDate={updated}
 >
   <article class="post">
-    <a href="/posts" class="back-link">← Posts</a>
+    <a href="/posts" class="back-link">&larr; All posts</a>
 
-    <header class="post-header">
-      <h1>{post.data.title}</h1>
-      <p class="meta">
-        Published <time datetime={published.toISOString()}
-          >{dateFormat.format(published)}</time
-        >
-        {
-          showUpdated && (
-            <>
-              {" · "}Updated{" "}
-              <time datetime={updated!.toISOString()}>
-                {dateFormat.format(updated!)}
-              </time>
-            </>
-          )
-        }
+    <header class="post-head">
+      <p class="eyebrow">
+        <time datetime={published.toISOString()}>
+          {dateFormat.format(published)}
+        </time>
       </p>
+      <h1>{post.data.title}</h1>
+      {
+        showUpdated && (
+          <p class="meta">
+            Updated{" "}
+            <time datetime={updated!.toISOString()}>
+              {dateFormat.format(updated!)}
+            </time>
+          </p>
+        )
+      }
     </header>
 
     <TableOfContents headings={headings} />
@@ -76,33 +85,76 @@ const showUpdated =
         </section>
       )
     }
+
+    {
+      (prev || next) && (
+        <nav class="post-nav" aria-label="More posts">
+          {prev ? (
+            <a class="post-nav__link post-nav__link--prev" href={`/posts/${prev.id}`} rel="prev">
+              <span class="post-nav__label">&larr; Previous</span>
+              <span class="post-nav__title">{prev.data.title}</span>
+            </a>
+          ) : (
+            <span />
+          )}
+          {next && (
+            <a class="post-nav__link post-nav__link--next" href={`/posts/${next.id}`} rel="next">
+              <span class="post-nav__label">Next &rarr;</span>
+              <span class="post-nav__title">{next.data.title}</span>
+            </a>
+          )}
+        </nav>
+      )
+    }
   </article>
 </BaseLayout>
 
 <style>
   .post {
-    margin-inline: auto;
-    padding-inline: 1rem;
-    padding-block: 4rem;
     max-width: 72ch;
+    margin-inline: auto;
+    padding-inline: clamp(1rem, 4vw, 2rem);
+    padding-block: clamp(2.5rem, 8vh, 5rem);
   }
 
   .back-link {
     display: inline-block;
-    margin-block-end: 2rem;
+    margin-block-end: 2.5rem;
     font-size: var(--font-size-fluid--1);
+    font-variant-caps: all-small-caps;
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    color: var(--alt);
   }
 
-  .post-header {
-    margin-block-end: 3rem;
+  .back-link:hover {
+    color: var(--accent);
+  }
+
+  .post-head {
+    margin-block-end: clamp(2.5rem, 6vh, 3.5rem);
+  }
+
+  /* Published date doubles as the editorial kicker above the title. */
+  .eyebrow {
+    font-family: var(--font-system-ui);
+    font-size: var(--font-size-fluid--1);
+    font-weight: 700;
+    font-variant-caps: all-small-caps;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    margin-block-end: 0.5rem;
   }
 
   .meta {
+    margin-block-start: 0.75rem;
     font-size: var(--font-size-fluid--1);
     color: var(--alt);
     font-variant-caps: all-small-caps;
     letter-spacing: 0.05em;
   }
+
+  /* ---- Body ---------------------------------------------------------- */
 
   .post-body {
     line-height: 1.7;
@@ -118,6 +170,30 @@ const showUpdated =
     margin-block-end: 1.25em;
   }
 
+  /* The global reset strips list-style + padding from every ul/ol, so the
+     reading body restores them to get marker boxes back (which ::marker colours). */
+  .post-body :global(ul) {
+    list-style: disc;
+    margin-block-end: 1.25em;
+    padding-inline-start: 1.5em;
+  }
+
+  .post-body :global(ol) {
+    list-style: decimal;
+    margin-block-end: 1.25em;
+    padding-inline-start: 1.5em;
+  }
+
+  .post-body :global(li) {
+    margin-block-end: 0.4em;
+  }
+
+  /* Bullets and ordinals pick up the accent so list markers carry the theme
+     across every palette (same highlight family as the eyebrow and code borders). */
+  .post-body :global(li)::marker {
+    color: var(--accent);
+  }
+
   /* Drop cap on the first top-level paragraph of the post body. Direct-child
      combinator keeps it out of any nested elements like <Callout>. */
   .post-body > :global(p:first-of-type::first-letter) {
@@ -131,24 +207,51 @@ const showUpdated =
     padding-block-start: 0.05em;
   }
 
+  /* Codeblock surface: padding, radius and a themed border follow the palette.
+     Syntax colours come from Shiki's two themes (github-light / github-dark),
+     emitted as CSS variables; light-dark() picks the pair based on color-scheme,
+     which our data-mode override drives. */
   .post-body :global(pre) {
-    padding: 1rem;
+    padding: 1rem 1.25rem;
+    margin-block: 1.5em;
     border-radius: var(--radius-3);
     overflow-x: auto;
-    font-size: 0.9em;
+    font-size: 0.875em;
+    border: 1px solid var(--accent);
+    background-color: light-dark(
+      var(--shiki-light-bg),
+      var(--shiki-dark-bg)
+    );
+    color: light-dark(var(--shiki-light), var(--shiki-dark));
   }
 
+  .post-body :global(pre span) {
+    color: light-dark(var(--shiki-light), var(--shiki-dark));
+  }
+
+  /* Inline code: derive the pill background from the current surface (not
+     alt-soft, which clamps to near-white in dark mode and blows out). 15% alt
+     mixed into the reading surface gives a subtle, themed tint that lands a
+     short distance from the surface lightness in either mode. */
   .post-body :global(:not(pre) > code) {
     padding: 0.125em 0.375em;
-    background-color: var(--alt-soft);
+    background-color: color-mix(
+      in oklch,
+      var(--alt) 15%,
+      var(--surface-reading)
+    );
+    color: var(--alt-strong);
     border-radius: 0.25em;
     font-size: 0.9em;
   }
 
+  /* ---- Changelog ----------------------------------------------------- */
+
   .changelog {
     margin-block-start: 4rem;
     padding-block-start: 2rem;
-    border-block-start: 1px solid var(--accent);
+    border-block-start: 1px solid
+      color-mix(in oklch, var(--accent) 28%, transparent);
   }
 
   .changelog ul {
@@ -165,5 +268,81 @@ const showUpdated =
     font-variant-caps: all-small-caps;
     letter-spacing: 0.05em;
     color: var(--alt);
+  }
+
+  /* ---- Prev/next nav ------------------------------------------------- */
+
+  .post-nav {
+    margin-block-start: 4rem;
+    padding-block-start: 2rem;
+    border-block-start: 1px solid
+      color-mix(in oklch, var(--accent) 28%, transparent);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .post-nav__link {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    text-decoration: none;
+    color: var(--ink-body);
+  }
+
+  .post-nav__link--next {
+    text-align: end;
+  }
+
+  .post-nav__label {
+    font-size: var(--font-size-fluid--1);
+    font-variant-caps: all-small-caps;
+    letter-spacing: 0.05em;
+    color: var(--alt);
+    transition: color 0.2s ease;
+  }
+
+  .post-nav__title {
+    font-family: var(--font-classical-humanist);
+    font-size: var(--font-size-fluid-0);
+    line-height: 1.3;
+    color: var(--ink-heading);
+    transition: color 0.2s ease;
+  }
+
+  .post-nav__link:hover .post-nav__label,
+  .post-nav__link:focus-visible .post-nav__label,
+  .post-nav__link:hover .post-nav__title,
+  .post-nav__link:focus-visible .post-nav__title {
+    color: var(--accent);
+  }
+
+  /* ---- Choreography -------------------------------------------------- */
+
+  @media (prefers-reduced-motion: no-preference) {
+    .post-head > * {
+      opacity: 0;
+      animation: rise 0.7s cubic-bezier(0.21, 0.6, 0.35, 1) both;
+    }
+    .post-head > :nth-child(1) {
+      animation-delay: 0.1s;
+    }
+    .post-head > :nth-child(2) {
+      animation-delay: 0.2s;
+    }
+    .post-head > :nth-child(3) {
+      animation-delay: 0.32s;
+    }
+  }
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(1.25rem);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
   }
 </style>

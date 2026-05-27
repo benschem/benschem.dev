@@ -1,0 +1,2 @@
+/pa-stats/js/*      https://analytics.rocketzip.com.au/js/:splat 200
+/pa-stats/api/event https://analytics.rocketzip.com.au/api/event 200
