@@ -247,9 +247,10 @@ const showUpdated =
   }
 
   /* Codeblock surface: padding, radius and a themed border follow the palette.
-     Syntax colours come from Shiki's two themes (github-light / github-dark),
-     emitted as CSS variables; light-dark() picks the pair based on color-scheme,
-     which our data-mode override drives. */
+     Syntax colours come from our single CSS-variable Shiki theme: each token
+     span carries `color: var(--syn-*)` inline, and the --syn-* roles are
+     derived from the palette seeds in tokens.css — so highlighting matches the
+     active palette and light/dark mode, switching live with no rebuild. */
   .post-body :global(pre) {
     padding: 1rem 1.25rem;
     margin-block: 1.5em;
@@ -257,15 +258,8 @@ const showUpdated =
     overflow-x: auto;
     font-size: 0.875em;
     border: 1px solid var(--accent);
-    background-color: light-dark(
-      var(--shiki-light-bg),
-      var(--shiki-dark-bg)
-    );
-    color: light-dark(var(--shiki-light), var(--shiki-dark));
-  }
-
-  .post-body :global(pre span) {
-    color: light-dark(var(--shiki-light), var(--shiki-dark));
+    background-color: var(--syn-bg);
+    color: var(--syn-fg);
   }
 
   /* Inline code: derive the pill background from the current surface (not

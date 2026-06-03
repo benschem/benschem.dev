@@ -136,6 +136,38 @@
   --burst-edge: oklch(from var(--seed-accent) calc(l - 0.25) c h);
 }
 
+/* -------------------------------------------------------------------------- */
+/*  Syntax roles — code highlighting derived from the palette seeds, defined   */
+/*  ONCE here. Every palette only overrides the seeds, and these reference     */
+/*  them via var(), so all 10 palettes (and light/dark) inherit a matching     */
+/*  syntax theme automatically. Shiki's single CSS-variable theme emits        */
+/*  `color: var(--syn-*)` per token, so switching is pure runtime CSS — no     */
+/*  rebuild, no per-token bloat. See src/shiki-theme.mjs.                       */
+/*                                                                              */
+/*  Keywords sit on the accent hue (the palette's signature); functions/types  */
+/*  fan out from it; strings/constants live on the alt hue. Lightness comes     */
+/*  from the seeds, which already flip by mode, so contrast holds in both.      */
+/*  Keep these in the oklch(from …)/light-dark()/var() forms the contrast       */
+/*  audit (scripts/check-contrast.mjs) can parse.                               */
+/* -------------------------------------------------------------------------- */
+:root {
+  --syn-fg: var(--ink-body);
+  --syn-bg: oklch(from var(--surface-raised) calc(l - 0.02) c h);
+  --syn-comment: light-dark(
+    oklch(from var(--ink-body) calc(l + 0.38) 0.012 h),
+    oklch(from var(--ink-body) calc(l - 0.32) 0.02 h)
+  );
+  --syn-punctuation: light-dark(
+    oklch(from var(--ink-body) calc(l + 0.22) 0.02 h),
+    oklch(from var(--ink-body) calc(l - 0.18) 0.02 h)
+  );
+  --syn-keyword: var(--seed-accent);
+  --syn-function: oklch(from var(--seed-accent) l c calc(h + 45));
+  --syn-type: oklch(from var(--seed-accent) l c calc(h - 55));
+  --syn-string: var(--seed-alt);
+  --syn-constant: oklch(from var(--seed-alt) l c calc(h + 55));
+}
+
 :root[data-palette="lagoon"] {
   /* Teal surface + coral alt. */
   --seed-surface: light-dark(oklch(99% 0.008 200), oklch(22% 0.02 200));

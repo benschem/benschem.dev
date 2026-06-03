@@ -4,6 +4,8 @@ import { defineConfig } from "astro/config";
 import mdx from "@astrojs/mdx";
 import rehypeExternalLinks from 'rehype-external-links';
 
+import { synTheme } from "./src/shiki-theme.mjs";
+
 // https://astro.build/config
 export default defineConfig({
   site: "https://benschem.dev",
@@ -12,14 +14,11 @@ export default defineConfig({
   integrations: [mdx()],
   markdown: {
     shikiConfig: {
-      // Emit both themes as CSS variables (no inline default). Our CSS picks
-      // between them with light-dark(), which reads color-scheme — driven by
-      // data-mode on <html>.
-      themes: {
-        light: "github-light",
-        dark: "github-dark",
-      },
-      defaultColor: false,
+      // One custom theme whose token colours are CSS variables (--syn-*), so
+      // syntax highlighting is resolved at runtime by the browser and follows
+      // the live palette + light/dark mode. The --syn-* roles live in
+      // tokens.css, derived from each palette's seeds. See src/shiki-theme.mjs.
+      theme: synTheme,
     },
     rehypePlugins: [
       [
