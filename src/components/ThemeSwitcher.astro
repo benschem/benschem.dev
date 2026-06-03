@@ -1,6 +1,7 @@
 ---
 const themes = [
-  "default",
+  "sky",
+  "ember",
   "forest",
   "grape",
   "lagoon",
@@ -9,7 +10,6 @@ const themes = [
   "plum",
   "rose",
   "sand",
-  "sky",
 ];
 ---
 
@@ -17,7 +17,7 @@ const themes = [
   type="button"
   class="theme-switcher"
   aria-label="Switch theme"
-  title="Theme: default"
+  title="Theme: Sky"
 >
   🎨
 </button>
@@ -25,14 +25,15 @@ const themes = [
 <script is:inline define:vars={{ themes }}>
   const btn = document.querySelector(".theme-switcher");
   const current = () => document.documentElement.dataset.palette ?? themes[0];
+  const label = (name) => `Theme: ${name[0].toUpperCase()}${name.slice(1)}`;
 
-  btn.title = `Theme: ${current()}`;
+  btn.title = label(current());
 
   btn.addEventListener("click", () => {
     const next = themes[(themes.indexOf(current()) + 1) % themes.length];
     document.documentElement.dataset.palette = next;
     localStorage.setItem("palette", next);
-    btn.title = `Theme: ${next}`;
+    btn.title = label(next);
   });
 </script>
 

@@ -98,12 +98,12 @@
 /* -------------------------------------------------------------------------- */
 
 :root,
-:root[data-palette="default"] {
-  /* Warm orange + violet — the original v2 vibe */
-  --seed-surface: light-dark(oklch(99% 0.008 60), oklch(20% 0.015 60));
-  --seed-raised: light-dark(oklch(96% 0.02 60), oklch(26% 0.03 60));
-  --seed-accent: light-dark(oklch(53% 0.18 50), oklch(72% 0.18 50));
-  --seed-alt: light-dark(oklch(45% 0.22 310), oklch(80% 0.14 310));
+:root[data-palette="sky"] {
+  /* Sky blue + sunset orange — airy and high-key. The default. */
+  --seed-surface: light-dark(oklch(99% 0.012 240), oklch(19% 0.018 240));
+  --seed-raised: light-dark(oklch(96% 0.024 240), oklch(26% 0.034 240));
+  --seed-accent: light-dark(oklch(50% 0.16 240), oklch(74% 0.14 240));
+  --seed-alt: light-dark(oklch(52% 0.18 42), oklch(80% 0.15 42));
 
   --surface-reading: var(--seed-surface);
   --surface-raised: var(--seed-raised);
@@ -169,11 +169,11 @@
 }
 
 :root[data-palette="lagoon"] {
-  /* Teal surface + coral alt. */
-  --seed-surface: light-dark(oklch(99% 0.008 200), oklch(22% 0.02 200));
-  --seed-raised: light-dark(oklch(95% 0.025 200), oklch(28% 0.04 200));
-  --seed-accent: light-dark(oklch(49% 0.14 200), oklch(70% 0.13 200));
-  --seed-alt: light-dark(oklch(50% 0.18 25), oklch(78% 0.16 25));
+  /* Teal water + coral — bright and tropical. */
+  --seed-surface: light-dark(oklch(99% 0.012 200), oklch(21% 0.022 200));
+  --seed-raised: light-dark(oklch(95% 0.028 200), oklch(28% 0.042 200));
+  --seed-accent: light-dark(oklch(48% 0.13 200), oklch(70% 0.13 200));
+  --seed-alt: light-dark(oklch(52% 0.18 28), oklch(78% 0.16 28));
 
   --surface-reading: var(--seed-surface);
   --surface-raised: var(--seed-raised);
@@ -235,11 +235,11 @@
 }
 
 :root[data-palette="forest"] {
-  /* Deep forest green + warm gold. */
-  --seed-surface: light-dark(oklch(99% 0.008 145), oklch(20% 0.015 145));
-  --seed-raised: light-dark(oklch(96% 0.02 145), oklch(26% 0.03 145));
-  --seed-accent: light-dark(oklch(50% 0.15 145), oklch(72% 0.14 145));
-  --seed-alt: light-dark(oklch(50% 0.16 85), oklch(80% 0.14 85));
+  /* Deep mossy green on a duskier paper, quiet warm-grey second tone. */
+  --seed-surface: light-dark(oklch(96.5% 0.022 140), oklch(18% 0.022 140));
+  --seed-raised: light-dark(oklch(93% 0.032 140), oklch(25% 0.038 140));
+  --seed-accent: light-dark(oklch(47% 0.14 145), oklch(72% 0.13 145));
+  --seed-alt: light-dark(oklch(50% 0.025 110), oklch(78% 0.025 110));
 
   --surface-reading: var(--seed-surface);
   --surface-raised: var(--seed-raised);
@@ -268,11 +268,11 @@
 }
 
 :root[data-palette="plum"] {
-  /* Wine / burgundy + mustard. */
-  --seed-surface: light-dark(oklch(99% 0.008 10), oklch(20% 0.015 10));
-  --seed-raised: light-dark(oklch(96% 0.02 10), oklch(26% 0.03 10));
-  --seed-accent: light-dark(oklch(48% 0.18 10), oklch(68% 0.16 10));
-  --seed-alt: light-dark(oklch(50% 0.16 85), oklch(80% 0.14 85));
+  /* Wine on a deep tinted paper + mustard — rich and low-key. */
+  --seed-surface: light-dark(oklch(96% 0.02 12), oklch(17% 0.022 12));
+  --seed-raised: light-dark(oklch(92% 0.03 12), oklch(24% 0.036 12));
+  --seed-accent: light-dark(oklch(47% 0.18 12), oklch(68% 0.16 12));
+  --seed-alt: light-dark(oklch(49% 0.13 85), oklch(82% 0.14 85));
 
   --surface-reading: var(--seed-surface);
   --surface-raised: var(--seed-raised);
@@ -300,12 +300,12 @@
   --burst-edge: oklch(from var(--seed-accent) calc(l - 0.2) c h);
 }
 
-:root[data-palette="sky"] {
-  /* Sky blue + sunset orange. */
-  --seed-surface: light-dark(oklch(99% 0.008 240), oklch(20% 0.015 240));
-  --seed-raised: light-dark(oklch(96% 0.02 240), oklch(26% 0.03 240));
-  --seed-accent: light-dark(oklch(50% 0.17 240), oklch(72% 0.15 240));
-  --seed-alt: light-dark(oklch(50% 0.18 40), oklch(78% 0.16 40));
+:root[data-palette="ember"] {
+  /* Sunset orange fading to violet dusk — warm and glowing. */
+  --seed-surface: light-dark(oklch(98.5% 0.014 60), oklch(20% 0.018 60));
+  --seed-raised: light-dark(oklch(96% 0.026 60), oklch(26% 0.034 60));
+  --seed-accent: light-dark(oklch(54% 0.17 55), oklch(74% 0.17 55));
+  --seed-alt: light-dark(oklch(47% 0.2 305), oklch(80% 0.14 305));
 
   --surface-reading: var(--seed-surface);
   --surface-raised: var(--seed-raised);
@@ -334,11 +334,11 @@
 }
 
 :root[data-palette="rose"] {
-  /* Dusty rose + sage. */
-  --seed-surface: light-dark(oklch(99% 0.008 10), oklch(20% 0.015 10));
-  --seed-raised: light-dark(oklch(96% 0.02 10), oklch(26% 0.03 10));
-  --seed-accent: light-dark(oklch(53% 0.16 10), oklch(75% 0.13 10));
-  --seed-alt: light-dark(oklch(50% 0.1 150), oklch(75% 0.1 150));
+  /* Dusty rose on softly tinted paper, with a quiet warm-grey second tone. */
+  --seed-surface: light-dark(oklch(98% 0.018 12), oklch(20% 0.02 12));
+  --seed-raised: light-dark(oklch(95% 0.026 12), oklch(26% 0.032 12));
+  --seed-accent: light-dark(oklch(53% 0.16 12), oklch(75% 0.13 12));
+  --seed-alt: light-dark(oklch(50% 0.025 20), oklch(78% 0.025 20));
 
   --surface-reading: var(--seed-surface);
   --surface-raised: var(--seed-raised);
@@ -367,11 +367,11 @@
 }
 
 :root[data-palette="sand"] {
-  /* Warm sand / wheat + terracotta. */
-  --seed-surface: light-dark(oklch(98% 0.012 80), oklch(22% 0.02 80));
-  --seed-raised: light-dark(oklch(94% 0.025 80), oklch(28% 0.035 80));
-  --seed-accent: light-dark(oklch(50% 0.12 75), oklch(74% 0.12 75));
-  --seed-alt: light-dark(oklch(48% 0.18 40), oklch(74% 0.16 40));
+  /* Warm sandy paper + terracotta, with a quiet warm-grey second tone. */
+  --seed-surface: light-dark(oklch(97% 0.03 75), oklch(21% 0.028 70));
+  --seed-raised: light-dark(oklch(93.5% 0.04 75), oklch(27% 0.038 70));
+  --seed-accent: light-dark(oklch(50% 0.13 50), oklch(74% 0.13 50));
+  --seed-alt: light-dark(oklch(48% 0.03 70), oklch(76% 0.028 70));
 
   --surface-reading: var(--seed-surface);
   --surface-raised: var(--seed-raised);
@@ -400,11 +400,11 @@
 }
 
 :root[data-palette="mint"] {
-  /* Fresh mint + coral. */
-  --seed-surface: light-dark(oklch(99% 0.008 170), oklch(20% 0.015 170));
-  --seed-raised: light-dark(oklch(96% 0.02 170), oklch(26% 0.03 170));
-  --seed-accent: light-dark(oklch(49% 0.13 170), oklch(74% 0.12 170));
-  --seed-alt: light-dark(oklch(50% 0.18 25), oklch(78% 0.16 25));
+  /* Fresh mint on crisp bright paper, with a quiet cool-grey second tone. */
+  --seed-surface: light-dark(oklch(99% 0.012 165), oklch(20% 0.018 165));
+  --seed-raised: light-dark(oklch(96% 0.024 165), oklch(26% 0.034 165));
+  --seed-accent: light-dark(oklch(49% 0.13 168), oklch(74% 0.12 168));
+  --seed-alt: light-dark(oklch(50% 0.025 200), oklch(78% 0.025 200));
 
   --surface-reading: var(--seed-surface);
   --surface-raised: var(--seed-raised);
@@ -433,11 +433,11 @@
 }
 
 :root[data-palette="grape"] {
-  /* Saturated purple + lime. */
-  --seed-surface: light-dark(oklch(99% 0.008 300), oklch(20% 0.015 300));
-  --seed-raised: light-dark(oklch(96% 0.02 300), oklch(26% 0.03 300));
+  /* Electric purple + lime — bold and high-key. */
+  --seed-surface: light-dark(oklch(99% 0.012 300), oklch(19% 0.02 300));
+  --seed-raised: light-dark(oklch(96% 0.024 300), oklch(26% 0.034 300));
   --seed-accent: light-dark(oklch(52% 0.22 300), oklch(72% 0.2 300));
-  --seed-alt: light-dark(oklch(50% 0.18 120), oklch(82% 0.18 120));
+  --seed-alt: light-dark(oklch(52% 0.16 128), oklch(82% 0.18 128));
 
   --surface-reading: var(--seed-surface);
   --surface-raised: var(--seed-raised);
