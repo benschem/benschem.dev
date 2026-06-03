@@ -1,25 +1,27 @@
 ---
 title: Two GitHub accounts, one machine
 description: Authentication and identity in Git vs GitHub
-published: 2026-05-27
-draft: true
+published: 2026-06-03
+draft: false
 ---
 
 import Callout from "../components/Callout.astro";
 
-I needed a file from one of my personal repos on my work machine. I don't have my personal GitHub account set up, as my workplace asked me to use a new GitHub account. Whatever, I don't chase the green dots. In fact, I think it's a good idea to have as little personal stuff on your work machine as possible. But it'd be a boring article if I didn't do it anyway.
+I needed a file from one of my personal repos on my work laptop. I didn't have my personal GitHub account set up though, as my workplace asked me to make a new GitHub account when I started (Whatever - I don't chase the green dots on the GitHub contribution graph anyway). In fact, I was happy to use a different account because I don't think it's a good idea to have personal stuff on the work machine. But it'd be a boring article if I didn't do it anyway - Let's **set up a second GitHub account**
 
-<Callout variant="warning" title="Check your workplace policies">
+<Callout variant="warning" title="Check your workplace policies around this">
   Some companies restrict personal accounts on work hardware. It's worth checking if yours cares about this. In some countries this can give your workplace ownership over your personal code. Don't say I didn't warn you.
 </Callout>
 
-## Auth and identity in Git vs GitHub
+I don't want to have to remember to manually switch between my personal GitHub account and my existing work account in different directories. **I want every directory to use the right account automatically.** Otherwise there's a good chance I'll forget to switch, and push to the wrong account or commit as the wrong author.
 
-When I was searching for how to set this up, I was reminded of something that's easy to forget - your identity in Git and on GitHub are two separate things.
+Ideally, I want to set this up once and then never think about it again.
 
-### Commit authorship
+## Your GitHub account is not your identity in Git
 
-Git has no concept of "GitHub accounts." Git doesn't have any kind of identity beyond "this name and email authored this commit", which you can set to anything you want:
+It's easy to forget that Git has no concept of "GitHub accounts." GitHub is just another remote to Git, and the account I use to authenticate to a remote like GitHub is totally separate from my identity as a commit author with Git.
+
+Git allows me to set a name and email that will be associated as the author of each commit, but it doesn't validate it - I can set it to anything I want:
 
 ```sh
 # Changing your git commit author details
@@ -35,65 +37,95 @@ git config --show-origin user.email
 git config --show-origin user.name
 ```
 
-### Remote authentication
+Before I can set my personal commit author details for the new repo, I need to clone it onto my work machine, which means I need to first set up authentication for my personal GitHub account.
 
-Git needs to authenticate only when it talks to a remote, and even then it doesn't do authentication itself, it asks either SSH or HTTPS for the credentials and passes them along to the remote.
+## Git remote authentication
 
-- When using SSH, `git` shells out to `ssh` to do the crypto stuff for public-key auth.
-- When using HTTPS, `git` calls whatever credential helper is set in `credential.helper` (like `gh`, or the macOS keychain) to fetch a username or token and send it on.
+When Git talks to a remote repository, **Git itself doesn't do any authentication** - it asks either SSH or HTTPS for the credentials, and passes them along to the remote for it to authenticate them. Git is just the pipe.
 
-```sh
-# What's yours using?
-git config --get-all credential.helper
-```
+A remote repository like GitHub authenticates the credentials to see if the user is authorised to push to, pull from or clone a repo.
 
-If you're on MacOs like me and it's set to `osxkeychain` but you don't remember doing it, there's a good chance it was set by Xcode or Homebrew.
-
-So what's the difference between SSH and HTTPS for remote authentication? SSH bakes the account into the remote URL, whereas HTTPS keeps it as global state using `gh` or `osxkeychain`.
-
-The remote is what checks if that key or token can push to that repo. GitHub is the remote. Git is just the pipe.
-
-## Which auth should I use for the second GitHub remote?
-
-The other thing I was hoping was that there was a way to set it once per directory and never think about it again, with no danger of pushing to the wrong account or commiting as the wrong author.
-
-Now we know that I actually have two things to add:
-
-- Authentication for the new GitHub account (choose SSH or HTTPS)
-- The new commit author identity for `git`.
-
-So which should I choose, SSH or HTTPS?
+So what's the difference between using HTTPS or SSH for auth and why would I choose one over the other?
 
 ### HTTPS
 
-I could do this with HTTPS, using `gh` as a git credential helper.
+When logging in to GitHub in the browser over HTTPS, you can use your email and password. But for command-line Git operations (like `git push` or `git clone`) over HTTPS, GitHub won't accept your account password in the name of security.[^1][^2]
 
-`gh` CLI can hold multiple accounts. Over HTTPS, GitHub no longer accepts your account password. You authenticate with a Personal Access Token (PAT) in place of a password.
-  
+The alternative is token-based authentication. Tokens are significantly better than passwords because they are long machine-generated strings of random characters, scoped to certain actions, that can expire or be revoked. GitHub deliberately starts its tokens with specific letters (like `ghp_` for Personal Access Tokens).
+
+There's some one-time setup:
+
+1. Generate a token by logging in to Github in the browser and going through the menus.
+2. Copy that token to a helper program on your local machine that can store it securely.
+
+Commonly used helpers are the cross-platform Git Credential Manager (GCM), macOS Keychain or `gh` for GitHub.
+
 ```sh
-# Login and switch to new GitHub account
-gh auth login
-gh auth status
-gh auth switch
+# See which credential helper is currently active
+git config --show-origin --show-scope --get-all credential.helper
 ```
 
-Then `git push` and `git pull` over `https://GitHub.com/` will automatically use whichever account is currently active. The downside being that `gh auth switch` changes the active account for the whole machine, not per-repo, so it would be easy to forget to switch or switch back.
+<Callout variant="warning" title="Secure your credentials">
+  If the credential helper is set to `store`, then your tokens are being saved as plaintext at `~/.git-credentials` and you should fix that immediately - it's not secure.
+</Callout>
 
-And this still wouldn't set commit authorship.
+Then during usage `git` calls whatever credential helper is set in `credential.helper` to fetch the token, the helper passes the token back to `git` in the terminal, then packages the token into an encrypted HTTPS request header and sends it directly to the remote's servers to be authenticated.
 
 ### SSH
 
-If I just want to clone this one personal repo into `~/code` and not think about it again, the SSH alias is lower-maintenance as I only have to set it once and the repo always pushes to the right account, there’s nothing to remember.
+When using SSH, `git` shells out to `ssh` to do the crypto stuff for public-key auth.
 
-## Set up auth for the GitHub remote
+SSH (Secure Shell) works by using asymmetric cryptography, which relies on a pair of mathematically linked keys: a secret private key and a public key.
+
+Instead of a token or password to prove who you are, your computer's private key "signs" a digital challenge, and GitHub uses your public key to verify that signature.
+
+The keys are generated from a one-way math problem that makes it easy to create the pair together, but basically impossible to work out the private key from the public one alone.
+
+<Callout variant="warning" title="Check if your office blocks SSH">
+  It's common for corporate networks to block both incoming traffic on port 22 - the port that SSH listens on, as well as outgoing requests to port 22. GitHub itself offers SSH-over-443 (ssh.github.com) as a workaround.
+</Callout>
+
+With HTTPS, your computer still has to send the token string over the internet to GitHub. With SSH, your secret key never leaves your computer.
+
+### Multi-account switching
+
+Using HTTPS and `gh` as the credential helper and running `gh auth login` is much easier than setting up an SSH key.
+
+But for multiple accounts using HTTPS, using `gh` as the helper means remembering to run `gh auth switch` in the appropriate repos, and switch back after - because it switches accounts globally for your whole machine.
+
+Other helpers like GCM or keychain handle this better, with **automatic token switching by path** if you instruct Git to include the full folder path when querying the helper:
+
+```sh
+git config --global credential.useHttpPath true
+```
+
+And I can also achieve the exact same automatic account switching per folder with SSH, using hostname aliases.
+
+### Which one should I use?
+
+There's not much difference in 2026.
+
+Developers heavily favor SSH for GitHub auth, but mostly due to inertia and history.
+
+HTTPS auth used to genuinely suck. Before tokens and credential helpers were a thing, HTTPS meant typing your password on every `git push`, or storing your password in plaintext in `~/.git-credentials`. For ~15 years SSH was the only setup that didn't make you type a password on every push.
+
+SSH does not need a credential helper. It uses a native background service called `ssh-agent` to manage your keys.
+
+SSH keys last until you manually revoke them, whereas GitHub forces HTTPS tokens to expire (usually after 30 to 90 days), requiring you to regenerate and update them.
+
+The pendulum is arguably swinging back to HTTPS on security grounds. Fine-grained scoped tokens are better than all-or-nothing SSH keys. SSH keys being long-lived (often forever) is a double edged sword - it trades less user friction for worse security.
+
+<Callout variant="info" title="Use it or lose it">
+  As an extra safety precaution - regardless of the expiration date you set - GitHub will automatically delete any token or SSH key that haven't been used in a year.
+</Callout>
+
+Even though I was surprised to learn how far git auth over HTTPS has come, **I'm still going to use SSH**, for no other real reason now than I want to.
+
+## Setting up SSH auth for my personal GitHub account
 
 ### Make a new SSH key
 
-<Callout variant="info" title="What is an SSH key anyway?">
-  An SSH key is actually a pair of keys: a secret private key and a public key. They're generated from a one-way math problem that makes it easy to create the pair together, but basically impossible to work out the private key from the public one alone.
-</Callout>
-
-Ed25519 is the algorithm is the widely supported, current default for most professional use.
+Ed25519 is the widely supported, current default algorithm for most professional use.
 
 ```sh
 ssh-keygen -t ed25519 -C "benschembri@gmail.com" -f ~/.ssh/id_ed25519_personal
@@ -101,7 +133,7 @@ ssh-keygen -t ed25519 -C "benschembri@gmail.com" -f ~/.ssh/id_ed25519_personal
 
 Press enter through the prompts to skip setting a passphrase. This creates two files: `id_ed25519_personal` (secret private key) and `id_ed25519_personal.pub` (public key).
 
-I skip creating a passphrase even though it means anyone who gets hold of the private key file can use it, because if I set a passphrase, I'll have to type it at least once per session.
+I skip creating a passphrase even though it means anyone who gets hold of the private key file can use it, but you may not want to do the same. I know that if I set a passphrase then I'll have to type it at least once and it will annoy me. Also I'll probably forget it.
 
 ### Add the public key to my personal GitHub
 
@@ -113,57 +145,68 @@ pbcopy < ~/.ssh/id_ed25519_personal.pub
 
 On GitHub, log in to my personal account and go to Settings > SSH and GPG keys > New SSH key > paste.
 
-### Add an SSH host alias
+### Add an SSH hostname alias
 
-Create or edit the ssh config file:
+I can create `github-personal`, a fake host that still points at the real `github.com` url, but uses my personal SSH key.
+
+To do this, I can edit my global SSH config file:
 
 ```sh
 vim ~/.ssh/config
 ```
 
-Add the following personal host alias after my work account:
+Add the following host alias after my existing work account:
 
 ```
 # Work account (default)
-Host GitHub.com
-    HostName GitHub.com
+Host github.com
+    HostName github.com
     User git
     IdentityFile ~/.ssh/id_ed25519
     IdentitiesOnly yes
 
 # Personal account
-Host GitHub-personal
-    HostName GitHub.com
+Host github-personal
+    HostName github.com
     User git
     IdentityFile ~/.ssh/id_ed25519_personal
     IdentitiesOnly yes
 ```
 
-`GitHub-personal` is a fake host that points at the real `GitHub.com` using my personal key.
+Now, `git@github-personal:benschem/cloned-repo` will use my personal SSH key, whilst `git@github.com:benschem/repo-name` will use my work key.
 
 Verify the connection to confirm the alias and key work and show which account is being used:
 
 ```sh
-ssh -T git@GitHub-personal` 
+ssh -T git@github-personal
 ```
 
-### Clone my repo using the personal host
+The only downside is that when cloning a personal repo I need to remember to use the alias instead of standard `github.com`:
 
 ```sh
-git clone git@GitHub-personal:username/cloned-repo.git
+git clone git@github-personal:benschem/cloned-repo.git
 ```
 
-For repos already cloned under the wrong remote:
+But I can avoid that too. By putting this in my global `~/.gitconfig` file, it will use my personal SSH key automatically any time I try to clone a personal repo, based on the url.
 
-```sh
-git remote set-url origin git@GitHub-personal:username/repo.git
+```
+[url "git@github-personal:benschem/"]
+    insteadOf = git@github.com:benschem/
 ```
 
-Use `GitHub.com` as usual for work stuff.
+Now I don't even need to remember to use the alias - pushing, pulling, cloning, will all use my personal SSH key when connecting to my personal account's url.
 
-## Set commit authorship identity in the personal repo
+<Callout variant="warning" title="Edge cases">
+  There's one drawback worth noting about the `insteadOf` method - if I ever needed to clone one of my own repos using my work account (say I was added as a collaborator under my work identity), this wouldn't be possible with the current setup and I'd have to come up with another workaround (add a third alias maybe).
+</Callout>
 
-Inside the personal repo, set:
+## Setting up Git commit authorship for my personal repos
+
+### Automatic author by folder
+
+Nothing I did above changed the commit authorship.
+
+Inside the personal repo, I could set:
 
 ```sh
 cd /code/personal/cloned-repo
@@ -171,26 +214,81 @@ git config user.name "Ben Schembri"
 git config user.email "benschembri@gmail.com"
 ```
 
-Setting commit authorship manually per repo means every new personal repo I clone, I'd have to remember to set authorship again.
+But setting it manually like that per repo would mean every new personal repo I clone, I'd have to remember to set the authorship.
 
-To solve this:
+To solve this, I can make use of the directory structure. If I only clone personal repos under the `~/code/personal` directory, I can then set it to use my personal author details automatically when I'm working on a personal repo in that folder[^3].
 
-```sh
-vim ~/.gitconfig:
-```
+Edit my global git config `~/.gitconfig` file to add an `includeIf` block, which tells Git to use another config file for any repo under that path:
 
 ```
+# Default global settings
+[user]
+    name = Ben Schembri
+    email = ben@company.com
+
 [includeIf "gitdir:~/code/personal/"]
     path = ~/.gitconfig-personal
 ```
 
-Any repo under `~/code/personal/` automatically gets the personal name and email.
+Next, create the personal config file with the right commit author name and email and point it to your personal SSH key:
 
-One more safety measure:
+```sh
+vim ~/.gitconfig-personal
+```
+
+Add:
+
+```
+[user]
+    name = Ben Schembri
+    email = benschembri@gmail.com
+```
+
+Now, any Git repo under the directory `~/code/personal/` automatically uses my personal details for authorship, and everywhere else uses my work details.
+
+### Bonus safety measure
+
+By default, if you forget to set your Git `user.name` and `user.email` in a repository, Git will silently set them for you when you commit, using your machine's local username and hostname:
+
+```sh
+# Preview what Git would use for your email:
+echo "$(whoami)@$(hostname)"
+
+# Preview what Git would first try to use for your name:
+dscl . -read /Users/$(whoami) RealName
+
+# If that last one was blank, name falls back to:
+echo $(whoami)
+```
+
+Avoid this altogether by setting:
 
 ```sh
 git config --global user.useConfigOnly true
 ```
 
-Make Git refuse to commit if no identity is set for the repo, so you can never silently commit as the wrong author.
-  
+Now Git will refuse to commit if no identity is set for the repo:
+
+```
+> git commit
+*** Please tell me who you are.
+
+Run
+  git config --global user.email "you@example.com"
+  git config --global user.name "Your Name"
+
+to set your account's default identity.
+Omit --global to set the identity only in this repository.
+
+fatal: user.name and user.email must be configured before committing.
+```
+
+## Wrapping up
+
+I should have just Airdropped the file.
+
+[^1]: GitHub stopped accepting account passwords when authenticating Git operations on GitHub.com [on August 13, 2021](https://github.blog/changelog/2021-08-12-git-password-authentication-is-shutting-down/)
+
+[^2]: Bitbucket also won't accept your account password over HTTPS from the command line. GitLab and most self-hosted alternatives still allow it by default, but repo admins can disallow it if they choose.
+
+[^3]: Again, I'm definitely not doing this.
