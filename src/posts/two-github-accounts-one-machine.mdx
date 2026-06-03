@@ -128,7 +128,7 @@ Even though I was surprised to learn how far git auth over HTTPS has come, **I'm
 Ed25519 is the widely supported, current default algorithm for most professional use.
 
 ```sh
-ssh-keygen -t ed25519 -C "benschembri@gmail.com" -f ~/.ssh/id_ed25519_personal
+ssh-keygen -t ed25519 -C "ben@email.com" -f ~/.ssh/id_ed25519_personal
 ```
 
 Press enter through the prompts to skip setting a passphrase. This creates two files: `id_ed25519_personal` (secret private key) and `id_ed25519_personal.pub` (public key).
@@ -211,7 +211,7 @@ Inside the personal repo, I could set:
 ```sh
 cd /code/personal/cloned-repo
 git config user.name "Ben Schembri"
-git config user.email "benschembri@gmail.com"
+git config user.email "ben@email.com"
 ```
 
 But setting it manually like that per repo would mean every new personal repo I clone, I'd have to remember to set the authorship.
@@ -241,7 +241,7 @@ Add:
 ```
 [user]
     name = Ben Schembri
-    email = benschembri@gmail.com
+    email = ben@email.com
 ```
 
 Now, any Git repo under the directory `~/code/personal/` automatically uses my personal details for authorship, and everywhere else uses my work details.
