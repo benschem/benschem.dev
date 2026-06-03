@@ -4,53 +4,53 @@
 
 ## MVP — ship v2
 
-### Deploy plumbing
+### Deploy plumbing (Netlify)
 
-[ ] connect cloudflare pages to repo
-[ ] set v2 as preview branch
-[ ] verify empty starter deploys to \*.pages.dev
+[ ] import repo into Netlify (build settings come from `netlify.toml`)
+[ ] set production branch = master; enable deploy previews for branches/PRs
+[ ] branch-deploy v2; verify on \*--<site>.netlify.app
 
 ### Layout shell
 
-[ ] lang attribute
-[ ] viewport meta
-[ ] charset
-[ ] theme-color meta
-[ ] color-scheme css property
-[ ] canonical link tag per page
-[ ] title per page
-[ ] description meta per page
-[ ] prevent FOUC on theme
+[x] lang attribute
+[x] viewport meta
+[x] charset
+[x] theme-color meta
+[x] color-scheme css property
+[x] canonical link tag per page
+[x] title per page
+[x] description meta per page
+[x] prevent FOUC on theme
 
 ### Content collection
 
-[ ] posts collection zod schema
-[ ] title field
-[ ] description field
-[ ] published field
-[ ] updated field
-[ ] changelog[] field
-[ ] draft? field
-[ ] [slug].astro post template
-[ ] one real post written end-to-end
-[ ] typography for post body
-[ ] syntax highlighting (shiki default)
-[ ] changelog rendered on post page
-[ ] updated date shown when differs from published
+[x] posts collection zod schema
+[x] title field
+[x] description field
+[x] published field
+[x] updated field
+[x] changelog[] field
+[x] draft? field
+[x] [slug].astro post template
+[x] one real post written end-to-end
+[x] typography for post body
+[x] syntax highlighting (shiki default)
+[x] changelog rendered on post page
+[x] updated date shown when differs from published
 
 ### Post index
 
-[ ] /posts page
-[ ] sort by published desc
-[ ] filter draft
-[ ] show title + date + description
+[x] /posts page
+[x] sort by published desc
+[x] filter draft
+[x] show title + date + description
 
 ### Homepage
 
-[ ] new bio/intro
-[ ] drop "clients say / students say" framing
-[ ] latest posts list
-[ ] connect / social links
+[x] new bio/intro
+[x] drop "clients say / students say" framing
+[x] latest posts list
+[x] connect / social links
 
 ### Other pages
 
@@ -59,20 +59,20 @@
 ### RSS / SEO
 
 [ ] rss feed
-[ ] rss autodiscovery link in head
+[x] rss autodiscovery link in head
 [ ] sitemap
 [ ] robots.txt with sitemap line
-[ ] og:title
-[ ] og:description
-[ ] og:image (sitewide default)
-[ ] og:type
-[ ] og:url
-[ ] twitter:card summary_large_image
+[x] og:title
+[x] og:description
+[x] og:image (sitewide default)
+[x] og:type
+[x] og:url
+[x] twitter:card summary_large_image
 
 ### Favicons
 
 [ ] favicon.svg
-[ ] favicon.ico
+[x] favicon.ico
 [ ] apple-touch-icon
 
 ### Security headers (\_headers file)
@@ -85,17 +85,17 @@
 
 ### Performance
 
-[ ] explicit width/height on imgs
-[ ] loading=lazy below fold
+[x] explicit width/height on imgs
+[x] loading=lazy below fold
 
 ### Accessibility
 
 [ ] visible focus styles
 [ ] heading hierarchy never skips
 [ ] color contrast WCAG AA
-[ ] prefers-reduced-motion respected
+[x] prefers-reduced-motion respected
 [ ] alt text on all images
-[ ] skip-link works
+[x] skip-link works
 [ ] keyboard tab through all pages
 
 ### Pre-launch
@@ -105,19 +105,21 @@
 [ ] og image renders in slack/imessage paste test
 [ ] view source self-review
 
-### Cutover
+### Cutover (GitHub Pages → Netlify)
 
-[ ] set master as production branch in cf pages
-[ ] merge v2 to master with --no-ff
-[ ] verify on \*.pages.dev
-[ ] add custom domain in cf pages
-[ ] wait for cert provisioning
-[ ] update DNS CNAME to cf
+[ ] run pre-launch checks on the v2 Netlify preview (lighthouse, keyboard, view-source)
+[ ] merge v2 to master with --no-ff (triggers Netlify production deploy)
+[ ] verify on <site>.netlify.app
+[ ] add custom domain benschem.dev (+ www) in Netlify Domain settings
+[ ] repoint DNS off GitHub Pages (delegate to Netlify DNS, or set apex A/ALIAS + www CNAME per Netlify's panel)
+[ ] wait for Netlify Let's Encrypt cert
 [ ] verify benschem.dev serves new site
 [ ] check from cellular / off-wifi
-[ ] disable github pages in repo settings
+[ ] disable github pages in repo settings (Settings → Pages → None)
+[ ] delete CNAME file on master (GH Pages artifact)
+[ ] confirm which branch Pages deployed from, then delete stale gh-pages branch (local + origin)
 [ ] delete v2 branch (local + origin)
-[ ] submit new sitemap to google search console
+[ ] submit https://benschem.dev/sitemap-index.xml to google search console
 
 ---
 
@@ -133,6 +135,15 @@
 
 [ ] tags? field
 [ ] reading time
+
+### Prose linting (Vale)
+
+[ ] install vale (brew install vale)
+[ ] .vale.ini over src/posts/\*.mdx (Google + write-good styles)
+[ ] sync styles into .vale/styles (gitignore or vendor)
+[ ] pnpm lint:prose script
+[ ] flags condescending words (easily/simply/just/obvious) + weasel words
+[ ] decide: pre-commit hook vs CI vs on-demand only
 
 ### Homepage extras
 
@@ -184,10 +195,6 @@
 [ ] rel="me" links
 [ ] back-to-top
 
-### Old site cleanup followups
-
-[ ] remove CNAME file (after cutover)
-
 ### Obscure / on-brand additions
 
 [ ] microformats2 (h-card on bio, h-entry on posts)
@@ -202,6 +209,9 @@
 ---
 
 ## Cutover commands (exact order)
+
+Netlify auto-deploys `master` on push (production) once the repo is imported, so the
+merge below is what triggers the production build — no manual deploy step.
 
 ```
 git checkout master
