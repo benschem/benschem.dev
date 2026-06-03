@@ -49,6 +49,7 @@ const showUpdated =
         </time>
       </p>
       <h1>{post.data.title}</h1>
+      {post.data.description && <p class="lead">{post.data.description}</p>}
       {
         showUpdated && (
           <p class="meta">
@@ -146,6 +147,13 @@ const showUpdated =
     margin-block-end: 0.5rem;
   }
 
+  .lead {
+    font-size: var(--font-size-fluid-0);
+    max-width: 52ch;
+    margin-block-start: 0.75rem;
+    color: var(--alt-strong);
+  }
+
   .meta {
     margin-block-start: 0.75rem;
     font-size: var(--font-size-fluid--1);
@@ -165,7 +173,7 @@ const showUpdated =
      several h3s stack under one h2 — without it the headings read as a flat
      column. em keeps each gap proportional to the heading's own size. */
   .post-body :global(h2) {
-    margin-block-start: 3em;
+    margin-block-start: 2em;
     margin-block-end: 0.5em;
   }
 
@@ -208,6 +216,15 @@ const showUpdated =
 
   .post-body :global(li) {
     margin-block-end: 0.4em;
+  }
+
+  /* A nested list sits inside its parent <li>, so the 1.25em list-end margin
+     (sized to separate a whole list from the following paragraph) is wrong here
+     — it stacks onto the parent li's own gap and blows the spacing out. Reset to
+     the same rhythm as sibling items so nesting reads as one even column. */
+  .post-body :global(li ul),
+  .post-body :global(li ol) {
+    margin-block: 0.4em 0;
   }
 
   /* Bullets and ordinals pick up the accent so list markers carry the theme
@@ -354,6 +371,9 @@ const showUpdated =
     }
     .post-head > :nth-child(3) {
       animation-delay: 0.32s;
+    }
+    .post-head > :nth-child(4) {
+      animation-delay: 0.44s;
     }
   }
 
