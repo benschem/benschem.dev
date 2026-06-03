@@ -1,44 +1,144 @@
 ---
+/* Each theme's signature is its accent + alt seed (see styles/tokens.css).
+   The swatch reuses those exact light-dark() values so it matches in both
+   modes without re-deriving anything. Adding a theme = add a row here. */
 const themes = [
-  "sky",
-  "ember",
-  "forest",
-  "grape",
-  "lagoon",
-  "mint",
-  "noir",
-  "plum",
-  "rose",
-  "sand",
+  {
+    id: "sky",
+    accent: "light-dark(oklch(50% 0.16 240), oklch(74% 0.14 240))",
+    alt: "light-dark(oklch(52% 0.18 42), oklch(80% 0.15 42))",
+  },
+  {
+    id: "ember",
+    accent: "light-dark(oklch(54% 0.17 55), oklch(74% 0.17 55))",
+    alt: "light-dark(oklch(47% 0.2 305), oklch(80% 0.14 305))",
+  },
+  {
+    id: "forest",
+    accent: "light-dark(oklch(47% 0.14 145), oklch(72% 0.13 145))",
+    alt: "light-dark(oklch(50% 0.025 110), oklch(78% 0.025 110))",
+  },
+  {
+    id: "grape",
+    accent: "light-dark(oklch(52% 0.22 300), oklch(72% 0.2 300))",
+    alt: "light-dark(oklch(52% 0.16 128), oklch(82% 0.18 128))",
+  },
+  {
+    id: "lagoon",
+    accent: "light-dark(oklch(48% 0.13 200), oklch(70% 0.13 200))",
+    alt: "light-dark(oklch(52% 0.18 28), oklch(78% 0.16 28))",
+  },
+  {
+    id: "mint",
+    accent: "light-dark(oklch(49% 0.13 168), oklch(74% 0.12 168))",
+    alt: "light-dark(oklch(50% 0.025 200), oklch(78% 0.025 200))",
+  },
+  {
+    id: "noir",
+    accent: "light-dark(oklch(55% 0.22 25), oklch(70% 0.22 25))",
+    alt: "light-dark(oklch(30% 0 0), oklch(80% 0 0))",
+  },
+  {
+    id: "plum",
+    accent: "light-dark(oklch(47% 0.18 12), oklch(68% 0.16 12))",
+    alt: "light-dark(oklch(49% 0.13 85), oklch(82% 0.14 85))",
+  },
+  {
+    id: "rose",
+    accent: "light-dark(oklch(53% 0.16 12), oklch(75% 0.13 12))",
+    alt: "light-dark(oklch(50% 0.025 20), oklch(78% 0.025 20))",
+  },
+  {
+    id: "sand",
+    accent: "light-dark(oklch(50% 0.13 50), oklch(74% 0.13 50))",
+    alt: "light-dark(oklch(48% 0.03 70), oklch(76% 0.028 70))",
+  },
 ];
+
+const label = (id) => `${id[0].toUpperCase()}${id.slice(1)}`;
 ---
 
-<button
-  type="button"
-  class="theme-switcher"
-  aria-label="Switch theme"
-  title="Theme: Sky"
->
-  🎨
-</button>
+<div class="theme-switcher">
+  <button
+    type="button"
+    class="theme-toggle"
+    aria-label="Switch theme"
+    aria-haspopup="true"
+    aria-expanded="false"
+    title="Theme: Sky"
+  >
+    🎨
+  </button>
 
-<script is:inline define:vars={{ themes }}>
-  const btn = document.querySelector(".theme-switcher");
-  const current = () => document.documentElement.dataset.palette ?? themes[0];
-  const label = (name) => `Theme: ${name[0].toUpperCase()}${name.slice(1)}`;
+  <ul class="theme-menu" role="menu" aria-label="Colour theme">
+    {
+      themes.map((t) => (
+        <li role="none">
+          <button
+            type="button"
+            role="menuitemradio"
+            aria-checked="false"
+            class="theme-option"
+            data-theme={t.id}
+            style={`--swatch-accent: ${t.accent}; --swatch-alt: ${t.alt};`}
+          >
+            <span class="swatch" aria-hidden="true" />
+            {label(t.id)}
+          </button>
+        </li>
+      ))
+    }
+  </ul>
+</div>
 
-  btn.title = label(current());
+<script is:inline>
+  const root = document.querySelector(".theme-switcher");
+  const toggle = root.querySelector(".theme-toggle");
+  const options = [...root.querySelectorAll(".theme-option")];
 
-  btn.addEventListener("click", () => {
-    const next = themes[(themes.indexOf(current()) + 1) % themes.length];
-    document.documentElement.dataset.palette = next;
-    localStorage.setItem("palette", next);
-    btn.title = label(next);
+  const current = () => document.documentElement.dataset.palette ?? "sky";
+  const label = (n) => `Theme: ${n[0].toUpperCase()}${n.slice(1)}`;
+
+  const sync = () => {
+    const c = current();
+    toggle.title = label(c);
+    options.forEach((o) =>
+      o.setAttribute("aria-checked", String(o.dataset.theme === c)),
+    );
+  };
+  sync();
+
+  options.forEach((o) =>
+    o.addEventListener("click", () => {
+      const next = o.dataset.theme;
+      document.documentElement.dataset.palette = next;
+      localStorage.setItem("palette", next);
+      sync();
+      toggle.focus(); // return focus to the trigger; blur closes the menu
+    }),
+  );
+
+  // Keep aria-expanded honest for assistive tech: focus opens (via CSS
+  // :focus-within), so mirror that. Hover is a mouse-only affordance.
+  root.addEventListener("focusin", () =>
+    toggle.setAttribute("aria-expanded", "true"),
+  );
+  root.addEventListener("focusout", (e) => {
+    if (!root.contains(e.relatedTarget))
+      toggle.setAttribute("aria-expanded", "false");
+  });
+  root.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") toggle.focus();
   });
 </script>
 
 <style>
   .theme-switcher {
+    position: relative;
+    display: inline-flex;
+  }
+
+  .theme-toggle {
     font-size: 1.25rem;
     line-height: 1;
     width: 2.25rem;
@@ -50,7 +150,106 @@ const themes = [
     cursor: pointer;
   }
 
-  .theme-switcher:hover {
+  .theme-toggle:hover,
+  .theme-switcher:focus-within .theme-toggle {
     background-color: var(--accent-soft);
+  }
+
+  .theme-menu {
+    position: absolute;
+    bottom: calc(100% + 0.5rem); /* footer sits at the bottom — open upward */
+    left: 0;
+    z-index: 10;
+    display: none;
+    flex-direction: column;
+    gap: 0.125rem;
+    min-width: max-content;
+    margin: 0;
+    padding: 0.375rem;
+    list-style: none;
+    background-color: var(--surface-raised);
+    border: 1px solid var(--accent-soft);
+    border-radius: var(--radius-3);
+    box-shadow: 0 0.5rem 1.5rem -0.5rem rgb(0 0 0 / 0.35);
+  }
+
+  /* Transparent bridge over the gap between menu and toggle, so the pointer
+     stays within the hover region while travelling up into the menu. */
+  .theme-menu::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    height: 0.5rem;
+  }
+
+  /* Reveal on hover (mouse) and focus-within (keyboard + touch). */
+  .theme-switcher:hover .theme-menu,
+  .theme-switcher:focus-within .theme-menu {
+    display: flex;
+  }
+
+  .theme-option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.3rem 0.6rem 0.3rem 0.4rem;
+    border-radius: var(--radius-1);
+    font: inherit;
+    font-size: var(--font-size-fluid--1);
+    text-align: left;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  /* Mix accent into the surface rather than using --accent-soft: that keeps
+     the background near the surface lightness, so --ink-body stays legible in
+     both light and dark mode (accent-soft is a light tint that loses contrast
+     against near-white ink in dark mode). */
+  .theme-option:hover,
+  .theme-option:focus-visible {
+    background-color: color-mix(in oklab, var(--accent) 22%, var(--surface-raised));
+  }
+
+  /* Selected state uses colour + tick + swatch ring rather than font-weight,
+     so the row width never changes and the menu can't reflow on selection. */
+  .theme-option[aria-checked="true"] {
+    color: var(--accent);
+  }
+
+  /* Reserve the tick slot on every row (transparent until checked) so the
+     menu's max-content width doesn't shift when a longer name is selected. */
+  .theme-option::after {
+    content: "✓";
+    margin-left: auto;
+    padding-left: 0.75rem;
+    color: transparent;
+    font-weight: 700;
+  }
+
+  .theme-option[aria-checked="true"]::after {
+    color: var(--accent);
+  }
+
+  .theme-option[aria-checked="true"] .swatch {
+    box-shadow:
+      0 0 0 2px var(--surface-raised),
+      0 0 0 3.5px var(--accent);
+  }
+
+  .swatch {
+    flex: none;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    border: 1px solid color-mix(in oklab, var(--ink-body) 25%, transparent);
+    /* accent / alt split — the two seeds that define each theme */
+    background: linear-gradient(
+      135deg,
+      var(--swatch-accent) 0 50%,
+      var(--swatch-alt) 50% 100%
+    );
   }
 </style>
