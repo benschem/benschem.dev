@@ -9,10 +9,10 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 >
   <div class="home">
     <section class="hero" aria-labelledby="hero-title">
-      <p class="eyebrow">Full&nbsp;Stack · Dev&nbsp;Ops · Web&nbsp;Dev</p>
-      <h1 id="hero-title">Sometimes I learn or do things that are pretty cool</h1>
+      <p class="eyebrow">Curious · Opinionated · Hands&nbsp;On</p>
+      <h1 id="hero-title">I go down the rabbit holes, then write about it.</h1>
       <p class="lead">
-        Sometimes I learn things or do things that are pretty cool. My writing here is mostly for me so I don't forget about them, but you might like it too.
+         Sometimes on purpose, sometimes by accident, I keep asking questions until I really understand. I try to do things the hard way at least once, so that the next time I can take the shortcut knowing the trade-offs.
       </p>
       <div class="buttons">
         <a class="btn btn-primary" href="/posts">Read my blog</a>
@@ -21,13 +21,14 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     </section>
 
     <section class="aside scroll-reveal" aria-labelledby="aside-title">
-      <h2 id="aside-title">My day job</h2>
+      <h2 id="aside-title">About me</h2>
+      <h3>My day job</h3>
       <p>
-        In my day job I work in the energy sector, helping to improve and maintain
+        In my day job I work in the energy sector, helping to improve and maintain the software
 				infrastructure for a large network of hardware
 				connected devices. Our product is used by consumers and businesses, as well as our own internal teams.
       </p>
-      <h2 id="aside-title">On the side</h2>
+      <h3>On the side</h3>
       <p>
         I run a boutique studio building custom e-commerce stores for Australian
         fashion and lifestyle brands that have outgrown Shopify. Plus I do the odd
@@ -130,7 +131,14 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     margin-block-start: 1rem;
   }
 
-	.aside p + h2 {
+  /* Section title sits a little closer to its first subheading. */
+  .aside > h2 {
+    margin-block-end: 1.25rem;
+  }
+
+  /* Subheadings get air above them, except the first one (which follows the
+     section's h2 and is handled by the h2's margin-block-end above). */
+  .aside p + h3 {
     margin-block-start: 2rem;
   }
 
