@@ -7,6 +7,14 @@
   }
 }
 
+/* The reset's [data-motion="reduced"] kill rules can't reach the
+   view-transition pseudos (they hang off the root, not *), so the footer
+   motion override needs its own rule here. */
+html[data-motion="reduced"]::view-transition-old(root),
+html[data-motion="reduced"]::view-transition-new(root) {
+  animation-duration: 0s;
+}
+
 h1,
 h2,
 h3,
@@ -70,6 +78,15 @@ a {
   & * {
     cursor: pointer;
   }
+}
+
+/* Mark external links with a ↗. inline-block keeps the arrow
+   out of the wavy underline. */
+a[href^="http"]::after {
+  content: "↗";
+  display: inline-block;
+  margin-inline-start: 0.2em;
+  font-size: 0.85em;
 }
 
 ::selection {

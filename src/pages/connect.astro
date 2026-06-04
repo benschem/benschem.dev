@@ -160,6 +160,12 @@ const links = [
       transform 0.2s ease;
   }
 
+  /* The cards render their own .arrow span; suppress the global
+     external-link ↗ so it doesn't double up. */
+  .links a::after {
+    content: none;
+  }
+
   .links a:hover,
   .links a:focus-visible {
     background-color: var(--surface-raised);
