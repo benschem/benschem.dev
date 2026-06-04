@@ -54,14 +54,14 @@
 
 ### Other pages
 
-[ ] 404 page
+[x] 404 page
 
 ### RSS / SEO
 
 [x] rss feed
 [x] rss autodiscovery link in head
 [x] sitemap
-[ ] robots.txt with sitemap line
+[x] robots.txt with sitemap line
 [x] og:title
 [x] og:description
 [x] og:image (sitewide default)
@@ -77,11 +77,11 @@
 
 ### Security headers (\_headers file)
 
-[ ] content-security-policy
-[ ] strict-transport-security
-[ ] x-content-type-options nosniff
-[ ] referrer-policy
-[ ] permissions-policy
+[x] content-security-policy
+[x] strict-transport-security
+[x] x-content-type-options nosniff
+[x] referrer-policy
+[x] permissions-policy
 
 ### Performance
 
@@ -170,6 +170,12 @@
 [ ] humans.txt
 [ ] /.well-known/security.txt
 [ ] \_redirects (if needed for old urls)
+
+### Security polish
+
+[ ] strict CSP: drop script-src 'unsafe-inline' via astro experimental.csp build-time hashes (meta-tag delivery — keep frame-ancestors in \_headers; both policies must agree)
+[ ] submit benschem.dev to hstspreload.org (only weeks after cutover is stable — near-irreversible, locks all subdomains to https)
+[ ] csp reporting via report-to + collector (probably overkill)
 
 ### Performance polish
 
