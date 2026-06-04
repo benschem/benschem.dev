@@ -120,4 +120,29 @@ const isCurrent = (href: string) =>
     text-wrap: balance;
     font-size: var(--font-size-fluid-1);
   }
+
+  /* Below ~345px the nav no longer fits beside the title and flex-wrap drops
+     it onto its own row, misaligned with the title. Make that wrap deliberate:
+     stack the header and switch the nav to a compact wrapping row. The emoji
+     markers survive the flex layout because list-items keep their ::marker;
+     list-style-position: inside pulls each marker into its link's row. */
+  @media (max-width: 345px) {
+    header {
+      flex-direction: column;
+    }
+
+    nav {
+      & ul {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem 1.5rem;
+        padding-inline-start: 0;
+        list-style-position: inside;
+
+        & li {
+          margin-block-end: 0;
+        }
+      }
+    }
+  }
 </style>
