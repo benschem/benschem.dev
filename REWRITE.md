@@ -71,9 +71,9 @@
 
 ### Favicons
 
-[ ] favicon.svg
+[x] favicon.svg
 [x] favicon.ico
-[ ] apple-touch-icon
+[x] apple-touch-icon
 
 ### Security headers (\_headers file)
 
@@ -127,7 +127,7 @@
 
 ### Setup polish
 
-[ ] engines in package.json
+[x] engines in package.json
 [ ] .editorconfig
 [ ] TODO.md scratch file
 
@@ -169,7 +169,9 @@
 
 [ ] humans.txt
 [ ] /.well-known/security.txt
-[ ] \_redirects (if needed for old urls)
+[x] \_redirects (if needed for old urls) — old /students/\* urls redirect via public/\_redirects
+[ ] re-enable /students/intro-to-javascript.html redirect once intro-to-js post is published (commented out in public/\_redirects)
+[ ] check if old GitHub Pages student urls also worked extensionless; add non-.html redirect variants if so
 
 ### Security polish
 
