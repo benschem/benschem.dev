@@ -60,7 +60,7 @@
 
 [x] rss feed
 [x] rss autodiscovery link in head
-[ ] sitemap
+[x] sitemap
 [ ] robots.txt with sitemap line
 [x] og:title
 [x] og:description

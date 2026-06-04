@@ -2,7 +2,8 @@
 import { defineConfig } from "astro/config";
 
 import mdx from "@astrojs/mdx";
-import rehypeExternalLinks from 'rehype-external-links';
+import sitemap from "@astrojs/sitemap";
+import rehypeExternalLinks from "rehype-external-links";
 
 import { synTheme } from "./src/shiki-theme.mjs";
 
@@ -11,7 +12,7 @@ export default defineConfig({
   site: "https://benschem.dev",
   output: "static",
   devToolbar: { enabled: false },
-  integrations: [mdx()],
+  integrations: [mdx(), sitemap()],
   markdown: {
     shikiConfig: {
       // One custom theme whose token colours are CSS variables (--syn-*), so
