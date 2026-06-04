@@ -25,8 +25,8 @@ const dateFormat = new Intl.DateTimeFormat("en-AU", { dateStyle: "long" });
       <p>Nothing here yet.</p>
     ) : (
       <ol class="post-list" reversed>
-        {posts.map((post, i) => (
-          <li style={`--i:${i}`}>
+        {posts.map((post) => (
+          <li>
             <a href={`/posts/${post.id}`}>
               <time datetime={post.data.published.toISOString()}>
                 {dateFormat.format(post.data.published)}
@@ -121,26 +121,4 @@ const dateFormat = new Intl.DateTimeFormat("en-AU", { dateStyle: "long" });
     margin-block-start: 1.75rem;
   }
 
-  /* Rows cascade in on load, each delayed by its index (--i set inline).
-     Time-based rather than scroll-driven so the entrance is visible even
-     when the list sits at the top of the page (e.g. the /posts index).
-     The host page offsets the whole cascade with --list-delay so the rows
-     pick up after its own head stagger instead of racing it.
-     Gated under no-preference, so opacity:0 only applies when it animates. */
-  @media (prefers-reduced-motion: no-preference) {
-    .post-list li {
-      opacity: 0;
-      animation: rise 0.6s cubic-bezier(0.21, 0.6, 0.35, 1) both;
-      animation-delay: calc(var(--list-delay, 0s) + var(--i, 0) * 0.06s);
-    }
-
-    /* Trails the last row (only rendered with limit, i.e. 3 rows). */
-    .view-all {
-      opacity: 0;
-      animation: rise 0.6s cubic-bezier(0.21, 0.6, 0.35, 1) both;
-      animation-delay: calc(var(--list-delay, 0s) + 0.18s);
-    }
-  }
-
-  /* `rise` itself lives in global.css — keyframe names aren't scoped. */
 </style>

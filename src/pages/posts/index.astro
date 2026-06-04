@@ -27,9 +27,6 @@ import PostList from "../../components/PostList.astro";
     margin-inline: auto;
     padding-inline: clamp(1rem, 4vw, 2rem);
     padding-block: clamp(2.5rem, 8vh, 5rem);
-    /* The list rows cascade in behind the lead (read inside PostList)
-       rather than block-rising with the global content rule. */
-    --list-delay: 0.25s;
   }
 
   .page-head {
@@ -42,5 +39,4 @@ import PostList from "../../components/PostList.astro";
     margin-block-start: 0.75rem;
   }
 
-  /* Entry choreography comes from the site-wide rules in global.css. */
 </style>

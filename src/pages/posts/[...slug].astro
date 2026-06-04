@@ -40,11 +40,9 @@ const showUpdated =
   updatedDate={updated}
 >
   <article class="post">
-    {/* The back link lives inside the header so it leads the head's entry
-        stagger (and keeps .page-head as the container's first child — see
-        the choreography rules in global.css). */}
+    <a href="/posts" class="back-link">&larr; All posts</a>
+
     <header class="page-head">
-      <a href="/posts" class="back-link">&larr; All posts</a>
       <h1>{post.data.title}</h1>
       <p class="meta">
         <time datetime={published.toISOString()}>
@@ -342,5 +340,4 @@ const showUpdated =
     color: var(--accent);
   }
 
-  /* Entry choreography comes from the site-wide rules in global.css. */
 </style>

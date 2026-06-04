@@ -8,7 +8,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   description="Profile for Ben Schembri, a software engineer from Melbourne Australia."
 >
   <div class="home">
-    <section class="hero page-head" aria-labelledby="hero-title">
+    <section class="hero" aria-labelledby="hero-title">
       <p class="eyebrow">Curious · Opinionated · Hands&nbsp;On</p>
       <h1 id="hero-title">I go down the rabbit holes, then write about it.</h1>
       <p class="lead">
@@ -115,12 +115,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
   /* ---- Lower sections ------------------------------------------------ */
 
-  .latest {
-    /* The post rows cascade after the section block-rises in (read inside
-       PostList); "View all" trails the rows. */
-    --list-delay: 0.5s;
-  }
-
   .latest > h2 {
     margin-block-end: 0.75rem;
   }
@@ -130,6 +124,4 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     margin-block-end: 0.75em;
   }
 
-  /* Entry choreography comes from the site-wide rules in global.css
-     (the hero doubles as the page-head). */
 </style>
