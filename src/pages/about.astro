@@ -13,11 +13,13 @@ import profilePhoto from "../../public/images/profile-photo-ben-schembri.webp";
       <figure class="portrait">
         <Image src={profilePhoto} alt="Ben Schembri" width={400} height={400} />
       </figure>
-      <h1>About me</h1>
-      <p class="lead">
-        Software engineer in Melbourne, Australia. Curious, opinionated,
-        hands&nbsp;on.
-      </p>
+      <div class="page-head-text">
+        <h1>About me</h1>
+        <p class="lead">
+          Software engineer in Melbourne, Australia. Curious, opinionated,
+          hands&nbsp;on.
+        </p>
+      </div>
     </header>
 
     <section aria-labelledby="day-job-title">
@@ -69,15 +71,19 @@ import profilePhoto from "../../public/images/profile-photo-ben-schembri.webp";
   }
 
   .page-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.5rem 2rem;
     margin-block-end: 2.5rem;
   }
 
   /* Same radial burst frame the photo wore in the header, scaled up. */
   .portrait {
     aspect-ratio: 1 / 1;
-    max-width: 200px;
+    width: 160px;
+    flex-shrink: 0;
     padding: 0.5rem;
-    margin-block-end: 1.5rem;
     border-radius: 0.25rem;
     background: radial-gradient(
       circle at center,
@@ -91,6 +97,13 @@ import profilePhoto from "../../public/images/profile-photo-ben-schembri.webp";
     border-radius: 0.25rem;
     width: 100%;
     height: auto;
+  }
+
+  /* Lets the text block wrap below the portrait when there isn't room
+     for both side by side, instead of squishing. */
+  .page-head-text {
+    flex: 1;
+    min-width: 20ch;
   }
 
   .lead {
@@ -120,9 +133,6 @@ import profilePhoto from "../../public/images/profile-photo-ben-schembri.webp";
     }
     .page-head > :nth-child(2) {
       animation-delay: 0.2s;
-    }
-    .page-head > :nth-child(3) {
-      animation-delay: 0.32s;
     }
   }
 
