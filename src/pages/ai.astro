@@ -6,48 +6,48 @@ const dateFormat = new Intl.DateTimeFormat("en-AU", { dateStyle: "long" });
 ---
 
 <BaseLayout
-  title="Privacy -- Ben Schembri"
-  description="What this site tracks and where the data lives."
+  title="AI -- Ben Schembri"
+  description="No AI is used to write content, but I do use it to write code."
 >
-  <article class="privacy">
+  <article class="ai">
     <header class="page-head">
       <p class="eyebrow">
         Last updated <time datetime={updated.toISOString()}
           >{dateFormat.format(updated)}</time
         >
       </p>
-      <h1>Privacy Policy</h1>
+      <h1>AI Policy</h1>
       <p class="lead">
-        This is my personal blog. I try to respect your privacy, and I don't
-        collect much data.
+        No AI is used to write content, but I do use it to write some code.
       </p>
     </header>
 
-    <h2>Analytics</h2>
+    <h2>Writing</h2>
     <p>
-      I use a self-hosted <a href="https://plausible.io" rel="noopener">Plausible</a> instance to count visits.
+      I don't use AI to generate any of the content. <strong>I write all the posts in my own words</strong> for better or worse.
     </p>
     <p>
-      It records the page URL, referrer, country, device type and browser. Standard stuff, nothing that identifies you. No cookies, cross-site tracking or profiling.
+      I do use use AI to research, discuss ideas with, and review finished posts for flow, consistency and accuracy. I don't always listen to it or agree with it.
     </p>
 
-    <h2>Hosting</h2>
+
+    <h2>Code</h2>
     <p>
-      This website is hosted on Netlify, which keeps short-term logs of it's own. I don't read these unless something goes wrong.
+      I use AI coding tools as part of my workflow, the same way I use search engines, linters and other tools.
     </p>
     <p>
-      Plausible is hosted on Digital Ocean in Sydney, Australia and presumably they can access the data under certain circumstances.
+      I don't "vibe code" - it's more like pairing with an over-eager, very knowledgeable junior who can type a lot faster than I can. I take full responsibility for any code I ship, whether it's AI-assisted or not.
     </p>
 
     <h2>Contact</h2>
     <p>
-      Questions or requests? <a href="/connect">Get in touch</a>.
+      Questions? <a href="/connect">Get in touch</a>.
     </p>
   </article>
 </BaseLayout>
 
 <style>
-  .privacy {
+  .ai {
     max-width: 64ch;
     margin-inline: auto;
     padding-inline: clamp(1rem, 4vw, 2rem);
@@ -82,27 +82,6 @@ const dateFormat = new Intl.DateTimeFormat("en-AU", { dateStyle: "long" });
 
   p {
     margin-block-end: 1.25em;
-  }
-
-  ul {
-    padding-inline-start: 1.25rem;
-    margin-block-end: 1.25em;
-  }
-
-  li {
-    margin-block-end: 0.4em;
-  }
-
-  code {
-    padding: 0.125em 0.375em;
-    background-color: color-mix(
-      in oklch,
-      var(--alt) 15%,
-      var(--surface-reading)
-    );
-    color: var(--alt-strong);
-    border-radius: 0.25em;
-    font-size: 0.9em;
   }
 
   /* Matches the homepage hero stagger so navigating between pages feels
