@@ -23,30 +23,13 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       </div>
     </section>
 
-    <section class="aside scroll-reveal" aria-labelledby="aside-title">
-      <h2 id="aside-title">About me</h2>
-      <h3>My day job</h3>
-      <p>
-        In my day job I work in the energy sector, helping to improve and
-        maintain the software infrastructure for a large network of hardware
-        connected devices. Our product is used by consumers and businesses, as
-        well as our own internal teams.
-      </p>
-      <h3>On the side</h3>
-      <p>
-        I run a boutique studio building custom e-commerce stores for Australian
-        fashion and lifestyle brands that have outgrown Shopify. Plus I do the
-        odd marketing site.
-      </p>
-      <p>
-        And I sometimes teach web development at a coding bootcamp, taking
-        students from the basics of programming through to shipping their first
-        full-stack web apps.
-      </p>
-    </section>
-
     <section class="latest scroll-reveal" aria-labelledby="latest-title">
       <h2 id="latest-title">Latest writing</h2>
+      <p>Web development and software engineering blog.
+        <a class="more" href="/about">
+          About the author <span aria-hidden="true">&rarr;</span>
+        </a>
+      </p>
       <PostList limit={3} />
     </section>
   </div>
@@ -74,8 +57,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     isolation: isolate;
     padding-block-end: clamp(3rem, 9vh, 5.5rem);
     margin-block-end: clamp(2.5rem, 7vh, 4rem);
-    border-block-end: 1px solid
-      color-mix(in oklch, var(--accent) 35%, transparent);
   }
 
   /* A CSS echo of the page's sunburst: thin radial rays fanning out of the
@@ -103,10 +84,12 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   }
 
   .eyebrow {
-    font-family: var(--font-system-ui);
+    /* Monospace on purpose: a quiet "this is a developer's site" signal.
+       Mono fonts lack true small caps, so uppercase + tracking instead. */
+    font-family: var(--font-monospace);
     font-size: var(--font-size-fluid--1);
     font-weight: 700;
-    font-variant-caps: all-small-caps;
+    text-transform: uppercase;
     letter-spacing: 0.12em;
     color: var(--accent);
     margin-block-end: 0.75rem;
@@ -132,27 +115,13 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
   /* ---- Lower sections ------------------------------------------------ */
 
-  .aside {
-    margin-block-end: clamp(2.5rem, 7vh, 4rem);
-  }
-
-  .aside p + p {
-    margin-block-start: 1rem;
-  }
-
-  /* Section title sits a little closer to its first subheading. */
-  .aside > h2 {
-    margin-block-end: 1.25rem;
-  }
-
-  /* Subheadings get air above them, except the first one (which follows the
-     section's h2 and is handled by the h2's margin-block-end above). */
-  .aside p + h3 {
-    margin-block-start: 2rem;
-  }
-
   .latest > h2 {
     margin-block-end: 0.75rem;
+  }
+
+  .latest > p {
+    font-size: var(--font-size-fluid-0);
+    margin-block-end: 0.75em;
   }
 
   /* ---- Choreography -------------------------------------------------- */

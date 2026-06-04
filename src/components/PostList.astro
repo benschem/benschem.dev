@@ -65,9 +65,8 @@ const dateFormat = new Intl.DateTimeFormat("en-AU", { dateStyle: "long" });
         color-mix(in oklch, var(--accent) 28%, transparent);
     }
 
-    & li:last-child {
-      border-block-end: 1px solid
-        color-mix(in oklch, var(--accent) 28%, transparent);
+    & li:first-child {
+      border-block-start: none;
     }
 
     & a {
@@ -106,24 +105,20 @@ const dateFormat = new Intl.DateTimeFormat("en-AU", { dateStyle: "long" });
 
     & time {
       display: block;
+      /* Mono dates: same developer-signal accent as the homepage eyebrow.
+         Mono fonts lack true small caps, so uppercase + tracking instead. */
+      font-family: var(--font-monospace);
       font-size: var(--font-size-fluid--1);
       color: var(--alt);
-      font-variant-caps: all-small-caps;
+      text-transform: uppercase;
       letter-spacing: 0.05em;
     }
   }
 
+  /* Spacing only — the link itself keeps the global wavy underline. */
   .view-all {
     display: inline-block;
     margin-block-start: 1.75rem;
-    font-variant-caps: all-small-caps;
-    letter-spacing: 0.05em;
-    color: var(--ink-heading);
-    text-decoration: none;
-  }
-
-  .view-all:hover {
-    text-decoration: underline;
   }
 
   /* Rows cascade in on load, each delayed by its index (--i set inline).

@@ -1,12 +1,10 @@
 ---
-import { Image } from "astro:assets";
-import profilePhoto from "../../public/images/profile-photo-ben-schembri.webp";
-
 const pathname = Astro.url.pathname;
 
 const links = [
   { href: "/", label: "Home" },
   { href: "/posts", label: "Posts" },
+  { href: "/about", label: "About" },
   { href: "/connect", label: "Connect" },
 ];
 
@@ -37,16 +35,10 @@ const isCurrent = (href: string) =>
 ---
 
 <header>
-  <div>
-    <figure class="avatar">
-      <Image src={profilePhoto} alt="Ben Schembri" width={200} height={200} />
-    </figure>
-
-    <div class="site-title">
-      <a href="/" rel="home">Ben Schembri</a>
-      <strong>👨🏻‍💻 Software Engineer</strong>
-      <p>📍 Melbourne, Australia</p>
-    </div>
+  <div class="site-title">
+    <a href="/" rel="home">Ben Schembri</a>
+    <strong>👨🏻‍💻 Software Engineer</strong>
+    <p>📍 Melbourne, Australia</p>
   </div>
 
   <nav>
@@ -89,13 +81,6 @@ const isCurrent = (href: string) =>
     border-bottom-right-radius: calc(1rem + var(--border-accent))
       calc(1rem + var(--border-thick));
     padding: 1rem;
-
-    & > div {
-      display: flex;
-      gap: 0 1rem;
-      flex-wrap: wrap;
-      align-items: center;
-    }
   }
 
   nav {
@@ -105,7 +90,7 @@ const isCurrent = (href: string) =>
     padding-inline: 1rem;
 
     & ul {
-      list-style-type: symbols(cyclic "🏡" "📚" "📞");
+      list-style-type: symbols(cyclic "🏡" "📚" "👋" "📞");
       & li {
         margin-block-end: 0.5rem;
         & a[aria-current="page"] {
@@ -115,26 +100,10 @@ const isCurrent = (href: string) =>
     }
   }
 
-  .avatar {
-    aspect-ratio: 1 / 1;
-    max-width: 140px;
-    padding: 0.5rem;
-    border-radius: 0.25rem;
-    background: radial-gradient(
-      circle at center,
-      var(--burst-centre),
-      var(--burst-mid)
-    );
-  }
-
-  .avatar img {
-    aspect-ratio: 1 / 1;
-    border-radius: 0.25rem;
-    width: 100%;
-    height: auto;
-  }
-
   .site-title {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     padding-inline-start: 1rem;
   }
 

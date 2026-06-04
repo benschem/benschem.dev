@@ -108,6 +108,9 @@
   --font-system-ui: system-ui, sans-serif;
   --font-classical-humanist:
     Optima, Candara, "Noto Sans", source-sans-pro, sans-serif;
+  --font-monospace:
+    ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas,
+    monospace;
 
   scroll-behavior: smooth;
 }
