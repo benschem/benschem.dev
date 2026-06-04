@@ -1,2 +1,9 @@
+# Plausible analytics proxied through a first-party path so adblockers don't filter it
 /pa-stats/js/*      https://analytics.rocketzip.com.au/js/:splat 200
 /pa-stats/api/event https://analytics.rocketzip.com.au/api/event 200
+
+# Old Le Wagon student URLs from the GitHub Pages site
+/students/how-this-site-is-built.html  /posts/how-this-site-is-built-and-hosted  301
+# TODO: re-enable once intro-to-js is published (it's still draft: true)
+# /students/intro-to-javascript.html   /posts/intro-to-js                        301
+/students/*                            /                                         301
