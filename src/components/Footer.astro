@@ -1,4 +1,5 @@
 ---
+import MotionSwitcher from "./MotionSwitcher.astro";
 import ThemeSwitcher from "./ThemeSwitcher.astro";
 
 const year = new Date().getFullYear();
@@ -23,6 +24,7 @@ const year = new Date().getFullYear();
 
   <div class="end">
     <ThemeSwitcher />
+    <MotionSwitcher />
     <p class="copyright">&copy; {year} Ben Schembri</p>
   </div>
 </footer>

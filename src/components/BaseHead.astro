@@ -95,6 +95,9 @@ const socialImageURL = new URL(image, Astro.site);
 
     const palette = localStorage.getItem("palette");
     if (palette) document.documentElement.dataset.palette = palette;
+
+    const motion = localStorage.getItem("motion");
+    if (motion) document.documentElement.dataset.motion = motion;
   })();
 </script>
 

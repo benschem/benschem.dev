@@ -40,9 +40,11 @@ const showUpdated =
   updatedDate={updated}
 >
   <article class="post">
-    <a href="/posts" class="back-link">&larr; All posts</a>
-
-    <header class="post-head">
+    {/* The back link lives inside the header so it leads the head's entry
+        stagger (and keeps .page-head as the container's first child — see
+        the choreography rules in global.css). */}
+    <header class="page-head">
+      <a href="/posts" class="back-link">&larr; All posts</a>
       <h1>{post.data.title}</h1>
       <p class="meta">
         <time datetime={published.toISOString()}>
@@ -133,7 +135,7 @@ const showUpdated =
     font-size: var(--font-size-fluid--1);
   }
 
-  .post-head {
+  .page-head {
     margin-block-end: clamp(2.5rem, 6vh, 3.5rem);
   }
 
@@ -340,35 +342,5 @@ const showUpdated =
     color: var(--accent);
   }
 
-  /* ---- Choreography -------------------------------------------------- */
-
-  @media (prefers-reduced-motion: no-preference) {
-    .post-head > * {
-      opacity: 0;
-      animation: rise 0.7s cubic-bezier(0.21, 0.6, 0.35, 1) both;
-    }
-    .post-head > :nth-child(1) {
-      animation-delay: 0.1s;
-    }
-    .post-head > :nth-child(2) {
-      animation-delay: 0.2s;
-    }
-    .post-head > :nth-child(3) {
-      animation-delay: 0.32s;
-    }
-    .post-head > :nth-child(4) {
-      animation-delay: 0.44s;
-    }
-  }
-
-  @keyframes rise {
-    from {
-      opacity: 0;
-      transform: translateY(1.25rem);
-    }
-    to {
-      opacity: 1;
-      transform: none;
-    }
-  }
+  /* Entry choreography comes from the site-wide rules in global.css. */
 </style>

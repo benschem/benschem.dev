@@ -70,7 +70,10 @@ const label = (id: string) => `${id[0].toUpperCase()}${id.slice(1)}`;
     🎨
   </button>
 
-  <ul class="theme-menu" role="menu" aria-label="Colour theme">
+  <ul class="theme-menu" role="menu" aria-labelledby="theme-menu-heading">
+    <li role="presentation" id="theme-menu-heading" class="menu-heading">
+      Theme
+    </li>
     {
       themes.map((t) => (
         <li role="none">
@@ -188,6 +191,17 @@ const label = (id: string) => `${id[0].toUpperCase()}${id.slice(1)}`;
   .theme-switcher:hover .theme-menu,
   .theme-switcher:focus-within .theme-menu {
     display: flex;
+  }
+
+  /* Same small-caps treatment as the footer copyright. Slightly faded so the
+     options read as the interactive rows and the heading as furniture. */
+  .menu-heading {
+    padding: 0.2rem 0.6rem 0.3rem 0.4rem;
+    font-size: var(--font-size-fluid--1);
+    font-variant-caps: all-small-caps;
+    letter-spacing: 0.05em;
+    color: color-mix(in oklab, var(--ink-body) 70%, transparent);
+    user-select: none;
   }
 
   .theme-option {

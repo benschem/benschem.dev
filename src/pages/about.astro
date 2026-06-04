@@ -121,29 +121,5 @@ import profilePhoto from "../../public/images/profile-photo-ben-schembri.webp";
     margin-block-start: 1rem;
   }
 
-  /* Matches the homepage hero stagger so navigating between pages feels
-     continuous. Time-based, so opacity:0 only applies when it will animate. */
-  @media (prefers-reduced-motion: no-preference) {
-    .page-head > * {
-      opacity: 0;
-      animation: rise 0.7s cubic-bezier(0.21, 0.6, 0.35, 1) both;
-    }
-    .page-head > :nth-child(1) {
-      animation-delay: 0.1s;
-    }
-    .page-head > :nth-child(2) {
-      animation-delay: 0.2s;
-    }
-  }
-
-  @keyframes rise {
-    from {
-      opacity: 0;
-      transform: translateY(1.25rem);
-    }
-    to {
-      opacity: 1;
-      transform: none;
-    }
-  }
+  /* Entry choreography comes from the site-wide rules in global.css. */
 </style>

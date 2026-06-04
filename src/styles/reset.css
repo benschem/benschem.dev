@@ -145,3 +145,18 @@ select {
     scroll-behavior: auto !important;
   }
 }
+
+/* Same again for the explicit footer override (the 🍃 menu), which the
+   BaseHead inline script applies before first paint. Unlike the OS path,
+   the no-preference animation blocks are live here, so delays are zeroed
+   too — otherwise staggered intros would hold content at opacity: 0. */
+html[data-motion="reduced"],
+html[data-motion="reduced"] *,
+html[data-motion="reduced"] *::before,
+html[data-motion="reduced"] *::after {
+  animation-duration: 0.01ms !important;
+  animation-delay: 0s !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}

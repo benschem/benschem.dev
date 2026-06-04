@@ -8,7 +8,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   description="Profile for Ben Schembri, a software engineer from Melbourne Australia."
 >
   <div class="home">
-    <section class="hero" aria-labelledby="hero-title">
+    <section class="hero page-head" aria-labelledby="hero-title">
       <p class="eyebrow">Curious · Opinionated · Hands&nbsp;On</p>
       <h1 id="hero-title">I go down the rabbit holes, then write about it.</h1>
       <p class="lead">
@@ -23,7 +23,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       </div>
     </section>
 
-    <section class="latest scroll-reveal" aria-labelledby="latest-title">
+    <section class="latest" aria-labelledby="latest-title">
       <h2 id="latest-title">Latest writing</h2>
       <p>Web development and software engineering blog.
         <a class="more" href="/about">
@@ -44,7 +44,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     /* Clip only the horizontal axis so the hero's decorative burst can bleed
        off the right edge without ever spawning a horizontal scrollbar. `clip`
        (unlike `hidden`) doesn't create a scroll container, so the page scroll
-       and the below-fold view() timelines keep working. */
+       keeps working. */
     overflow-x: clip;
   }
 
@@ -115,6 +115,12 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
   /* ---- Lower sections ------------------------------------------------ */
 
+  .latest {
+    /* The post rows cascade after the section block-rises in (read inside
+       PostList); "View all" trails the rows. */
+    --list-delay: 0.5s;
+  }
+
   .latest > h2 {
     margin-block-end: 0.75rem;
   }
@@ -124,47 +130,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     margin-block-end: 0.75em;
   }
 
-  /* ---- Choreography -------------------------------------------------- */
-
-  @media (prefers-reduced-motion: no-preference) {
-    /* Hero: a time-based stagger that always runs, so opacity:0 is safe. */
-    .hero > * {
-      opacity: 0;
-      animation: rise 0.7s cubic-bezier(0.21, 0.6, 0.35, 1) both;
-    }
-    .hero > :nth-child(1) {
-      animation-delay: 0.12s;
-    }
-    .hero > :nth-child(2) {
-      animation-delay: 0.22s;
-    }
-    .hero > :nth-child(3) {
-      animation-delay: 0.34s;
-    }
-    .hero > :nth-child(4) {
-      animation-delay: 0.46s;
-    }
-
-    /* Below-fold: scroll-driven reveal. Gated behind @supports so browsers
-       without view() timelines never hide the content (no JS fallback). */
-    @supports (animation-timeline: view()) {
-      .scroll-reveal {
-        opacity: 0;
-        animation: rise linear both;
-        animation-timeline: view();
-        animation-range: entry 0% cover 22%;
-      }
-    }
-  }
-
-  @keyframes rise {
-    from {
-      opacity: 0;
-      transform: translateY(1.25rem);
-    }
-    to {
-      opacity: 1;
-      transform: none;
-    }
-  }
+  /* Entry choreography comes from the site-wide rules in global.css
+     (the hero doubles as the page-head). */
 </style>

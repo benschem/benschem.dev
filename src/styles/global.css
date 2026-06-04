@@ -183,3 +183,58 @@ a[href^="http"]::after {
 .btn:focus-visible {
   outline-offset: 6px;
 }
+
+/* ---- Entry choreography ------------------------------------------------
+   Every page follows the same shape: <container> > header.page-head +
+   content siblings, with .page-head as the container's FIRST child (the
+   content nth-child delays below assume it). The title — and any wrapper
+   containing it — renders instantly so the page is readable straight away;
+   the lead lands a beat later, then everything else eases in softly around
+   the already-readable text. Time-based (not scroll-driven) so it always
+   plays, even for content in view at load. Gated under no-preference so
+   opacity: 0 only applies when it will animate — the MotionSwitcher kill
+   rules in reset.css zero duration AND delay, so `both`-fill animations
+   snap straight to their final state. (Browsers without :has() drop the
+   head rule entirely: everything just renders instantly.) */
+@media (prefers-reduced-motion: no-preference) {
+  main .page-head > :not(h1, :has(h1)) {
+    opacity: 0;
+    animation: rise 0.55s cubic-bezier(0.21, 0.6, 0.35, 1) both;
+    animation-delay: 0.3s;
+  }
+  /* Subtext is readable almost immediately after the title… */
+  main .page-head > .lead {
+    animation-delay: 0.1s;
+  }
+  /* …dates and metadata next, decorations last (the 0.3s default above). */
+  main .page-head > .meta {
+    animation-delay: 0.2s;
+  }
+
+  /* Content blocks below the head: the first two stagger, the rest share
+     the tail delay (they're below the fold anyway). nth-child indices count
+     the head itself as child 1. .posts (the PostList root) is excluded —
+     its rows run their own --list-delay cascade instead of a block rise. */
+  main .page-head ~ :not(.posts) {
+    opacity: 0;
+    animation: rise 0.55s cubic-bezier(0.21, 0.6, 0.35, 1) both;
+    animation-delay: 0.65s;
+  }
+  main .page-head ~ :nth-child(2):not(.posts) {
+    animation-delay: 0.35s;
+  }
+  main .page-head ~ :nth-child(3):not(.posts) {
+    animation-delay: 0.5s;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
