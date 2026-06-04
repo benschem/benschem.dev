@@ -58,7 +58,7 @@
 
 ### RSS / SEO
 
-[ ] rss feed
+[x] rss feed
 [x] rss autodiscovery link in head
 [ ] sitemap
 [ ] robots.txt with sitemap line
@@ -152,7 +152,7 @@
 
 ### Other pages
 
-[ ] /uses
+[x] /uses
 [ ] /now
 
 ### SEO extras
