@@ -90,6 +90,9 @@
   --radius-1: 2px;
   --radius-3: 1rem;
 
+  /* Shared page-container measure so text doesn't shift between pages */
+  --container-max: 68ch;
+
   /* Decorative borders that scale with viewport - floor and ceiling clamped */
   --border-accent: clamp(1rem, 0.4rem + 3vmin, 4rem);
   --border-thick: clamp(1rem, 0.6rem + 2vmin, 2rem);
