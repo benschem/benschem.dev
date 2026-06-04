@@ -20,35 +20,37 @@ const dateFormat = new Intl.DateTimeFormat("en-AU", { dateStyle: "long" });
 ---
 
 <div class="posts">
-{
-  posts.length === 0 ? (
-    <p>Nothing here yet.</p>
-  ) : (
-    <ol class="post-list" reversed>
-      {posts.map((post, i) => (
-        <li style={`--i:${i}`}>
-          <a href={`/posts/${post.id}`}>
-            <time datetime={post.data.published.toISOString()}>
-              {dateFormat.format(post.data.published)}
-            </time>
-            <h2>
-              {post.data.title}
-              <span class="go" aria-hidden="true">&rarr;</span>
-            </h2>
-            <p>{post.data.description}</p>
-          </a>
-        </li>
-      ))}
-    </ol>
-  )
-}
-{
-  hasMore && (
-    <a class="view-all" href="/posts">
-      View all posts <span aria-hidden="true">&rarr;</span>
-    </a>
-  )
-}
+  {
+    posts.length === 0 ? (
+      <p>Nothing here yet.</p>
+    ) : (
+      <ol class="post-list" reversed>
+        {posts.map((post, i) => (
+          <li style={`--i:${i}`}>
+            <a href={`/posts/${post.id}`}>
+              <time datetime={post.data.published.toISOString()}>
+                {dateFormat.format(post.data.published)}
+              </time>
+              <h2>
+                {post.data.title}
+                <span class="go" aria-hidden="true">
+                  &rarr;
+                </span>
+              </h2>
+              <p>{post.data.description}</p>
+            </a>
+          </li>
+        ))}
+      </ol>
+    )
+  }
+  {
+    hasMore && (
+      <a class="view-all" href="/posts">
+        View all posts <span aria-hidden="true">&rarr;</span>
+      </a>
+    )
+  }
 </div>
 
 <style>

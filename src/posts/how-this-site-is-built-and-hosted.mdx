@@ -83,11 +83,12 @@ There was a time when I wanted to self-host everything, and I got a lot of joy o
 These days the less time I spend managing or thinking about a server the better - there's other things I'd rather be doing! If I must self-host, then I want that infrastructure defined as code - no more snowflake servers.
 
 <Callout variant="info" title="Snowflakes vs blueprints">
-  You may have heard the expression "pets vs cattle" referring to servers. I prefer "snowflakes vs
-  blueprints", but it's the same idea. Snowflake servers are unique and tend to
-  drift over time as you tinker with them. They're impossible to reproduce
-  exactly if they break. Blueprints define a server configuration, so that it
-  can be scaled or replaced by spinning up a brand new, identical clone.
+  You may have heard the expression "pets vs cattle" referring to servers. I
+  prefer "snowflakes vs blueprints", but it's the same idea. Snowflake servers
+  are unique and tend to drift over time as you tinker with them. They're
+  impossible to reproduce exactly if they break. Blueprints define a server
+  configuration, so that it can be scaled or replaced by spinning up a brand
+  new, identical clone.
 </Callout>
 
 An increasingly attractive hosting option is to make use of "serverless" functions, where the need to manage a server at all is abstracted away. These are often essentially free depending on usage, sometimes at the cost of warmup time.

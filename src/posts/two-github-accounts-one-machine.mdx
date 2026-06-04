@@ -10,7 +10,9 @@ import Callout from "../components/Callout.astro";
 I needed a file from one of my personal repos on my work laptop. I didn't have my personal GitHub account set up though, as my workplace asked me to make a new GitHub account when I started (Whatever - I don't chase the green dots on the GitHub contribution graph anyway). In fact, I was happy to use a different account because I don't think it's a good idea to have personal stuff on the work machine. But it'd be a boring article if I didn't do it anyway - Let's **set up a second GitHub account**
 
 <Callout variant="warning" title="Check your workplace policies around this">
-  Some companies restrict personal accounts on work hardware. It's worth checking if yours cares about this. In some countries this can give your workplace ownership over your personal code. Don't say I didn't warn you.
+  Some companies restrict personal accounts on work hardware. It's worth
+  checking if yours cares about this. In some countries this can give your
+  workplace ownership over your personal code. Don't say I didn't warn you.
 </Callout>
 
 I don't want to have to remember to manually switch between my personal GitHub account and my existing work account in different directories. **I want every directory to use the right account automatically.** Otherwise there's a good chance I'll forget to switch, and push to the wrong account or commit as the wrong author.
@@ -66,7 +68,9 @@ git config --show-origin --show-scope --get-all credential.helper
 ```
 
 <Callout variant="warning" title="Secure your credentials">
-  If the credential helper is set to `store`, then your tokens are being saved as plaintext at `~/.git-credentials` and you should fix that immediately - it's not secure.
+  If the credential helper is set to `store`, then your tokens are being saved
+  as plaintext at `~/.git-credentials` and you should fix that immediately -
+  it's not secure.
 </Callout>
 
 Then during usage `git` calls whatever credential helper is set in `credential.helper` to fetch the token, the helper passes the token back to `git` in the terminal, then packages the token into an encrypted HTTPS request header and sends it directly to the remote's servers to be authenticated.
@@ -82,7 +86,9 @@ Instead of a token or password to prove who you are, your computer's private key
 The keys are generated from a one-way math problem that makes it easy to create the pair together, but basically impossible to work out the private key from the public one alone.
 
 <Callout variant="warning" title="Check if your office blocks SSH">
-  It's common for corporate networks to block both incoming traffic on port 22 - the port that SSH listens on, as well as outgoing requests to port 22. GitHub itself offers SSH-over-443 (ssh.github.com) as a workaround.
+  It's common for corporate networks to block both incoming traffic on port 22 -
+  the port that SSH listens on, as well as outgoing requests to port 22. GitHub
+  itself offers SSH-over-443 (ssh.github.com) as a workaround.
 </Callout>
 
 With HTTPS, your computer still has to send the token string over the internet to GitHub. With SSH, your secret key never leaves your computer.
@@ -116,7 +122,9 @@ SSH keys last until you manually revoke them, whereas GitHub forces HTTPS tokens
 The pendulum is arguably swinging back to HTTPS on security grounds. Fine-grained scoped tokens are better than all-or-nothing SSH keys. SSH keys being long-lived (often forever) is a double edged sword - it trades less user friction for worse security.
 
 <Callout variant="info" title="Use it or lose it">
-  As an extra safety precaution - regardless of the expiration date you set - GitHub will automatically delete any token or SSH key that haven't been used in a year.
+  As an extra safety precaution - regardless of the expiration date you set -
+  GitHub will automatically delete any token or SSH key that haven't been used
+  in a year.
 </Callout>
 
 Even though I was surprised to learn how far git auth over HTTPS has come, **I'm still going to use SSH**, for no other real reason now than I want to.
@@ -197,7 +205,11 @@ But I can avoid that too. By putting this in my global `~/.gitconfig` file, it w
 Now I don't even need to remember to use the alias - pushing, pulling, cloning, will all use my personal SSH key when connecting to my personal account's url.
 
 <Callout variant="warning" title="Edge cases">
-  There's one drawback worth noting about the `insteadOf` method - if I ever needed to clone one of my own repos using my work account (say I was added as a collaborator under my work identity), this wouldn't be possible with the current setup and I'd have to come up with another workaround (add a third alias maybe).
+  There's one drawback worth noting about the `insteadOf` method - if I ever
+  needed to clone one of my own repos using my work account (say I was added as
+  a collaborator under my work identity), this wouldn't be possible with the
+  current setup and I'd have to come up with another workaround (add a third
+  alias maybe).
 </Callout>
 
 ## Setting up Git commit authorship for my personal repos

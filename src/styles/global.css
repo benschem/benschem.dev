@@ -72,7 +72,6 @@ a {
   }
 }
 
-
 ::selection {
   background-color: var(--alt-soft);
   color: var(--alt-strong);

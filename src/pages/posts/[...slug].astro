@@ -91,7 +91,11 @@ const showUpdated =
       (prev || next) && (
         <nav class="post-nav" aria-label="More posts">
           {prev ? (
-            <a class="post-nav__link post-nav__link--prev" href={`/posts/${prev.id}`} rel="prev">
+            <a
+              class="post-nav__link post-nav__link--prev"
+              href={`/posts/${prev.id}`}
+              rel="prev"
+            >
               <span class="post-nav__label">&larr; Previous</span>
               <span class="post-nav__title">{prev.data.title}</span>
             </a>
@@ -99,7 +103,11 @@ const showUpdated =
             <span />
           )}
           {next && (
-            <a class="post-nav__link post-nav__link--next" href={`/posts/${next.id}`} rel="next">
+            <a
+              class="post-nav__link post-nav__link--next"
+              href={`/posts/${next.id}`}
+              rel="next"
+            >
               <span class="post-nav__label">Next &rarr;</span>
               <span class="post-nav__title">{next.data.title}</span>
             </a>

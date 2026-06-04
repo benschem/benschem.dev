@@ -210,7 +210,11 @@ const label = (id: string) => `${id[0].toUpperCase()}${id.slice(1)}`;
      against near-white ink in dark mode). */
   .theme-option:hover,
   .theme-option:focus-visible {
-    background-color: color-mix(in oklab, var(--accent) 22%, var(--surface-raised));
+    background-color: color-mix(
+      in oklab,
+      var(--accent) 22%,
+      var(--surface-raised)
+    );
   }
 
   /* Selected state uses colour + tick + swatch ring rather than font-weight,

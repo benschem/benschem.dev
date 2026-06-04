@@ -11,20 +11,57 @@ const sections: {
   {
     title: "Software",
     items: [
-      { label: "Editing code", name: "VSCode", note: "I've tried to switch to Neovim but it didn't stick" },
-      { label: "Shell", name: "Zsh", note: "No plugin manager - all handwritten. Starship prompt", href: "https://github.com/benschem/dotfiles" },
-      { label: "Browsing", name: "Safari", note: "Keychain, Handoff and autofilling confirmation codes keep me here" },
-      { label: "Debugging", name: "Firefox", note: "Vastly prefer the dev tools compared to Safari" },
-      { label: "Chatting", name: "Slack", note: "Please don't make me use Teams" },
+      {
+        label: "Editing code",
+        name: "VSCode",
+        note: "I've tried to switch to Neovim but it didn't stick",
+      },
+      {
+        label: "Shell",
+        name: "Zsh",
+        note: "No plugin manager - all handwritten. Starship prompt",
+        href: "https://github.com/benschem/dotfiles",
+      },
+      {
+        label: "Browsing",
+        name: "Safari",
+        note: "Keychain, Handoff and autofilling confirmation codes keep me here",
+      },
+      {
+        label: "Debugging",
+        name: "Firefox",
+        note: "Vastly prefer the dev tools compared to Safari",
+      },
+      {
+        label: "Chatting",
+        name: "Slack",
+        note: "Please don't make me use Teams",
+      },
     ],
   },
   {
     title: "Hardware",
     items: [
-      { label: "Laptop", name: "Macbook", note: "Windows is hot garbage and Apple Silicon is amazing" },
-      { label: "Desktop", name: "Custom build", note: "Ageing gaming and media editing machine that dual boots Windows and Linux" },
-      { label: "Keyboard", name: "Keychron K3", note: "I'm eyeing off a split keyboard next" },
-      { label: "Pointer", name: "Apple Trackpad", note: "I'm just a trackpad guy, the gestures are so good" },
+      {
+        label: "Laptop",
+        name: "Macbook",
+        note: "Windows is hot garbage and Apple Silicon is amazing",
+      },
+      {
+        label: "Desktop",
+        name: "Custom build",
+        note: "Ageing gaming and media editing machine that dual boots Windows and Linux",
+      },
+      {
+        label: "Keyboard",
+        name: "Keychron K3",
+        note: "I'm eyeing off a split keyboard next",
+      },
+      {
+        label: "Pointer",
+        name: "Apple Trackpad",
+        note: "I'm just a trackpad guy, the gestures are so good",
+      },
     ],
   },
 ];
@@ -61,7 +98,11 @@ const sections: {
                   {item.label && <span class="label">{item.label}</span>}
                   <span class="name">
                     {item.href ? (
-                      <a href={item.href} target="_blank" rel="noopener noreferrer">
+                      <a
+                        href={item.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
                         {item.name}
                       </a>
                     ) : (

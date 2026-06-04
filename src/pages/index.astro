@@ -12,7 +12,10 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       <p class="eyebrow">Curious · Opinionated · Hands&nbsp;On</p>
       <h1 id="hero-title">I go down the rabbit holes, then write about it.</h1>
       <p class="lead">
-         Sometimes on purpose, sometimes by accident, I keep asking questions until I really understand. I try to do things the hard way at least once, so that the next time I can take the shortcut knowing the trade-offs.
+        Sometimes on purpose, sometimes by accident, I keep asking questions
+        until I really understand. I try to do things the hard way at least
+        once, so that the next time I can take the shortcut knowing the
+        trade-offs.
       </p>
       <div class="buttons">
         <a class="btn btn-primary" href="/posts">Read my blog</a>
@@ -24,15 +27,16 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       <h2 id="aside-title">About me</h2>
       <h3>My day job</h3>
       <p>
-        In my day job I work in the energy sector, helping to improve and maintain the software
-				infrastructure for a large network of hardware
-				connected devices. Our product is used by consumers and businesses, as well as our own internal teams.
+        In my day job I work in the energy sector, helping to improve and
+        maintain the software infrastructure for a large network of hardware
+        connected devices. Our product is used by consumers and businesses, as
+        well as our own internal teams.
       </p>
       <h3>On the side</h3>
       <p>
         I run a boutique studio building custom e-commerce stores for Australian
-        fashion and lifestyle brands that have outgrown Shopify. Plus I do the odd
-        marketing site.
+        fashion and lifestyle brands that have outgrown Shopify. Plus I do the
+        odd marketing site.
       </p>
       <p>
         And I sometimes teach web development at a coding bootcamp, taking
@@ -70,7 +74,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     isolation: isolate;
     padding-block-end: clamp(3rem, 9vh, 5.5rem);
     margin-block-end: clamp(2.5rem, 7vh, 4rem);
-    border-block-end: 1px solid color-mix(in oklch, var(--accent) 35%, transparent);
+    border-block-end: 1px solid
+      color-mix(in oklch, var(--accent) 35%, transparent);
   }
 
   /* A CSS echo of the page's sunburst: thin radial rays fanning out of the
@@ -87,7 +92,11 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       color-mix(in oklch, var(--accent) 24%, transparent) 0deg 2.6deg,
       transparent 2.6deg 11deg
     );
-    -webkit-mask-image: radial-gradient(circle at 50% 50%, #000, transparent 64%);
+    -webkit-mask-image: radial-gradient(
+      circle at 50% 50%,
+      #000,
+      transparent 64%
+    );
     mask-image: radial-gradient(circle at 50% 50%, #000, transparent 64%);
     opacity: 0.55;
     pointer-events: none;
