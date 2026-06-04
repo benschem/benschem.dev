@@ -10,6 +10,17 @@
 [ ] set production branch = master; enable deploy previews for branches/PRs
 [ ] branch-deploy v2; verify on \*--<site>.netlify.app
 
+### Contact form (post-deploy)
+
+[ ] verify Forms tab shows the registered `contact` form after first deploy
+[ ] disable Netlify's built-in reCAPTCHA option if prompted (honeypot only, per forms standard)
+[ ] add email notification for submissions (Forms → notifications)
+[ ] send one real test submission end-to-end (lands in inbox + redirects to /thanks/)
+[ ] test the form with JS disabled on the deployed site (should still POST to /thanks/)
+[ ] add /thanks/ pageview goal in Plausible (cleanest "form completed" signal)
+[ ] optional: add "Contact form submitted" custom event goal in Plausible
+[ ] check Netlify's spam-filtered submissions folder once after a few weeks (false positives)
+
 ### Layout shell
 
 [x] lang attribute

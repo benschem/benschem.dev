@@ -1,0 +1,476 @@
+---
+/* Contact form built to the portfolio forms standard (Rocketzip's
+   forms-endgame doc): Netlify Forms transport, dual honeypot, blur-validate /
+   input-clear with custom messages, sessionStorage draft persistence, submit
+   hardening, and a no-JS path that still POSTs to /thanks/. No Turnstile by
+   choice — this site ships zero third-party scripts; add it only if the
+   honeypot ever stops being enough. */
+
+/* Inline status icons (heroicons-style outlines) — SVG, not glyphs, so
+   rendering doesn't depend on the user's font having ✓/✗. */
+const checkIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8.5 12.5 2.5 2.5 5-5.5"/></svg>`;
+const crossIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m15 9-6 6m0-6 6 6"/></svg>`;
+---
+
+<form
+  name="contact"
+  method="POST"
+  action="/thanks/"
+  autocomplete="on"
+  data-netlify="true"
+  data-netlify-honeypot="website-url"
+  class="contact-form"
+>
+  <!-- Netlify needs this on AJAX-less POSTs too; it maps the submission to
+       the form registered at deploy time. -->
+  <input type="hidden" name="form-name" value="contact" />
+
+  <p class="visually-hidden">
+    <label>
+      Don't fill this out if you're human:
+      <input name="website-url" tabindex="-1" autocomplete="off" />
+    </label>
+  </p>
+
+  <div class="field" data-required="true">
+    <label id="nameLabel" for="name">Name</label>
+    <div class="control">
+      <input
+        type="text"
+        id="name"
+        name="name"
+        required
+        minlength="2"
+        pattern="^[\\p{L}' .\\-]+$"
+        autocomplete="name"
+        autocapitalize="words"
+        enterkeyhint="next"
+        aria-invalid="false"
+        aria-describedby="nameError"
+      />
+      <span class="status" data-status aria-hidden="true">
+        <span data-icon="valid" set:html={checkIcon} />
+        <span data-icon="invalid" set:html={crossIcon} />
+      </span>
+    </div>
+    <span id="nameError" class="error" data-error role="alert" aria-live="polite"
+    ></span>
+  </div>
+
+  <div class="field" data-required="true">
+    <label id="emailLabel" for="email">Email</label>
+    <div class="control">
+      <input
+        type="email"
+        id="email"
+        name="email"
+        required
+        minlength="5"
+        autocomplete="email"
+        inputmode="email"
+        autocapitalize="off"
+        spellcheck="false"
+        enterkeyhint="next"
+        aria-invalid="false"
+        aria-describedby="emailHint emailError"
+      />
+      <span class="status" data-status aria-hidden="true">
+        <span data-icon="valid" set:html={checkIcon} />
+        <span data-icon="invalid" set:html={crossIcon} />
+      </span>
+    </div>
+    <span id="emailHint" class="hint">Only used to reply to you, I promise.</span>
+    <span
+      id="emailError"
+      class="error"
+      data-error
+      role="alert"
+      aria-live="polite"></span>
+  </div>
+
+  <div class="field" data-required="true">
+    <label id="messageLabel" for="message">Message</label>
+    <div class="control">
+      <textarea
+        id="message"
+        name="message"
+        required
+        minlength="10"
+        maxlength="2000"
+        rows="5"
+        aria-invalid="false"
+        aria-describedby="messageHint messageError"></textarea>
+      <span class="status" data-status aria-hidden="true">
+        <span data-icon="valid" set:html={checkIcon} />
+        <span data-icon="invalid" set:html={crossIcon} />
+      </span>
+    </div>
+    <span id="messageHint" class="hint"
+      >Minimum 10 characters.</span
+    >
+    <span
+      id="messageError"
+      class="error"
+      data-error
+      role="alert"
+      aria-live="polite"></span>
+  </div>
+
+  <p class="disclosure">
+    The <a href="/privacy"
+      >privacy policy</a
+    > has the fine print.
+  </p>
+
+  <button type="submit" class="btn btn-primary" data-submit>Send message</button
+  >
+</form>
+
+<style>
+  .contact-form {
+    display: grid;
+    gap: 1.25rem;
+    /* Re-tints any native control chrome (selection carets etc.) in one go. */
+    accent-color: var(--accent);
+  }
+
+  /* Off-screen but screen-reader-discoverable — the label copy tells humans
+     using AT to leave the honeypot alone. */
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .field {
+    display: grid;
+    gap: 0.35rem;
+  }
+
+  label {
+    font-family: var(--font-system-ui);
+    font-size: var(--font-size-fluid--1);
+    font-weight: 700;
+    color: var(--ink-body);
+    width: fit-content;
+  }
+
+  /* Asterisk lives in CSS so screen readers announce "required" (from the
+     attribute) instead of reading out "asterisk". */
+  .field[data-required="true"] > label::after {
+    content: " *";
+    color: var(--accent);
+  }
+
+  .control {
+    position: relative;
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    /* 1rem = 16px floor stops iOS Safari auto-zooming the page on focus. */
+    font-size: max(1rem, var(--font-size-fluid--1));
+    padding: 0.65rem 0.85rem;
+    /* Leave room so text doesn't run under the status icon. */
+    padding-inline-end: 2.75rem;
+    border: 1.5px solid var(--alt);
+    border-radius: var(--radius-1);
+    background-color: var(--surface-reading);
+    transition: border-color 0.2s ease;
+  }
+
+  textarea {
+    /* Grows with the message, then scrolls — falls back to rows="5". */
+    field-sizing: content;
+    min-block-size: 8rem;
+    max-block-size: 24rem;
+    resize: vertical;
+  }
+
+  /* Two channels for the invalid border: :user-invalid is the CSS-only / no-JS
+     path (only matches after the user has interacted, unlike :invalid), and
+     [aria-invalid="true"] is the JS-driven one so both stay in lockstep. */
+  input:user-invalid,
+  textarea:user-invalid,
+  [aria-invalid="true"] {
+    border-color: var(--error);
+  }
+
+  .status {
+    position: absolute;
+    inset-inline-end: 0.85rem;
+    inset-block-start: 50%;
+    translate: 0 -50%;
+    pointer-events: none;
+  }
+
+  /* Textareas resize, so pin the icon to the first line instead of centring. */
+  .control:has(textarea) .status {
+    inset-block-start: 1.1rem;
+    translate: none;
+  }
+
+  .status :global(svg) {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .status [data-icon] {
+    display: none;
+  }
+
+  .status[data-state="valid"] [data-icon="valid"] {
+    display: block;
+    color: var(--accent);
+  }
+
+  .status[data-state="invalid"] [data-icon="invalid"],
+  .control:has(:user-invalid) [data-icon="invalid"] {
+    display: block;
+    color: var(--error);
+  }
+
+  /* If CSS (:user-invalid) and JS disagree mid-keystroke, never show both. */
+  .status[data-state="valid"] [data-icon="invalid"] {
+    display: none;
+  }
+
+  .hint {
+    font-family: var(--font-system-ui);
+    font-size: var(--font-size-fluid--1);
+    font-style: italic;
+    color: var(--alt);
+  }
+
+  .error {
+    font-family: var(--font-system-ui);
+    font-size: var(--font-size-fluid--1);
+    font-weight: 600;
+    color: var(--error);
+  }
+
+  /* No red noise before there's anything to say. */
+  .error:empty {
+    display: none;
+  }
+
+  .disclosure {
+    font-size: var(--font-size-fluid--1);
+    color: var(--alt);
+  }
+
+  button[type="submit"] {
+    justify-self: start;
+    /* Extra block padding clears the 44px tap-target floor that the shared
+       .btn padding alone doesn't reach at this font size. */
+    padding-block: 0.75rem;
+  }
+
+  .contact-form[data-submitting="true"] button[type="submit"] {
+    opacity: 0.6;
+    cursor: wait;
+  }
+
+  /* Motion guards (prefers-reduced-motion + the 🍃 override) come from the
+     site-wide kill rules in reset.css. */
+</style>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('form[name="contact"]');
+
+  if (form) {
+    const STORAGE_KEY = "benschem-contact-draft-v1";
+    const FIELDS = ["name", "email", "message"]; // honeypot deliberately excluded
+
+    type Control = HTMLInputElement | HTMLTextAreaElement;
+    const controls = FIELDS.map(
+      (name) => form.elements.namedItem(name) as Control,
+    );
+    const submitBtn = form.querySelector<HTMLButtonElement>("[data-submit]")!;
+
+    const MESSAGES: Record<string, Record<string, string>> = {
+      name: {
+        valueMissing: "You haven't told me your name",
+        tooShort: "That name looks too short",
+        patternMismatch: "Letters, spaces, hyphens and apostrophes only",
+      },
+      email: {
+        valueMissing: "You haven't entered an email",
+        typeMismatch: "That doesn't look like an email",
+        tooShort: "That email looks too short",
+      },
+      message: {
+        valueMissing: "You haven't written a message",
+        tooShort: "Your message is a bit short — give me at least 10 characters",
+        tooLong: "Your message is too long",
+      },
+    };
+
+    let dirty = false;
+    let submitting = false;
+
+    const smoothOK = () =>
+      !matchMedia("(prefers-reduced-motion: reduce)").matches &&
+      document.documentElement.dataset.motion !== "reduced";
+
+    /* ---------- validation ---------- */
+
+    const errorEl = (control: Control) =>
+      control
+        .closest(".field")
+        ?.querySelector<HTMLElement>("[data-error]");
+    const statusEl = (control: Control) =>
+      control
+        .closest(".field")
+        ?.querySelector<HTMLElement>("[data-status]");
+
+    function messageFor(control: Control): string {
+      const custom = MESSAGES[control.name] ?? {};
+      for (const key of Object.keys(custom)) {
+        if (control.validity[key as keyof ValidityState]) return custom[key];
+      }
+      return control.validationMessage; // browser default as backstop
+    }
+
+    function showInvalid(control: Control) {
+      control.setAttribute("aria-invalid", "true");
+      const error = errorEl(control);
+      if (error) error.textContent = messageFor(control);
+      statusEl(control)?.setAttribute("data-state", "invalid");
+    }
+
+    function showValid(control: Control) {
+      control.setAttribute("aria-invalid", "false");
+      const error = errorEl(control);
+      if (error) error.textContent = "";
+      statusEl(control)?.setAttribute("data-state", "valid");
+    }
+
+    function clearState(control: Control) {
+      control.setAttribute("aria-invalid", "false");
+      const error = errorEl(control);
+      if (error) error.textContent = "";
+      statusEl(control)?.removeAttribute("data-state");
+    }
+
+    function validate(control: Control): boolean {
+      const valid = control.checkValidity();
+      if (valid) showValid(control);
+      else showInvalid(control);
+      return valid;
+    }
+
+    /* ---------- draft persistence (sessionStorage, per-tab) ---------- */
+
+    function saveDraft() {
+      try {
+        const draft = Object.fromEntries(
+          controls.map((c) => [c.name, c.value]),
+        );
+        sessionStorage.setItem(STORAGE_KEY, JSON.stringify(draft));
+      } catch {
+        /* Safari private mode / quota — never break the form over a draft. */
+      }
+    }
+
+    function clearDraft() {
+      try {
+        sessionStorage.removeItem(STORAGE_KEY);
+      } catch {
+        /* ditto */
+      }
+    }
+
+    function restoreDraft() {
+      try {
+        const raw = sessionStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        const draft = JSON.parse(raw) as Record<string, string>;
+        for (const control of controls) {
+          if (draft[control.name]) {
+            control.value = draft[control.name];
+            control.dispatchEvent(new Event("input", { bubbles: true }));
+          }
+        }
+      } catch {
+        /* corrupt draft → ignore */
+      }
+    }
+
+    let saveTimer: ReturnType<typeof setTimeout> | undefined;
+
+    /* ---------- wiring ---------- */
+
+    // Fields the user has actually typed in. Tabbing through an untouched
+    // empty field isn't an error yet — nagging "you haven't entered a name"
+    // at someone who hasn't started is blur-validation at its worst.
+    const touched = new WeakSet<Control>();
+
+    for (const control of controls) {
+      // Errors surface on blur — not mid-keystroke while the user is still
+      // typing.
+      control.addEventListener("blur", () => {
+        if (control.value === "" && !touched.has(control)) return;
+        validate(control);
+      });
+
+      control.addEventListener("input", () => {
+        dirty = true;
+        touched.add(control);
+        // Positive feedback while correcting: clear a showing error as soon
+        // as the input changes rather than making them blur again.
+        if (control.getAttribute("aria-invalid") === "true") {
+          if (control.checkValidity()) showValid(control);
+          else clearState(control);
+        }
+        clearTimeout(saveTimer);
+        saveTimer = setTimeout(saveDraft, 300);
+      });
+    }
+
+    form.addEventListener("submit", (event) => {
+      const invalid = controls.filter((c) => !validate(c));
+
+      if (invalid.length > 0) {
+        event.preventDefault();
+        invalid[0].focus();
+        invalid[0].scrollIntoView({
+          block: "center",
+          behavior: smoothOK() ? "smooth" : "auto",
+        });
+        return;
+      }
+
+      // Valid submit: harden against double-clicks and mark the navigation
+      // as intentional so the beforeunload guard stands down.
+      submitting = true;
+      clearDraft();
+
+      // Fires after validation passes — click-based tracking would count
+      // failed attempts as conversions.
+      (window as any).plausible?.("Contact form submitted");
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Sending…";
+      form.setAttribute("data-submitting", "true");
+      form.inert = true;
+    });
+
+    // Native "Leave site?" prompt if there's unsaved typing and the user
+    // isn't mid-submit. The draft would survive a reload anyway; this catches
+    // the tab-close case where sessionStorage dies with the tab.
+    window.addEventListener("beforeunload", (event) => {
+      if (dirty && !submitting) {
+        event.preventDefault();
+      }
+    });
+
+    restoreDraft();
+  }
+</script>

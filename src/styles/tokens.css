@@ -68,6 +68,11 @@
   inherits: true;
   initial-value: white;
 }
+@property --error {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: black;
+}
 @property --burst-centre {
   syntax: "<color>";
   inherits: true;
@@ -213,6 +218,14 @@
     oklch(from var(--seed-accent) l 0.13 70)
   );
   --callout-warning-tint: oklch(from var(--seed-raised) l calc(c + 0.02) 70);
+
+  /* Form validation red — same recipe as the callout labels (fixed hue,
+     lightness from the accent seed so it flips with mode), at the red end so
+     it never collides with the warning amber. Mirrored in check-contrast.mjs. */
+  --error: light-dark(
+    oklch(from var(--seed-accent) calc(l - 0.06) 0.16 28),
+    oklch(from var(--seed-accent) l 0.16 28)
+  );
 }
 
 :root[data-palette="lagoon"] {

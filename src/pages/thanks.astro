@@ -1,0 +1,66 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+/* Netlify Forms redirects here after a successful contact-form POST (the
+   form's action="/thanks/"). noIndex keeps it out of search results — nobody
+   should land here except via a submission. A pageview goal on this URL in
+   Plausible is the cleanest "form completed" signal (it survives blocked
+   submit-events). */
+---
+
+<BaseLayout
+  title="Message sent -- Ben Schembri"
+  description="Thanks for reaching out."
+  noIndex
+>
+  <div class="thanks">
+    <header class="page-head">
+      <h1>Message sent successfully</h1>
+      <p class="lead">
+        Thanks! Your message is sitting in my inbox. I usually reply within a day or two.
+        If I haven't replied after a week, something might have gone wrong, maybe try the socials on the <a href="/contact">contact page</a>.
+      </p>
+      <p class="links">
+        <a class="back" href="/"
+          ><span class="go" aria-hidden="true">&larr;</span> Back to the homepage</a
+        > or <a href="/posts">browse the posts</a> while you're here.
+      </p>
+    </header>
+  </div>
+</BaseLayout>
+
+<style>
+  .thanks {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-inline: clamp(1rem, 4vw, 2rem);
+    padding-block: clamp(2.5rem, 8vh, 5rem);
+    line-height: 1.7;
+  }
+
+  .page-head {
+    margin-block-end: 2.5rem;
+  }
+
+  .lead {
+    font-size: var(--font-size-fluid-0);
+    margin-block-start: 0.25rem;
+    max-width: 52ch;
+  }
+
+  .links {
+    margin-block-start: 1.5rem;
+  }
+
+  /* The arrow nudges out of the link on hover/focus, like the post list. */
+  .back .go {
+    display: inline-block;
+    color: var(--accent);
+    transition: transform 0.2s ease;
+  }
+
+  .back:hover .go,
+  .back:focus-visible .go {
+    transform: translateX(-0.3rem);
+  }
+</style>

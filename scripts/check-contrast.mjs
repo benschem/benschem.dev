@@ -250,6 +250,9 @@ function buildPairs(resolved, mode) {
   const calloutInfoTint = { L: seedRaised.L, C: seedRaised.C + 0.02, H: 245 };
   const calloutWarningTint = { L: seedRaised.L, C: seedRaised.C + 0.02, H: 70 };
 
+  // Mirrors the --error form-validation token in tokens.css — keep in sync.
+  const errorColor = { L: calloutLabelL, C: 0.16, H: 28 };
+
   return [
     ["ink-body on surface-reading (body p)", inkBody, surf, 4.5, "text"],
     [
@@ -366,6 +369,14 @@ function buildPairs(resolved, mode) {
     ["ink-heading focus ring vs surface-reading", inkHeading, surf, 3, "ui"],
     ["ink-heading focus ring vs surface-raised", inkHeading, raised, 3, "ui"],
     ["alt as btn-secondary border vs surface-reading", alt, surf, 3, "ui"],
+    [
+      "error text on surface-reading (form validation)",
+      errorColor,
+      surf,
+      4.5,
+      "text",
+    ],
+    ["alt as form input border vs surface-reading", alt, surf, 3, "ui"],
   ];
 }
 

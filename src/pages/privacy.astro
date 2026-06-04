@@ -1,7 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 
-const updated = new Date("2026-06-04");
+const updated = new Date("2026-06-05");
 const dateFormat = new Intl.DateTimeFormat("en-AU", { dateStyle: "long" });
 ---
 
@@ -47,9 +47,29 @@ const dateFormat = new Intl.DateTimeFormat("en-AU", { dateStyle: "long" });
       they can access the data under certain circumstances.
     </p>
 
-    <h2>Contact</h2>
+    <h2>Contact form</h2>
     <p>
-      Questions or requests? <a href="/connect">Get in touch</a>.
+      If you submit the <a href="/contact">contact form</a>, I collect what you
+      send: your name, email address and message. I use those only to reply
+      to you.
+    </p>
+    <p>
+      Submissions are processed and stored by Netlify Forms and forwarded to my
+      Gmail inbox. I delete old submissions out of Netlify periodically, the
+      email gets archived or deleted after our conversation.
+    </p>
+    <p>
+      I won't share your details with any third parties (other than Netlify and Gmail) unless - in some strange turn of events - I'm required to by law.
+    </p>
+    <p>
+      While you're typing, the form keeps a draft in your browser's session
+      storage so a refresh doesn't wipe your message. That draft never leaves
+      your browser (I don't see it) and is lost when you close the tab.
+    </p>
+
+    <h2>Contact Me</h2>
+    <p>
+      Questions or requests? <a href="/contact">Get in touch</a>.
     </p>
   </article>
 </BaseLayout>
