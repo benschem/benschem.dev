@@ -108,8 +108,7 @@ function evalExpr(expr, source) {
     const inner = unwrap("calc", expr).trim();
     const m = inner.match(/^([lch])\s*([+-])\s*([\d.]+)$/);
     if (m) {
-      const base =
-        m[1] === "l" ? source.L : m[1] === "c" ? source.C : source.H;
+      const base = m[1] === "l" ? source.L : m[1] === "c" ? source.C : source.H;
       const n = parseFloat(m[3]);
       return m[2] === "+" ? base + n : base - n;
     }
@@ -167,14 +166,14 @@ function oklchToLinearRgb(L, C, hDeg) {
   const b = C * Math.sin(h);
   const l_ = L + 0.3963377774 * a + 0.2158037573 * b;
   const m_ = L - 0.1055613458 * a - 0.0638541728 * b;
-  const s_ = L - 0.0894841775 * a - 1.2914855480 * b;
+  const s_ = L - 0.0894841775 * a - 1.291485548 * b;
   const l3 = l_ ** 3;
   const m3 = m_ ** 3;
   const s3 = s_ ** 3;
   return [
     +4.0767416621 * l3 - 3.3077115913 * m3 + 0.2309699292 * s3,
     -1.2684380046 * l3 + 2.6097574011 * m3 - 0.3413193965 * s3,
-    -0.0041960863 * l3 - 0.7034186147 * m3 + 1.7076147010 * s3,
+    -0.0041960863 * l3 - 0.7034186147 * m3 + 1.707614701 * s3,
   ];
 }
 
@@ -242,23 +241,128 @@ function buildPairs(resolved, mode) {
   const altStrong = g("alt-strong");
   const codeBg = mixOklch(alt, surf, 0.15);
 
+  // Mirrors the callout role tokens in tokens.css — keep in sync.
+  const seedAccent = g("seed-accent");
+  const seedRaised = g("seed-raised");
+  const calloutLabelL = mode === "light" ? seedAccent.L - 0.06 : seedAccent.L;
+  const calloutInfo = { L: calloutLabelL, C: 0.13, H: 245 };
+  const calloutWarning = { L: calloutLabelL, C: 0.13, H: 70 };
+  const calloutInfoTint = { L: seedRaised.L, C: seedRaised.C + 0.02, H: 245 };
+  const calloutWarningTint = { L: seedRaised.L, C: seedRaised.C + 0.02, H: 70 };
+
   return [
     ["ink-body on surface-reading (body p)", inkBody, surf, 4.5, "text"],
-    ["ink-body on surface-raised (header/footer/callout)", inkBody, raised, 4.5, "text"],
+    [
+      "ink-body on surface-raised (header/footer)",
+      inkBody,
+      raised,
+      4.5,
+      "text",
+    ],
     ["ink-heading on surface-reading (h2)", inkHeading, surf, 3, "large"],
-    ["ink-heading on surface-raised (h2 in callout/header)", inkHeading, raised, 3, "large"],
-    ["accent on surface-reading (strong/eyebrow/.go/.arrow/link hover)", accent, surf, 4.5, "text"],
-    ["accent on surface-raised (strong inside header)", accent, raised, 4.5, "text"],
-    ["alt on surface-reading (time/back-link/drop-cap/.sub/.meta)", alt, surf, 4.5, "text"],
+    [
+      "ink-heading on surface-raised (h2 in header)",
+      inkHeading,
+      raised,
+      3,
+      "large",
+    ],
+    [
+      "callout-info label on info tint",
+      calloutInfo,
+      calloutInfoTint,
+      4.5,
+      "text",
+    ],
+    [
+      "callout-warning label on warning tint",
+      calloutWarning,
+      calloutWarningTint,
+      4.5,
+      "text",
+    ],
+    ["ink-body on callout info tint", inkBody, calloutInfoTint, 4.5, "text"],
+    [
+      "ink-body on callout warning tint",
+      inkBody,
+      calloutWarningTint,
+      4.5,
+      "text",
+    ],
+    [
+      "ink-heading on callout info tint (title)",
+      inkHeading,
+      calloutInfoTint,
+      3,
+      "large",
+    ],
+    [
+      "ink-heading on callout warning tint (title)",
+      inkHeading,
+      calloutWarningTint,
+      3,
+      "large",
+    ],
+    [
+      "accent on surface-reading (strong/eyebrow/.go/.arrow/link hover)",
+      accent,
+      surf,
+      4.5,
+      "text",
+    ],
+    [
+      "accent on surface-raised (strong inside header)",
+      accent,
+      raised,
+      4.5,
+      "text",
+    ],
+    [
+      "alt on surface-reading (time/back-link/drop-cap/.sub/.meta)",
+      alt,
+      surf,
+      4.5,
+      "text",
+    ],
     ["alt on surface-raised", alt, raised, 4.5, "text"],
-    ["alt-strong on inline-code-bg (code text)", altStrong, codeBg, 4.5, "text"],
+    [
+      "alt-strong on inline-code-bg (code text)",
+      altStrong,
+      codeBg,
+      4.5,
+      "text",
+    ],
     ["alt-strong on alt-soft (::selection)", altStrong, altSoft, 4.5, "text"],
-    ["alt-strong on alt-soft (btn-secondary hover)", altStrong, altSoft, 4.5, "text"],
+    [
+      "alt-strong on alt-soft (btn-secondary hover)",
+      altStrong,
+      altSoft,
+      4.5,
+      "text",
+    ],
     ["btn-primary ink on accent", pickInk(accent), accent, 4.5, "text"],
-    ["btn-primary ink on accent-soft (hover)", pickInk(accentSoft), accentSoft, 4.5, "text"],
-    ["ink-heading on surface-raised (TOC heading)", inkHeading, raised, 3, "large"],
+    [
+      "btn-primary ink on accent-soft (hover)",
+      pickInk(accentSoft),
+      accentSoft,
+      4.5,
+      "text",
+    ],
+    [
+      "ink-heading on surface-raised (TOC heading)",
+      inkHeading,
+      raised,
+      3,
+      "large",
+    ],
     ["ink-body on surface-raised (TOC links)", inkBody, raised, 4.5, "text"],
-    ["accent border vs surface-reading (pre code-block)", accent, surf, 3, "ui"],
+    [
+      "accent border vs surface-reading (pre code-block)",
+      accent,
+      surf,
+      3,
+      "ui",
+    ],
     ["ink-heading focus ring vs surface-reading", inkHeading, surf, 3, "ui"],
     ["ink-heading focus ring vs surface-raised", inkHeading, raised, 3, "ui"],
     ["alt as btn-secondary border vs surface-reading", alt, surf, 3, "ui"],
@@ -306,7 +410,9 @@ for (const [pname, props] of Object.entries(subset)) {
   }
 }
 
-const scope = paletteArg ? `palette "${paletteArg}"` : `${Object.keys(palettes).length} palettes`;
+const scope = paletteArg
+  ? `palette "${paletteArg}"`
+  : `${Object.keys(palettes).length} palettes`;
 console.log(
   `\n${totalFails === 0 ? `All ${totalPairs} pairs pass for ${scope}.` : `${totalFails} of ${totalPairs} pairs FAIL for ${scope}.`}`,
 );

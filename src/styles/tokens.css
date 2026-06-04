@@ -48,6 +48,26 @@
   inherits: true;
   initial-value: black;
 }
+@property --callout-info {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: black;
+}
+@property --callout-info-tint {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: white;
+}
+@property --callout-warning {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: black;
+}
+@property --callout-warning-tint {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: white;
+}
 @property --burst-centre {
   syntax: "<color>";
   inherits: true;
@@ -113,9 +133,7 @@
     oklch(from var(--seed-accent) calc(l + 0.06) c h)
   );
   --accent: var(--seed-accent);
-  --accent-soft: oklch(
-    from var(--seed-accent) calc(l + 0.15) calc(c - 0.06) h
-  );
+  --accent-soft: oklch(from var(--seed-accent) calc(l + 0.15) calc(c - 0.06) h);
   --alt: var(--seed-alt);
   /* Soft/strong flip direction with mode: in light, soft is a lighter pastel
      and strong is a darker rich; in dark, soft becomes a darker tint and
@@ -168,6 +186,29 @@
   --syn-constant: oklch(from var(--seed-alt) l c calc(h + 55));
 }
 
+/* -------------------------------------------------------------------------- */
+/*  Callout roles — semantic hues fixed across every palette: info = blue,    */
+/*  warning = amber (the colourblind-safe pair). Lightness rides on the        */
+/*  seeds so the colours flip with mode and sit at each palette's tonal        */
+/*  level; chroma is fixed so zero-chroma palettes (noir) still read           */
+/*  coloured. Mirrored in scripts/check-contrast.mjs — keep in sync.           */
+/* -------------------------------------------------------------------------- */
+:root {
+  /* In light mode the label sits a step darker than the accent seed — the
+     lightest seeds (noir, ember) otherwise leave it short of 4.5:1 on the
+     tint. */
+  --callout-info: light-dark(
+    oklch(from var(--seed-accent) calc(l - 0.06) 0.13 245),
+    oklch(from var(--seed-accent) l 0.13 245)
+  );
+  --callout-info-tint: oklch(from var(--seed-raised) l calc(c + 0.02) 245);
+  --callout-warning: light-dark(
+    oklch(from var(--seed-accent) calc(l - 0.06) 0.13 70),
+    oklch(from var(--seed-accent) l 0.13 70)
+  );
+  --callout-warning-tint: oklch(from var(--seed-raised) l calc(c + 0.02) 70);
+}
+
 :root[data-palette="lagoon"] {
   /* Teal water + coral — bright and tropical. */
   --seed-surface: light-dark(oklch(99% 0.012 200), oklch(21% 0.022 200));
@@ -183,9 +224,7 @@
     oklch(from var(--seed-accent) calc(l + 0.06) c h)
   );
   --accent: var(--seed-accent);
-  --accent-soft: oklch(
-    from var(--seed-accent) calc(l + 0.15) calc(c - 0.06) h
-  );
+  --accent-soft: oklch(from var(--seed-accent) calc(l + 0.15) calc(c - 0.06) h);
   --alt: var(--seed-alt);
   --alt-soft: light-dark(
     oklch(from var(--seed-alt) calc(l + 0.3) calc(c - 0.1) h),
@@ -216,9 +255,7 @@
     oklch(from var(--seed-accent) calc(l + 0.06) c h)
   );
   --accent: var(--seed-accent);
-  --accent-soft: oklch(
-    from var(--seed-accent) calc(l + 0.15) calc(c - 0.06) h
-  );
+  --accent-soft: oklch(from var(--seed-accent) calc(l + 0.15) calc(c - 0.06) h);
   --alt: var(--seed-alt);
   --alt-soft: light-dark(
     oklch(from var(--seed-alt) calc(l + 0.3) c h),
@@ -249,9 +286,7 @@
     oklch(from var(--seed-accent) calc(l + 0.06) c h)
   );
   --accent: var(--seed-accent);
-  --accent-soft: oklch(
-    from var(--seed-accent) calc(l + 0.15) calc(c - 0.06) h
-  );
+  --accent-soft: oklch(from var(--seed-accent) calc(l + 0.15) calc(c - 0.06) h);
   --alt: var(--seed-alt);
   --alt-soft: light-dark(
     oklch(from var(--seed-alt) calc(l + 0.3) calc(c - 0.1) h),
@@ -282,9 +317,7 @@
     oklch(from var(--seed-accent) calc(l + 0.1) c h)
   );
   --accent: var(--seed-accent);
-  --accent-soft: oklch(
-    from var(--seed-accent) calc(l + 0.18) calc(c - 0.06) h
-  );
+  --accent-soft: oklch(from var(--seed-accent) calc(l + 0.18) calc(c - 0.06) h);
   --alt: var(--seed-alt);
   --alt-soft: light-dark(
     oklch(from var(--seed-alt) calc(l + 0.3) calc(c - 0.1) h),
@@ -315,9 +348,7 @@
     oklch(from var(--seed-accent) calc(l + 0.06) c h)
   );
   --accent: var(--seed-accent);
-  --accent-soft: oklch(
-    from var(--seed-accent) calc(l + 0.15) calc(c - 0.06) h
-  );
+  --accent-soft: oklch(from var(--seed-accent) calc(l + 0.15) calc(c - 0.06) h);
   --alt: var(--seed-alt);
   --alt-soft: light-dark(
     oklch(from var(--seed-alt) calc(l + 0.3) calc(c - 0.1) h),
@@ -348,9 +379,7 @@
     oklch(from var(--seed-accent) calc(l + 0.06) c h)
   );
   --accent: var(--seed-accent);
-  --accent-soft: oklch(
-    from var(--seed-accent) calc(l + 0.15) calc(c - 0.06) h
-  );
+  --accent-soft: oklch(from var(--seed-accent) calc(l + 0.15) calc(c - 0.06) h);
   --alt: var(--seed-alt);
   --alt-soft: light-dark(
     oklch(from var(--seed-alt) calc(l + 0.3) calc(c - 0.05) h),
@@ -381,9 +410,7 @@
     oklch(from var(--seed-accent) calc(l + 0.06) c h)
   );
   --accent: var(--seed-accent);
-  --accent-soft: oklch(
-    from var(--seed-accent) calc(l + 0.15) calc(c - 0.04) h
-  );
+  --accent-soft: oklch(from var(--seed-accent) calc(l + 0.15) calc(c - 0.04) h);
   --alt: var(--seed-alt);
   --alt-soft: light-dark(
     oklch(from var(--seed-alt) calc(l + 0.3) calc(c - 0.1) h),
@@ -414,9 +441,7 @@
     oklch(from var(--seed-accent) calc(l + 0.06) c h)
   );
   --accent: var(--seed-accent);
-  --accent-soft: oklch(
-    from var(--seed-accent) calc(l + 0.15) calc(c - 0.06) h
-  );
+  --accent-soft: oklch(from var(--seed-accent) calc(l + 0.15) calc(c - 0.06) h);
   --alt: var(--seed-alt);
   --alt-soft: light-dark(
     oklch(from var(--seed-alt) calc(l + 0.3) calc(c - 0.1) h),
@@ -447,9 +472,7 @@
     oklch(from var(--seed-accent) calc(l + 0.06) c h)
   );
   --accent: var(--seed-accent);
-  --accent-soft: oklch(
-    from var(--seed-accent) calc(l + 0.18) calc(c - 0.06) h
-  );
+  --accent-soft: oklch(from var(--seed-accent) calc(l + 0.18) calc(c - 0.06) h);
   --alt: var(--seed-alt);
   --alt-soft: light-dark(
     oklch(from var(--seed-alt) calc(l + 0.3) calc(c - 0.08) h),
