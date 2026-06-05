@@ -69,8 +69,16 @@ a {
   color: var(--ink-body);
   font-family: var(--font-system-ui);
   cursor: pointer;
-  text-decoration: underline wavy var(--accent);
-  text-decoration-thickness: 1.5px;
+  /* Longhands, not the `text-decoration` shorthand — Safari < 18.4 parses the
+     shorthand as a longhand (line only), so the whole declaration is dropped
+     and the wavy underline vanishes. */
+  text-decoration-line: underline;
+  text-decoration-style: wavy;
+  text-decoration-color: var(--accent);
+  /* Safari ignores thickness on wavy lines and draws its own small, tight
+     wave; Chrome/Firefox scale stroke + amplitude with it, so keep this low
+     to pull their waves in line with Safari's. */
+  text-decoration-thickness: 1px;
   text-underline-offset: 0.25em;
 
   &:visited {
