@@ -168,8 +168,12 @@ const options = [
     height: 0.5rem;
   }
 
-  /* Reveal on hover (mouse) and focus-within (keyboard + touch). */
-  .motion-switcher:hover .motion-menu,
+  /* Reveal on hover (mouse) and focus-within (keyboard + touch). The hover
+     rule stands down while the sibling theme menu is held open by focus, so
+     the two overlapping menus can never show at once. */
+  :global(html:not(:has(.theme-switcher:focus-within)))
+    .motion-switcher:hover
+    .motion-menu,
   .motion-switcher:focus-within .motion-menu {
     display: flex;
   }

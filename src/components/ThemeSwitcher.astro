@@ -187,8 +187,12 @@ const label = (id: string) => `${id[0].toUpperCase()}${id.slice(1)}`;
     height: 0.5rem;
   }
 
-  /* Reveal on hover (mouse) and focus-within (keyboard + touch). */
-  .theme-switcher:hover .theme-menu,
+  /* Reveal on hover (mouse) and focus-within (keyboard + touch). The hover
+     rule stands down while the sibling motion menu is held open by focus, so
+     the two overlapping menus can never show at once. */
+  :global(html:not(:has(.motion-switcher:focus-within)))
+    .theme-switcher:hover
+    .theme-menu,
   .theme-switcher:focus-within .theme-menu {
     display: flex;
   }
