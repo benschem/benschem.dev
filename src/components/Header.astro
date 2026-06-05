@@ -12,26 +12,6 @@ const isCurrent = (href: string) =>
   href === "/"
     ? pathname === "/"
     : pathname === href || pathname.startsWith(href + "/");
-
-// interface Props {
-//   title: string;
-//   description: string;
-//   image?: string;
-//   ogType?: "website" | "article";
-//   pubDate?: Date;
-//   updatedDate?: Date;
-//   noIndex?: boolean;
-// }
-
-// const {
-//   title,
-//   description,
-//   image = "/og-default.png",
-//   ogType = "website",
-//   pubDate,
-//   updatedDate,
-//   noIndex = false,
-// } = Astro.props;
 ---
 
 <header>
@@ -60,6 +40,15 @@ const isCurrent = (href: string) =>
 </header>
 
 <style>
+  /* Named @counter-style instead of the inline symbols() function — Safari
+     has never shipped symbols(), so it falls back to plain discs there.
+     @counter-style works in Safari 17+, Chrome 91+, Firefox 33+. */
+  @counter-style nav-emoji {
+    system: cyclic;
+    symbols: "🏡" "📚" "👋" "💬";
+    suffix: " ";
+  }
+
   header {
     background-color: var(--surface-raised);
     background-clip: padding-box;
@@ -90,7 +79,7 @@ const isCurrent = (href: string) =>
     padding-inline: 1rem;
 
     & ul {
-      list-style-type: symbols(cyclic "🏡" "📚" "👋" "💬");
+      list-style-type: nav-emoji;
       & li {
         margin-block-end: 0.5rem;
         & a[aria-current="page"] {
