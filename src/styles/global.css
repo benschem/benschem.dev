@@ -87,11 +87,18 @@ a {
   }
 }
 
-/* Mark external links with a ↗. inline-block keeps the arrow
-   out of the wavy underline. */
+/* Mark external links with a ↗. position: absolute keeps the arrow out of
+   the wavy underline (decoration doesn't propagate to out-of-flow boxes) and
+   removes the soft-wrap opportunity an inline-block would create, so the
+   arrow can never wrap to a line of its own. The anchor's end margin
+   reserves the space the out-of-flow arrow no longer takes up. */
+a[href^="http"] {
+  margin-inline-end: 0.75em;
+}
+
 a[href^="http"]::after {
   content: "↗";
-  display: inline-block;
+  position: absolute;
   margin-inline-start: 0.2em;
   font-size: 0.85em;
 }
