@@ -17,6 +17,13 @@ const posts = limit ? allPosts.slice(0, limit) : allPosts;
 const hasMore = limit !== undefined && allPosts.length > limit;
 
 const dateFormat = new Intl.DateTimeFormat("en-AU", { dateStyle: "long" });
+
+// Split off the last word so the arrow can be glued to it with `nowrap` —
+// the arrow should never wrap onto a line by itself.
+function splitLastWord(text: string): [string, string] {
+  const i = text.lastIndexOf(" ");
+  return i === -1 ? ["", text] : [text.slice(0, i + 1), text.slice(i + 1)];
+}
 ---
 
 <div class="posts">
@@ -25,29 +32,35 @@ const dateFormat = new Intl.DateTimeFormat("en-AU", { dateStyle: "long" });
       <p>Nothing here yet.</p>
     ) : (
       <ol class="post-list" reversed>
-        {posts.map((post) => (
-          <li>
-            <a href={`/posts/${post.id}`}>
-              <time datetime={post.data.published.toISOString()}>
-                {dateFormat.format(post.data.published)}
-              </time>
-              <h2>
-                {post.data.title}
-                <span class="go" aria-hidden="true">
-                  &rarr;
-                </span>
-              </h2>
-              <p>{post.data.description}</p>
-            </a>
-          </li>
-        ))}
+        {posts.map((post) => {
+          const [head, tail] = splitLastWord(post.data.title);
+          return (
+            <li>
+              <a href={`/posts/${post.id}`}>
+                <time datetime={post.data.published.toISOString()}>
+                  {dateFormat.format(post.data.published)}
+                </time>
+                <h2>
+                  {head}
+                  <span class="tail">
+                    {tail}
+                    <span class="go" aria-hidden="true">
+                      &rarr;
+                    </span>
+                  </span>
+                </h2>
+                <p>{post.data.description}</p>
+              </a>
+            </li>
+          );
+        })}
       </ol>
     )
   }
   {
     hasMore && (
       <a class="view-all" href="/posts">
-        View all posts <span aria-hidden="true">&rarr;</span>
+        View all <span class="tail">posts <span aria-hidden="true">&rarr;</span></span>
       </a>
     )
   }
@@ -119,6 +132,12 @@ const dateFormat = new Intl.DateTimeFormat("en-AU", { dateStyle: "long" });
   .view-all {
     display: inline-block;
     margin-block-start: 1.75rem;
+  }
+
+  /* Glues the last word to its trailing arrow so the arrow never
+     wraps onto a line by itself. */
+  .tail {
+    white-space: nowrap;
   }
 
 </style>
