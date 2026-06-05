@@ -1,11 +1,13 @@
 ---
 /* Mirrors ThemeSwitcher: same hover/focus menu mechanics, radio rows, tick.
-   "System" follows prefers-reduced-motion; "Off" forces animations off via
-   the html[data-motion="reduced"] kill rules in reset.css and global.css.
+   "Normal" (id: system) follows prefers-reduced-motion; "Off" forces animations off via
+   the html[data-motion="reduced"] kill rules in reset.css and global.css;
+   "Trippy" opts into the html[data-motion="trippy"] chaos in global.css.
    The choice persists in localStorage and is applied before first paint by
    the inline script in BaseHead. */
 const options = [
-  { id: "system", label: "System" },
+  { id: "system", label: "Normal" },
+  { id: "trippy", label: "Trippy" },
   { id: "reduced", label: "Off" },
 ];
 ---
@@ -17,7 +19,7 @@ const options = [
     aria-label="Switch animation preference"
     aria-haspopup="true"
     aria-expanded="false"
-    title="Animations: System"
+    title="Animations: Normal"
   >
     🍃
   </button>
@@ -51,8 +53,8 @@ const options = [
 
   const currentMotion = () =>
     document.documentElement.dataset.motion ?? "system";
-  const motionLabel = (m) =>
-    `Animations: ${m === "reduced" ? "Off" : "System"}`;
+  const motionLabels = { system: "Normal", reduced: "Off", trippy: "Trippy" };
+  const motionLabel = (m) => `Animations: ${motionLabels[m] ?? "Normal"}`;
 
   const syncMotion = () => {
     const c = currentMotion();
@@ -99,21 +101,42 @@ const options = [
     display: inline-flex;
   }
 
+  /* Deliberately demoted next to the ThemeSwitcher — smaller and faded so it
+     reads as an easter egg rather than a primary control. */
   .motion-toggle {
-    font-size: 1.25rem;
+    font-size: 1rem;
     line-height: 1;
-    width: 2.25rem;
-    height: 2.25rem;
+    width: 1.75rem;
+    height: 1.75rem;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
     cursor: pointer;
+    opacity: 0.55;
   }
 
   .motion-toggle:hover,
   .motion-switcher:focus-within .motion-toggle {
     background-color: var(--accent-soft);
+    opacity: 1;
+  }
+
+  /* While trippy mode is on, the leaf joins in (and stays fully visible so
+     it's findable to turn the chaos back off). */
+  :global(html[data-motion="trippy"]) .motion-toggle {
+    opacity: 1;
+    animation: leaf-sway 1.6s ease-in-out infinite;
+  }
+
+  @keyframes leaf-sway {
+    0%,
+    100% {
+      transform: rotate(-14deg);
+    }
+    50% {
+      transform: rotate(14deg);
+    }
   }
 
   .motion-menu {

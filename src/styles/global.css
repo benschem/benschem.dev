@@ -205,3 +205,118 @@ a[href^="http"]::after {
 .btn:focus-visible {
   outline-offset: 6px;
 }
+
+/* ---------------------------------------------------------------------------
+   Trippy mode — the third option in the footer 🍃 menu. Explicit opt-in
+   chaos: the calm default stays calm, and everything here hangs off
+   html[data-motion="trippy"], applied before first paint by the BaseHead
+   inline script. All compositor-friendly properties (transform, filter)
+   except the underline hue cycle, which is a cheap text-only repaint. */
+
+/* The fixed backdrop becomes a 150vmax square centred on the viewport — a
+   spinning square's inscribed circle covers the viewport diagonal at any
+   angle, so the corners never show through. The hue cycle only touches the
+   backdrop; content surfaces sit opaque on top, so just the chunky border
+   strips go technicolour. */
+html[data-motion="trippy"] .sunburst {
+  inset: auto;
+  top: 50%;
+  left: 50%;
+  width: 150vmax;
+  height: 150vmax;
+  animation:
+    trippy-spin 48s linear infinite,
+    trippy-hue 24s linear infinite;
+}
+
+@keyframes trippy-spin {
+  from {
+    transform: translate(-50%, -50%) rotate(0turn);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(1turn);
+  }
+}
+
+@keyframes trippy-hue {
+  from {
+    filter: hue-rotate(0deg);
+  }
+  to {
+    filter: hue-rotate(360deg);
+  }
+}
+
+/* Headings wobble; h2 runs slower and offset so the page doesn't march in
+   step. Amplitude stays small enough to keep text comfortably readable. */
+html[data-motion="trippy"] h1,
+html[data-motion="trippy"] h2 {
+  animation: trippy-wobble 2.4s ease-in-out infinite;
+}
+
+html[data-motion="trippy"] h2 {
+  animation-duration: 3.2s;
+  animation-delay: -1.6s;
+}
+
+@keyframes trippy-wobble {
+  0%,
+  100% {
+    transform: rotate(-0.8deg);
+  }
+  50% {
+    transform: rotate(0.8deg);
+  }
+}
+
+/* The wavy underlines swim through the colour wheel. Three intermediate
+   stops force the long way round — 0deg to 360deg computes to the same hue,
+   which would otherwise interpolate to nothing. */
+html[data-motion="trippy"] a {
+  animation: trippy-underline 4s linear infinite;
+}
+
+@keyframes trippy-underline {
+  0% {
+    text-decoration-color: oklch(from var(--accent) l c h);
+  }
+  33% {
+    text-decoration-color: oklch(from var(--accent) l c calc(h + 120));
+  }
+  66% {
+    text-decoration-color: oklch(from var(--accent) l c calc(h + 240));
+  }
+  100% {
+    text-decoration-color: oklch(from var(--accent) l c calc(h + 360));
+  }
+}
+
+/* External-link arrows bounce up-and-out on hover. The ::after is already
+   position: absolute, so the translate never reflows surrounding text. */
+html[data-motion="trippy"] a[href^="http"]:hover::after {
+  animation: trippy-arrow 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes trippy-arrow {
+  to {
+    translate: 0.15em -0.15em;
+  }
+}
+
+/* Squash-and-stretch boing on button hover. */
+html[data-motion="trippy"] .btn:hover {
+  animation: trippy-boing 0.45s ease;
+}
+
+@keyframes trippy-boing {
+  0%,
+  100% {
+    scale: 1;
+  }
+  30% {
+    scale: 1.15 0.85;
+  }
+  60% {
+    scale: 0.95 1.05;
+  }
+}

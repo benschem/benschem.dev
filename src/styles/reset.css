@@ -134,11 +134,15 @@ select {
   outline-offset: 2px;
 }
 
-/* If a user doesn't want motion, they won't get it  * */
+/* If a user doesn't want motion, they won't get it — unless they explicitly
+   pick Trippy in the 🍃 menu, in which case the deliberate click beats the
+   ambient OS preference (same logic as an explicit theme pick overriding the
+   OS colour scheme). */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  html:not([data-motion="trippy"]),
+  html:not([data-motion="trippy"]) *,
+  html:not([data-motion="trippy"]) *::before,
+  html:not([data-motion="trippy"]) *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
