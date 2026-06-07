@@ -12,7 +12,13 @@ export default defineConfig({
   site: "https://benschem.dev",
   output: "static",
   devToolbar: { enabled: false },
-  integrations: [mdx(), sitemap()],
+  integrations: [
+    mdx(),
+    sitemap({
+      // /teapot is an easter egg - you stumble on it, you don't get a map to it
+      filter: (page) => page !== "https://benschem.dev/teapot/",
+    }),
+  ],
   markdown: {
     shikiConfig: {
       // One custom theme whose token colours are CSS variables (--syn-*), so

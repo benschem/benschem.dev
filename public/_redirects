@@ -2,6 +2,13 @@
 /pa-stats/js/*      https://analytics.rocketzip.com.au/js/:splat 200
 /pa-stats/api/event https://analytics.rocketzip.com.au/api/event 200
 
+# RFC 2324 Teapot 418 Easter Egg
+# A file exists at /teapot, so Netlify would normally just serve it with a 200
+# and skip this rule. The `!` makes the rule win, so we get the 418 status.
+/teapot  /teapot/index.html  418!
+/coffee  /teapot/index.html  418
+/418     /teapot/index.html  418
+
 # Old Le Wagon student URLs from the GitHub Pages site
 /students/how-this-site-is-built.html  /posts/how-this-site-is-built-and-hosted  301
 # TODO: re-enable once intro-to-js is published (it's still draft: true)

@@ -3,17 +3,21 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
 <BaseLayout
-  title="Page not found -- Ben Schembri"
-  description="This page doesn't exist."
+  title="I'm a teapot -- Ben Schembri"
+  description="This server is a teapot."
   noIndex
 >
-  <div class="not-found">
+  <div class="teapot">
     <header class="page-head">
-      <p class="code">404</p>
-      <h1>Page not found</h1>
+      <p class="code">418</p>
+      <h1>I'm a teapot</h1>
       <p class="lead">
-        There's nothing at this address. The page may have moved, or it may have
-        never existed at all.
+        Short and stout. This server can't brew coffee because it is a
+        teapot. See <a
+          href="https://datatracker.ietf.org/doc/html/rfc2324.html"
+          target="_blank"
+          rel="noopener noreferrer">RFC 2324</a
+        >.
       </p>
       <p class="links">
         <a class="back" href="/"
@@ -25,7 +29,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 </BaseLayout>
 
 <style>
-  .not-found {
+  .teapot {
     max-width: var(--container-max);
     margin-inline: auto;
     padding-inline: clamp(1rem, 4vw, 2rem);
@@ -64,5 +68,4 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   .back:focus-visible .go {
     transform: translateX(-0.3rem);
   }
-
 </style>
