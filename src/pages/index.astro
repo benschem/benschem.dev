@@ -1,12 +1,36 @@
 ---
 import PostList from "../components/PostList.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Ben Schembri",
+  url: Astro.site!.href,
+  jobTitle: "Software Engineer",
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Melbourne",
+    addressCountry: "AU",
+  },
+  sameAs: [
+    "https://github.com/benschem",
+    "https://au.linkedin.com/in/benschembri",
+    "https://x.com/benschem",
+  ],
+};
 ---
 
 <BaseLayout
   title="Ben Schembri"
   description="Profile for Ben Schembri, a software engineer from Melbourne Australia."
 >
+  <script
+    slot="head"
+    is:inline
+    type="application/ld+json"
+    set:html={JSON.stringify(jsonLd)}
+  />
   <div class="home">
     <section class="hero" aria-labelledby="hero-title">
       <p class="eyebrow">Software Engineering · Web Development</p>

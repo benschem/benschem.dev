@@ -168,9 +168,9 @@
 
 ### SEO extras
 
-[ ] json-ld BlogPosting on posts
-[ ] json-ld Person on home
-[ ] og image generation per post at build time
+[x] json-ld BlogPosting on posts
+[x] json-ld Person on home
+[ ] og image generation per post at build time (when each post has its own image)
 
 ### Favicons extras
 

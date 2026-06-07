@@ -23,6 +23,7 @@ const props = Astro.props;
 <html lang="en">
   <head>
     <BaseHead {...props} />
+    <slot name="head" />
   </head>
   <body>
     <!-- Sunburst is inline so its gradient stops can read theme tokens.
