@@ -13,8 +13,13 @@ import profilePhoto from "../../public/images/profile-photo-ben-schembri.webp";
       <div class="page-head-text">
         <h1>About me</h1>
         <p class="lead">
-          Software engineer in Melbourne, Australia. Curious, opinionated,
+          Software engineer working in Melbourne, Australia. Curious, opinionated,
           hands&nbsp;on.
+        </p>
+        <p class="work-rights">
+          🇦🇺🇩🇪
+          <strong>Dual Australian/German citizen</strong><br />
+          Full EU work rights, no visa sponsorship required
         </p>
       </div>
       <figure class="portrait">
@@ -144,6 +149,19 @@ import profilePhoto from "../../public/images/profile-photo-ben-schembri.webp";
     font-size: var(--font-size-fluid-0);
     margin-block-start: 0.25rem;
     max-width: 52ch;
+  }
+
+  /* Right-to-work note for recruiters — borrows the tinted-sheet look
+     from the post callouts, scaled down to fit the page head. */
+  .work-rights {
+    width: fit-content;
+    max-width: 100%;
+    margin-block-start: 1rem;
+    padding: 0.6rem 0.9rem;
+    border-radius: var(--radius-1);
+    background-color: var(--callout-info-tint);
+    font-size: var(--font-size-fluid--1);
+    line-height: 1.5;
   }
 
   h2 {
