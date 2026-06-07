@@ -1,57 +1,60 @@
 ---
-/* Each theme's signature is its accent + alt seed (see styles/tokens.css).
-   The swatch reuses those exact light-dark() values so it matches in both
-   modes without re-deriving anything. Adding a theme = add a row here. */
+/* The swatch pairs each theme's accent seed (its signature colour) with its
+   raised seed (the header surface), so it previews both the theme's
+   character and its actual background tone. Values are copied verbatim from
+   each palette's --seed-accent / --seed-raised in styles/tokens.css, so the
+   swatch matches in both modes without re-deriving anything. Adding a
+   theme = add a row here. */
 const themes = [
   {
     id: "sky",
     accent: "light-dark(oklch(50% 0.16 240), oklch(74% 0.14 240))",
-    alt: "light-dark(oklch(52% 0.18 42), oklch(80% 0.15 42))",
+    raised: "light-dark(oklch(96% 0.024 240), oklch(26% 0.034 240))",
   },
   {
     id: "ember",
     accent: "light-dark(oklch(54% 0.17 55), oklch(74% 0.17 55))",
-    alt: "light-dark(oklch(47% 0.2 305), oklch(80% 0.14 305))",
+    raised: "light-dark(oklch(96% 0.026 60), oklch(26% 0.034 60))",
   },
   {
     id: "forest",
     accent: "light-dark(oklch(47% 0.14 145), oklch(72% 0.13 145))",
-    alt: "light-dark(oklch(50% 0.025 110), oklch(78% 0.025 110))",
+    raised: "light-dark(oklch(93% 0.032 140), oklch(25% 0.038 140))",
   },
   {
     id: "grape",
     accent: "light-dark(oklch(52% 0.22 300), oklch(72% 0.2 300))",
-    alt: "light-dark(oklch(52% 0.16 128), oklch(82% 0.18 128))",
+    raised: "light-dark(oklch(96% 0.024 300), oklch(26% 0.034 300))",
   },
   {
     id: "lagoon",
     accent: "light-dark(oklch(48% 0.13 200), oklch(70% 0.13 200))",
-    alt: "light-dark(oklch(52% 0.18 28), oklch(78% 0.16 28))",
+    raised: "light-dark(oklch(95% 0.028 200), oklch(28% 0.042 200))",
   },
   {
     id: "mint",
     accent: "light-dark(oklch(49% 0.13 168), oklch(74% 0.12 168))",
-    alt: "light-dark(oklch(50% 0.025 200), oklch(78% 0.025 200))",
+    raised: "light-dark(oklch(96% 0.024 165), oklch(26% 0.034 165))",
   },
   {
     id: "noir",
     accent: "light-dark(oklch(55% 0.22 25), oklch(70% 0.22 25))",
-    alt: "light-dark(oklch(30% 0 0), oklch(80% 0 0))",
+    raised: "light-dark(oklch(94% 0 0), oklch(22% 0 0))",
   },
   {
     id: "plum",
     accent: "light-dark(oklch(47% 0.18 12), oklch(68% 0.16 12))",
-    alt: "light-dark(oklch(49% 0.13 85), oklch(82% 0.14 85))",
+    raised: "light-dark(oklch(92% 0.03 12), oklch(24% 0.036 12))",
   },
   {
     id: "rose",
     accent: "light-dark(oklch(53% 0.16 12), oklch(75% 0.13 12))",
-    alt: "light-dark(oklch(50% 0.025 20), oklch(78% 0.025 20))",
+    raised: "light-dark(oklch(95% 0.026 12), oklch(26% 0.032 12))",
   },
   {
     id: "sand",
     accent: "light-dark(oklch(50% 0.13 50), oklch(74% 0.13 50))",
-    alt: "light-dark(oklch(48% 0.03 70), oklch(76% 0.028 70))",
+    raised: "light-dark(oklch(93.5% 0.04 75), oklch(27% 0.038 70))",
   },
   {
     // Konami code easter egg — sits last, under its own "Bonus" heading,
@@ -59,7 +62,7 @@ const themes = [
     // + /js/nintendo-boot.js).
     id: "nintendo",
     accent: "light-dark(oklch(48% 0.19 27), oklch(68% 0.19 27))",
-    alt: "light-dark(oklch(48% 0.11 75), oklch(80% 0.12 80))",
+    raised: "light-dark(oklch(90% 0.035 80), oklch(26% 0.02 30))",
     locked: true,
   },
 ];
@@ -109,7 +112,7 @@ const label = (id: string) => `${id[0].toUpperCase()}${id.slice(1)}`;
               aria-checked="false"
               class="theme-option"
               data-theme={t.id}
-              style={`--swatch-accent: ${t.accent}; --swatch-alt: ${t.alt};`}
+              style={`--swatch-accent: ${t.accent}; --swatch-raised: ${t.raised};`}
             >
               <span class="swatch" aria-hidden="true" />
               {label(t.id)}
@@ -294,13 +297,15 @@ const label = (id: string) => `${id[0].toUpperCase()}${id.slice(1)}`;
   }
 
   .theme-option[aria-checked="true"]::after {
-    color: var(--accent);
+    color: var(--ink-body);
   }
 
+  /* Ink, not accent: the swatch's top half IS the accent seed, so an
+     accent-coloured ring would blend straight into it. */
   .theme-option[aria-checked="true"] .swatch {
     box-shadow:
       0 0 0 2px var(--surface-raised),
-      0 0 0 3.5px var(--accent);
+      0 0 0 3.5px var(--ink-body);
   }
 
   .swatch {
@@ -308,12 +313,21 @@ const label = (id: string) => `${id[0].toUpperCase()}${id.slice(1)}`;
     width: 1rem;
     height: 1rem;
     border-radius: 50%;
-    border: 1px solid color-mix(in oklab, var(--ink-body) 25%, transparent);
-    /* accent / alt split — the two seeds that define each theme */
+    /* Opaque border (mixed into the surface, not transparent) so the gradient
+       can't bleed through and tint the rim accent. */
+    border: 1px solid
+      color-mix(in oklab, var(--ink-body) 25%, var(--surface-raised));
+    /* accent / raised split — signature colour on top, header surface below.
+       The raised seeds are whisper-quiet tints that all read as the same grey
+       at 1rem, so amplify the chroma (same hue + lightness) until the tint is
+       visible. Noir's is zero-chroma, so it stays honestly grey.
+       background-clip sits AFTER the shorthand: `background:` resets clip to
+       border-box, which would put the gradient back under the border. */
     background: linear-gradient(
       135deg,
       var(--swatch-accent) 0 50%,
-      var(--swatch-alt) 50% 100%
+      oklch(from var(--swatch-raised) l calc(c * 5) h) 50% 100%
     );
+    background-clip: padding-box;
   }
 </style>
