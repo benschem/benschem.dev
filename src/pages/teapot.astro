@@ -1,0 +1,71 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="I'm a teapot -- Ben Schembri"
+  description="This server is a teapot."
+  noIndex
+>
+  <div class="teapot">
+    <header class="page-head">
+      <p class="code">418</p>
+      <h1>I'm a teapot</h1>
+      <p class="lead">
+        Short and stout. This server can't brew coffee because it is a
+        teapot. See <a
+          href="https://datatracker.ietf.org/doc/html/rfc2324.html"
+          target="_blank"
+          rel="noopener noreferrer">RFC 2324</a
+        >.
+      </p>
+      <p class="links">
+        <a class="back" href="/"
+          ><span class="go" aria-hidden="true">&larr;</span> Back to the homepage</a
+        > or <a href="/posts">browse the posts</a>.
+      </p>
+    </header>
+  </div>
+</BaseLayout>
+
+<style>
+  .teapot {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-inline: clamp(1rem, 4vw, 2rem);
+    padding-block: clamp(2.5rem, 8vh, 5rem);
+    line-height: 1.7;
+  }
+
+  /* The status code is the star of the page -- bigger than any heading. */
+  .code {
+    font-family: var(--font-classical-humanist);
+    font-size: clamp(4.5rem, 3.5rem + 8vw, 8rem);
+    font-weight: 700;
+    line-height: 1;
+    color: var(--accent);
+    margin-block-end: 0.25rem;
+  }
+
+  .lead {
+    font-size: var(--font-size-fluid-0);
+    margin-block-start: 0.25rem;
+    max-width: 52ch;
+  }
+
+  .links {
+    margin-block-start: 1.5rem;
+  }
+
+  /* The arrow nudges out of the link on hover/focus, like the post list. */
+  .back .go {
+    display: inline-block;
+    color: var(--accent);
+    transition: transform 0.2s ease;
+  }
+
+  .back:hover .go,
+  .back:focus-visible .go {
+    transform: translateX(-0.3rem);
+  }
+</style>

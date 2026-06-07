@@ -1,0 +1,134 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const updated = new Date("2026-06-05");
+const dateFormat = new Intl.DateTimeFormat("en-AU", { dateStyle: "long" });
+---
+
+<BaseLayout
+  title="Privacy Policy -- Ben Schembri"
+  description="What this site tracks and where the data lives."
+>
+  <article class="privacy">
+    <header class="page-head">
+      <h1>Privacy Policy</h1>
+      <p class="meta">
+        Last updated <time datetime={updated.toISOString()}
+          >{dateFormat.format(updated)}</time
+        >
+      </p>
+      <p class="lead">
+        This is my personal blog. I try to respect your privacy, and I don't
+        collect much data.
+      </p>
+    </header>
+
+    <h2>Analytics</h2>
+    <p>
+      I use a self-hosted <a
+        href="https://plausible.io"
+        target="_blank"
+        rel="noopener noreferrer">Plausible</a
+      > instance to count visits.
+    </p>
+    <p>
+      It records the page URL, referrer, country, device type and browser.
+      Standard stuff, nothing that identifies you. No cookies, cross-site
+      tracking or profiling.
+    </p>
+
+    <h2>Hosting</h2>
+    <p>
+      This website is hosted on Netlify, which keeps short-term logs of it's
+      own. I don't read these unless something goes wrong.
+    </p>
+    <p>
+      Plausible is hosted on Digital Ocean in Sydney, Australia and presumably
+      they can access the data under certain circumstances.
+    </p>
+
+    <h2>Contact form</h2>
+    <p>
+      If you submit the <a href="/contact">contact form</a>, I collect what you
+      send: your name, email address and message. I use those only to reply
+      to you.
+    </p>
+    <p>
+      Submissions are processed and stored by Netlify Forms and forwarded to my
+      Gmail inbox. I delete old submissions out of Netlify periodically, the
+      email gets archived or deleted after our conversation.
+    </p>
+    <p>
+      I won't share your details with any third parties (other than Netlify and Gmail) unless - in some strange turn of events - I'm required to by law.
+    </p>
+    <p>
+      While you're typing, the form keeps a draft in your browser's session
+      storage so a refresh doesn't wipe your message. That draft never leaves
+      your browser (I don't see it) and is lost when you close the tab.
+    </p>
+
+    <h2>Contact Me</h2>
+    <p>
+      Questions or requests? <a href="/contact">Get in touch</a>.
+    </p>
+  </article>
+</BaseLayout>
+
+<style>
+  .privacy {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-inline: clamp(1rem, 4vw, 2rem);
+    padding-block: clamp(2.5rem, 8vh, 5rem);
+    line-height: 1.7;
+  }
+
+  .page-head {
+    margin-block-end: 2.5rem;
+  }
+
+  .meta {
+    margin-block-start: 0.75rem;
+    font-size: var(--font-size-fluid--1);
+    color: var(--alt);
+    font-variant-caps: all-small-caps;
+    letter-spacing: 0.05em;
+  }
+
+  .lead {
+    font-size: var(--font-size-fluid-0);
+    margin-block-start: 0.25rem;
+    max-width: 52ch;
+  }
+
+  h2 {
+    margin-block-start: 2.5em;
+    margin-block-end: 0.5em;
+  }
+
+  p {
+    margin-block-end: 1.25em;
+  }
+
+  ul {
+    padding-inline-start: 1.25rem;
+    margin-block-end: 1.25em;
+  }
+
+  li {
+    margin-block-end: 0.4em;
+  }
+
+  code {
+    padding: 0.125em 0.375em;
+    background-color: color-mix(
+      in oklch,
+      var(--alt) 15%,
+      var(--surface-reading)
+    );
+    color: var(--alt-strong);
+    border-radius: 0.25em;
+    font-size: 0.9em;
+  }
+
+</style>

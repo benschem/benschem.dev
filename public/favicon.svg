@@ -1,0 +1,64 @@
+<!-- Mini-OG favicon: bold B against the sunburst, accent strip on the left.
+     Ray geometry is src/assets/og-default.svg's, scaled 64/1200 so the brand
+     mark is literally the same sunburst. Colours are the "sky" palette seeds
+     from tokens.css pre-resolved to hex; unlike the PNGs this file is live
+     SVG, so the dark-mode seeds ride along in a media query.
+     This file is also the source for the raster icons. Regenerate with:
+       rsvg-convert -w 180 -h 180 public/favicon.svg -o public/apple-touch-icon.png
+       for s in 16 32 48; do rsvg-convert -w $s -h $s public/favicon.svg -o /tmp/fav-$s.png; done
+       magick /tmp/fav-16.png /tmp/fav-32.png /tmp/fav-48.png public/favicon.ico -->
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <style>
+    .bg { fill: #f5fdff; }
+    .ray { fill: #006ab4; }
+    .ink { fill: #110904; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #0c151b; }
+      .ray { fill: #47b5fa; }
+      .ink { fill: #f9ece1; }
+    }
+  </style>
+  <defs>
+    <!-- Fade the rays out before they reach the B, like the og image. -->
+    <radialGradient id="fade" cx="59.2" cy="-2.13" r="50.7" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff" stop-opacity="0.9"/>
+      <stop offset="0.62" stop-color="#fff" stop-opacity="0"/>
+    </radialGradient>
+    <mask id="ray-mask">
+      <rect width="64" height="64" fill="url(#fade)"/>
+    </mask>
+  </defs>
+
+  <rect class="bg" width="64" height="64"/>
+
+  <!-- Sunburst echo, top-right (og rays scaled 64/1200) -->
+  <g class="ray" opacity="0.34" mask="url(#ray-mask)">
+    <g transform="scale(0.0533333)">
+      <path d="M1110 -40 L2039.2 -237.5 L2047.2 -195.2 Z"/>
+      <path d="M1110 -40 L2059.9 -56.6 L2059.6 -13.5 Z"/>
+      <path d="M1110 -40 L2045.6 125.0 L2037.1 167.2 Z"/>
+      <path d="M1110 -40 L1996.9 300.4 L1980.5 340.3 Z"/>
+      <path d="M1110 -40 L1915.6 463.4 L1892.0 499.5 Z"/>
+      <path d="M1110 -40 L1804.8 607.9 L1774.7 638.7 Z"/>
+      <path d="M1110 -40 L1668.4 728.6 L1633.0 753.1 Z"/>
+      <path d="M1110 -40 L1511.5 821.0 L1472.0 838.3 Z"/>
+      <path d="M1110 -40 L1339.8 881.8 L1297.8 891.3 Z"/>
+      <path d="M1110 -40 L1159.7 908.7 L1116.6 910.0 Z"/>
+      <path d="M1110 -40 L977.8 900.8 L935.2 893.8 Z"/>
+      <path d="M1110 -40 L800.7 858.2 L760.3 843.3 Z"/>
+      <path d="M1110 -40 L635.0 782.7 L598.2 760.3 Z"/>
+      <path d="M1110 -40 L486.7 677.0 L454.9 648.0 Z"/>
+      <path d="M1110 -40 L361.4 544.9 L335.6 510.3 Z"/>
+      <path d="M1110 -40 L263.5 391.3 L244.9 352.4 Z"/>
+      <path d="M1110 -40 L196.8 221.9 L185.9 180.2 Z"/>
+      <path d="M1110 -40 L163.6 42.8 L160.8 -0.2 Z"/>
+      <path d="M1110 -40 L165.2 -139.3 L170.7 -182.1 Z"/>
+      <path d="M1110 -40 L201.5 -317.8 L215.0 -358.7 Z"/>
+    </g>
+  </g>
+
+  <!-- Chunky accent strip, like the og image's left edge -->
+  <rect class="ray" x="0" y="0" width="5" height="64"/>
+
+  <text class="ink" x="15" y="52" font-family="Optima, sans-serif" font-size="46" font-weight="900">B</text>
+</svg>

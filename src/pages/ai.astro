@@ -1,0 +1,91 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const updated = new Date("2026-06-04");
+const dateFormat = new Intl.DateTimeFormat("en-AU", { dateStyle: "long" });
+---
+
+<BaseLayout
+  title="AI Policy -- Ben Schembri"
+  description="No AI is used to write content, but I do use it to write code."
+>
+  <article class="ai">
+    <header class="page-head">
+      <h1>AI Policy</h1>
+      <p class="meta">
+        Last updated <time datetime={updated.toISOString()}
+          >{dateFormat.format(updated)}</time
+        >
+      </p>
+      <p class="lead">
+        No AI is used to write content, but I do use it to write some code.
+      </p>
+    </header>
+
+    <h2>Writing</h2>
+    <p>
+      I don't use AI to generate any of the content. <strong
+        >I write all the posts in my own words</strong
+      > for better or worse.
+    </p>
+    <p>
+      I do sometimes use AI to research, discuss ideas with, and review finished posts
+      for flow, consistency and accuracy. I don't always listen to it or agree
+      with it, and it's not the first or only tool I reach for.
+    </p>
+
+    <h2>Code</h2>
+    <p>
+      I do use AI coding tools as part of my workflow, the same way I use search
+      engines, linters and other tools.
+    </p>
+    <p>
+      When I use AI tools, I like to think I'm not "vibe coding". It feels more like pairing with an over-eager, very
+      knowledgeable junior who can type a lot faster than I can. I'm still researching, architecting and iterating like I always did. I just ship more. I take full
+      responsibility for any code I ship, whether it's AI-assisted or not.
+    </p>
+
+    <h2>Contact Me</h2>
+    <p>
+      Questions? <a href="/contact">Get in touch</a>.
+    </p>
+  </article>
+</BaseLayout>
+
+<style>
+  .ai {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-inline: clamp(1rem, 4vw, 2rem);
+    padding-block: clamp(2.5rem, 8vh, 5rem);
+    line-height: 1.7;
+  }
+
+  .page-head {
+    margin-block-end: 2.5rem;
+  }
+
+  .meta {
+    margin-block-start: 0.75rem;
+    font-size: var(--font-size-fluid--1);
+    color: var(--alt);
+    font-variant-caps: all-small-caps;
+    letter-spacing: 0.05em;
+  }
+
+  .lead {
+    font-size: var(--font-size-fluid-0);
+    margin-block-start: 0.25rem;
+    max-width: 52ch;
+  }
+
+  h2 {
+    margin-block-start: 2.5em;
+    margin-block-end: 0.5em;
+  }
+
+  p {
+    margin-block-end: 1.25em;
+  }
+
+</style>

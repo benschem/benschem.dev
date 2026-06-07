@@ -1,0 +1,143 @@
+---
+import { getCollection } from "astro:content";
+
+interface Props {
+  limit?: number;
+}
+
+const { limit } = Astro.props;
+
+const allPosts = (
+  await getCollection("posts", ({ data }) =>
+    import.meta.env.PROD ? !data.draft : true,
+  )
+).sort((a, b) => b.data.published.valueOf() - a.data.published.valueOf());
+
+const posts = limit ? allPosts.slice(0, limit) : allPosts;
+const hasMore = limit !== undefined && allPosts.length > limit;
+
+const dateFormat = new Intl.DateTimeFormat("en-AU", { dateStyle: "long" });
+
+// Split off the last word so the arrow can be glued to it with `nowrap` —
+// the arrow should never wrap onto a line by itself.
+function splitLastWord(text: string): [string, string] {
+  const i = text.lastIndexOf(" ");
+  return i === -1 ? ["", text] : [text.slice(0, i + 1), text.slice(i + 1)];
+}
+---
+
+<div class="posts">
+  {
+    posts.length === 0 ? (
+      <p>Nothing here yet.</p>
+    ) : (
+      <ol class="post-list" reversed>
+        {posts.map((post) => {
+          const [head, tail] = splitLastWord(post.data.title);
+          return (
+            <li>
+              <a href={`/posts/${post.id}`}>
+                <time datetime={post.data.published.toISOString()}>
+                  {dateFormat.format(post.data.published)}
+                </time>
+                <h2>
+                  {head}
+                  <span class="tail">
+                    {tail}
+                    <span class="go" aria-hidden="true">
+                      &rarr;
+                    </span>
+                  </span>
+                </h2>
+                <p>{post.data.description}</p>
+              </a>
+            </li>
+          );
+        })}
+      </ol>
+    )
+  }
+  {
+    hasMore && (
+      <a class="view-all" href="/posts">
+        View all <span class="tail">posts <span aria-hidden="true">&rarr;</span></span>
+      </a>
+    )
+  }
+</div>
+
+<style>
+  /* Flush-left list: rows are separated by hairline rules and padding only,
+     so the content lines up with whatever heading/intro sits above it. */
+  .post-list {
+    list-style: none;
+    padding: 0;
+
+    & li {
+      border-block-start: 1px solid
+        color-mix(in oklch, var(--accent) 28%, transparent);
+    }
+
+    & li:first-child {
+      border-block-start: none;
+    }
+
+    & a {
+      display: block;
+      padding-block: 1.5rem;
+      text-decoration: none;
+      color: var(--ink-body);
+    }
+
+    & h2 {
+      margin-block: 0.35rem 0;
+      transition: color 0.2s ease;
+    }
+
+    /* The arrow nudges out of the title on hover/focus. */
+    & .go {
+      display: inline-block;
+      margin-inline-start: 0.4rem;
+      color: var(--accent);
+      transition: transform 0.2s ease;
+    }
+
+    & a:hover h2,
+    & a:focus-visible h2 {
+      color: var(--accent);
+    }
+
+    & a:hover .go,
+    & a:focus-visible .go {
+      transform: translateX(0.3rem);
+    }
+
+    & p {
+      margin-block-start: 0.4rem;
+    }
+
+    & time {
+      display: block;
+      /* Mono dates: same developer-signal accent as the homepage eyebrow.
+         Mono fonts lack true small caps, so uppercase + tracking instead. */
+      font-family: var(--font-monospace);
+      font-size: var(--font-size-fluid--1);
+      color: var(--alt);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+  }
+
+  /* Spacing only — the link itself keeps the global wavy underline. */
+  .view-all {
+    display: inline-block;
+    margin-block-start: 1.75rem;
+  }
+
+  /* Glues the last word to its trailing arrow so the arrow never
+     wraps onto a line by itself. */
+  .tail {
+    white-space: nowrap;
+  }
+
+</style>

@@ -1,0 +1,11 @@
+# Don't install package versions published less than this many minutes ago.
+# Guards against supply-chain attacks where a malicious version is published
+# and yanked within a day or two. 4320 = 3 days.
+minimumReleaseAge: 4320
+
+allowBuilds:
+  esbuild: true
+  sharp: true
+onlyBuiltDependencies:
+  - esbuild
+  - sharp

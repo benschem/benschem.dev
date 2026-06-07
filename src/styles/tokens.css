@@ -1,0 +1,574 @@
+/* -------------------------------------------------------------------------- */
+/*  Role tokens — registered so palette switches animate smoothly.            */
+/*  Without @property, custom-property colours snap on change.                 */
+/* -------------------------------------------------------------------------- */
+
+@property --surface-reading {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: white;
+}
+@property --surface-raised {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: white;
+}
+@property --ink-body {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: black;
+}
+@property --ink-heading {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: black;
+}
+@property --accent {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: black;
+}
+@property --accent-soft {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: black;
+}
+@property --alt {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: black;
+}
+@property --alt-soft {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: black;
+}
+@property --alt-strong {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: black;
+}
+@property --callout-info {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: black;
+}
+@property --callout-info-tint {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: white;
+}
+@property --callout-warning {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: black;
+}
+@property --callout-warning-tint {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: white;
+}
+@property --error {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: black;
+}
+@property --burst-centre {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: white;
+}
+@property --burst-mid {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: white;
+}
+@property --burst-edge {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: white;
+}
+
+:root {
+  color-scheme: light dark;
+
+  --radius-1: 2px;
+  --radius-3: 1rem;
+
+  /* Shared page-container measure so text doesn't shift between pages */
+  --container-max: 68ch;
+
+  /* Decorative borders that scale with viewport - floor and ceiling clamped */
+  --border-accent: clamp(1rem, 0.4rem + 3vmin, 4rem);
+  --border-thick: clamp(1rem, 0.6rem + 2vmin, 2rem);
+  --border-thin: clamp(0.5rem, 0.4rem + 1vmin, 1rem);
+
+  /* https://utopia.fyi/type/calculator/ */
+  --font-size-fluid--2: clamp(0.7813rem, 0.7736rem + 0.0341vw, 0.8rem);
+  --font-size-fluid--1: clamp(0.9375rem, 0.9119rem + 0.1136vw, 1rem);
+  --font-size-fluid-0: clamp(1.125rem, 1.0739rem + 0.2273vw, 1.25rem);
+  --font-size-fluid-1: clamp(1.35rem, 1.2631rem + 0.3864vw, 1.5625rem);
+  --font-size-fluid-2: clamp(1.62rem, 1.4837rem + 0.6057vw, 1.9531rem);
+  --font-size-fluid-3: clamp(1.944rem, 1.7405rem + 0.9044vw, 2.4414rem);
+  --font-size-fluid-4: clamp(2.3328rem, 2.0387rem + 1.3072vw, 3.0518rem);
+  --font-size-fluid-5: clamp(2.7994rem, 2.384rem + 1.8461vw, 3.8147rem);
+
+  --font-system-ui: system-ui, sans-serif;
+  --font-classical-humanist:
+    Optima, Candara, "Noto Sans", source-sans-pro, sans-serif;
+  --font-monospace:
+    ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas,
+    monospace;
+
+  scroll-behavior: smooth;
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Palettes — each defines seeds, then derives role tokens via OKLCH         */
+/*  relative-colour syntax. Adding a theme = copy a block, change the seeds.  */
+/* -------------------------------------------------------------------------- */
+
+:root,
+:root[data-palette="sky"] {
+  /* Sky blue + sunset orange — airy and high-key. The default. */
+  --seed-surface: light-dark(oklch(99% 0.012 240), oklch(19% 0.018 240));
+  --seed-raised: light-dark(oklch(96% 0.024 240), oklch(26% 0.034 240));
+  --seed-accent: light-dark(oklch(50% 0.16 240), oklch(74% 0.14 240));
+  --seed-alt: light-dark(oklch(52% 0.18 42), oklch(80% 0.15 42));
+
+  --surface-reading: var(--seed-surface);
+  --surface-raised: var(--seed-raised);
+  --ink-body: light-dark(oklch(15% 0.02 60), oklch(95% 0.02 60));
+  --ink-heading: light-dark(
+    oklch(from var(--seed-accent) calc(l - 0.15) c h),
+    oklch(from var(--seed-accent) calc(l + 0.06) c h)
+  );
+  --accent: var(--seed-accent);
+  --accent-soft: oklch(from var(--seed-accent) calc(l + 0.15) calc(c - 0.06) h);
+  --alt: var(--seed-alt);
+  /* Soft/strong flip direction with mode: in light, soft is a lighter pastel
+     and strong is a darker rich; in dark, soft becomes a darker tint and
+     strong a lighter brighter — so the strong-on-soft pair keeps high
+     contrast either way (the old single-direction calc clamped to white in
+     dark mode and the pair lost contrast). */
+  --alt-soft: light-dark(
+    oklch(from var(--seed-alt) calc(l + 0.3) calc(c - 0.1) h),
+    oklch(from var(--seed-alt) calc(l - 0.4) calc(c - 0.05) h)
+  );
+  --alt-strong: light-dark(
+    oklch(from var(--seed-alt) calc(l - 0.15) c h),
+    oklch(from var(--seed-alt) calc(l + 0.15) c h)
+  );
+
+  --burst-centre: light-dark(white, oklch(from var(--seed-accent) 0.25 c h));
+  --burst-mid: var(--seed-accent);
+  --burst-edge: oklch(from var(--seed-accent) calc(l - 0.25) c h);
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Syntax roles — code highlighting derived from the palette seeds, defined   */
+/*  ONCE here. Every palette only overrides the seeds, and these reference     */
+/*  them via var(), so all 10 palettes (and light/dark) inherit a matching     */
+/*  syntax theme automatically. Shiki's single CSS-variable theme emits        */
+/*  `color: var(--syn-*)` per token, so switching is pure runtime CSS — no     */
+/*  rebuild, no per-token bloat. See src/shiki-theme.mjs.                       */
+/*                                                                              */
+/*  Keywords sit on the accent hue (the palette's signature); functions/types  */
+/*  fan out from it; strings/constants live on the alt hue. Lightness comes     */
+/*  from the seeds, which already flip by mode, so contrast holds in both.      */
+/*  Keep these in the oklch(from …)/light-dark()/var() forms the contrast       */
+/*  audit (scripts/check-contrast.mjs) can parse.                               */
+/* -------------------------------------------------------------------------- */
+:root {
+  --syn-fg: var(--ink-body);
+  --syn-bg: oklch(from var(--surface-raised) calc(l - 0.02) c h);
+  --syn-comment: light-dark(
+    oklch(from var(--ink-body) calc(l + 0.38) 0.012 h),
+    oklch(from var(--ink-body) calc(l - 0.32) 0.02 h)
+  );
+  --syn-punctuation: light-dark(
+    oklch(from var(--ink-body) calc(l + 0.22) 0.02 h),
+    oklch(from var(--ink-body) calc(l - 0.18) 0.02 h)
+  );
+  --syn-keyword: var(--seed-accent);
+  --syn-function: oklch(from var(--seed-accent) l c calc(h + 45));
+  --syn-type: oklch(from var(--seed-accent) l c calc(h - 55));
+  --syn-string: var(--seed-alt);
+  --syn-constant: oklch(from var(--seed-alt) l c calc(h + 55));
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Callout roles — semantic hues fixed across every palette: info = blue,    */
+/*  warning = amber (the colourblind-safe pair). Lightness rides on the        */
+/*  seeds so the colours flip with mode and sit at each palette's tonal        */
+/*  level; chroma is fixed so zero-chroma palettes (noir) still read           */
+/*  coloured. Mirrored in scripts/check-contrast.mjs — keep in sync.           */
+/* -------------------------------------------------------------------------- */
+:root {
+  /* In light mode the label sits a step darker than the accent seed — the
+     lightest seeds (noir, ember) otherwise leave it short of 4.5:1 on the
+     tint. */
+  --callout-info: light-dark(
+    oklch(from var(--seed-accent) calc(l - 0.06) 0.13 245),
+    oklch(from var(--seed-accent) l 0.13 245)
+  );
+  --callout-info-tint: oklch(from var(--seed-raised) l calc(c + 0.02) 245);
+  --callout-warning: light-dark(
+    oklch(from var(--seed-accent) calc(l - 0.06) 0.13 70),
+    oklch(from var(--seed-accent) l 0.13 70)
+  );
+  --callout-warning-tint: oklch(from var(--seed-raised) l calc(c + 0.02) 70);
+
+  /* Form validation red — same recipe as the callout labels (fixed hue,
+     lightness from the accent seed so it flips with mode), at the red end so
+     it never collides with the warning amber. Mirrored in check-contrast.mjs. */
+  --error: light-dark(
+    oklch(from var(--seed-accent) calc(l - 0.06) 0.16 28),
+    oklch(from var(--seed-accent) l 0.16 28)
+  );
+}
+
+:root[data-palette="lagoon"] {
+  /* Teal water + coral — bright and tropical. */
+  --seed-surface: light-dark(oklch(99% 0.012 200), oklch(21% 0.022 200));
+  --seed-raised: light-dark(oklch(95% 0.028 200), oklch(28% 0.042 200));
+  --seed-accent: light-dark(oklch(48% 0.13 200), oklch(70% 0.13 200));
+  --seed-alt: light-dark(oklch(52% 0.18 28), oklch(78% 0.16 28));
+
+  --surface-reading: var(--seed-surface);
+  --surface-raised: var(--seed-raised);
+  --ink-body: light-dark(oklch(15% 0.02 200), oklch(95% 0.02 200));
+  --ink-heading: light-dark(
+    oklch(from var(--seed-accent) calc(l - 0.15) c h),
+    oklch(from var(--seed-accent) calc(l + 0.06) c h)
+  );
+  --accent: var(--seed-accent);
+  --accent-soft: oklch(from var(--seed-accent) calc(l + 0.15) calc(c - 0.06) h);
+  --alt: var(--seed-alt);
+  --alt-soft: light-dark(
+    oklch(from var(--seed-alt) calc(l + 0.3) calc(c - 0.1) h),
+    oklch(from var(--seed-alt) calc(l - 0.4) calc(c - 0.05) h)
+  );
+  --alt-strong: light-dark(
+    oklch(from var(--seed-alt) calc(l - 0.15) c h),
+    oklch(from var(--seed-alt) calc(l + 0.15) c h)
+  );
+
+  --burst-centre: light-dark(white, oklch(from var(--seed-accent) 0.22 c h));
+  --burst-mid: var(--seed-accent);
+  --burst-edge: oklch(from var(--seed-accent) calc(l - 0.25) c h);
+}
+
+:root[data-palette="noir"] {
+  /* Pure neutral surface + a single saturated red accent. */
+  --seed-surface: light-dark(oklch(99% 0 0), oklch(15% 0 0));
+  --seed-raised: light-dark(oklch(94% 0 0), oklch(22% 0 0));
+  --seed-accent: light-dark(oklch(55% 0.22 25), oklch(70% 0.22 25));
+  --seed-alt: light-dark(oklch(30% 0 0), oklch(80% 0 0));
+
+  --surface-reading: var(--seed-surface);
+  --surface-raised: var(--seed-raised);
+  --ink-body: light-dark(oklch(15% 0 0), oklch(95% 0 0));
+  --ink-heading: light-dark(
+    oklch(from var(--seed-accent) calc(l - 0.15) c h),
+    oklch(from var(--seed-accent) calc(l + 0.06) c h)
+  );
+  --accent: var(--seed-accent);
+  --accent-soft: oklch(from var(--seed-accent) calc(l + 0.15) calc(c - 0.06) h);
+  --alt: var(--seed-alt);
+  --alt-soft: light-dark(
+    oklch(from var(--seed-alt) calc(l + 0.3) c h),
+    oklch(from var(--seed-alt) calc(l - 0.4) c h)
+  );
+  --alt-strong: light-dark(
+    oklch(from var(--seed-alt) calc(l - 0.15) c h),
+    oklch(from var(--seed-alt) calc(l + 0.15) c h)
+  );
+
+  --burst-centre: light-dark(white, oklch(15% 0 0));
+  --burst-mid: light-dark(oklch(85% 0 0), oklch(30% 0 0));
+  --burst-edge: light-dark(oklch(60% 0 0), oklch(20% 0 0));
+}
+
+:root[data-palette="forest"] {
+  /* Deep mossy green on a duskier paper, quiet warm-grey second tone. */
+  --seed-surface: light-dark(oklch(96.5% 0.022 140), oklch(18% 0.022 140));
+  --seed-raised: light-dark(oklch(93% 0.032 140), oklch(25% 0.038 140));
+  --seed-accent: light-dark(oklch(47% 0.14 145), oklch(72% 0.13 145));
+  --seed-alt: light-dark(oklch(50% 0.025 110), oklch(78% 0.025 110));
+
+  --surface-reading: var(--seed-surface);
+  --surface-raised: var(--seed-raised);
+  --ink-body: light-dark(oklch(15% 0.02 145), oklch(95% 0.02 145));
+  --ink-heading: light-dark(
+    oklch(from var(--seed-accent) calc(l - 0.15) c h),
+    oklch(from var(--seed-accent) calc(l + 0.06) c h)
+  );
+  --accent: var(--seed-accent);
+  --accent-soft: oklch(from var(--seed-accent) calc(l + 0.15) calc(c - 0.06) h);
+  --alt: var(--seed-alt);
+  --alt-soft: light-dark(
+    oklch(from var(--seed-alt) calc(l + 0.3) calc(c - 0.1) h),
+    oklch(from var(--seed-alt) calc(l - 0.4) calc(c - 0.05) h)
+  );
+  --alt-strong: light-dark(
+    oklch(from var(--seed-alt) calc(l - 0.15) c h),
+    oklch(from var(--seed-alt) calc(l + 0.15) c h)
+  );
+
+  --burst-centre: light-dark(white, oklch(from var(--seed-accent) 0.22 c h));
+  --burst-mid: var(--seed-accent);
+  --burst-edge: oklch(from var(--seed-accent) calc(l - 0.25) c h);
+}
+
+:root[data-palette="plum"] {
+  /* Wine on a deep tinted paper + mustard — rich and low-key. */
+  --seed-surface: light-dark(oklch(96% 0.02 12), oklch(17% 0.022 12));
+  --seed-raised: light-dark(oklch(92% 0.03 12), oklch(24% 0.036 12));
+  --seed-accent: light-dark(oklch(47% 0.18 12), oklch(68% 0.16 12));
+  --seed-alt: light-dark(oklch(49% 0.13 85), oklch(82% 0.14 85));
+
+  --surface-reading: var(--seed-surface);
+  --surface-raised: var(--seed-raised);
+  --ink-body: light-dark(oklch(15% 0.02 10), oklch(95% 0.02 10));
+  --ink-heading: light-dark(
+    oklch(from var(--seed-accent) calc(l - 0.1) c h),
+    oklch(from var(--seed-accent) calc(l + 0.1) c h)
+  );
+  --accent: var(--seed-accent);
+  --accent-soft: oklch(from var(--seed-accent) calc(l + 0.18) calc(c - 0.06) h);
+  --alt: var(--seed-alt);
+  --alt-soft: light-dark(
+    oklch(from var(--seed-alt) calc(l + 0.3) calc(c - 0.1) h),
+    oklch(from var(--seed-alt) calc(l - 0.4) calc(c - 0.05) h)
+  );
+  --alt-strong: light-dark(
+    oklch(from var(--seed-alt) calc(l - 0.15) c h),
+    oklch(from var(--seed-alt) calc(l + 0.15) c h)
+  );
+
+  --burst-centre: light-dark(white, oklch(from var(--seed-accent) 0.2 c h));
+  --burst-mid: var(--seed-accent);
+  --burst-edge: oklch(from var(--seed-accent) calc(l - 0.2) c h);
+}
+
+:root[data-palette="ember"] {
+  /* Sunset orange fading to violet dusk — warm and glowing. */
+  --seed-surface: light-dark(oklch(98.5% 0.014 60), oklch(20% 0.018 60));
+  --seed-raised: light-dark(oklch(96% 0.026 60), oklch(26% 0.034 60));
+  --seed-accent: light-dark(oklch(54% 0.17 55), oklch(74% 0.17 55));
+  --seed-alt: light-dark(oklch(47% 0.2 305), oklch(80% 0.14 305));
+
+  --surface-reading: var(--seed-surface);
+  --surface-raised: var(--seed-raised);
+  --ink-body: light-dark(oklch(15% 0.02 240), oklch(95% 0.02 240));
+  --ink-heading: light-dark(
+    oklch(from var(--seed-accent) calc(l - 0.15) c h),
+    oklch(from var(--seed-accent) calc(l + 0.06) c h)
+  );
+  --accent: var(--seed-accent);
+  --accent-soft: oklch(from var(--seed-accent) calc(l + 0.15) calc(c - 0.06) h);
+  --alt: var(--seed-alt);
+  --alt-soft: light-dark(
+    oklch(from var(--seed-alt) calc(l + 0.3) calc(c - 0.1) h),
+    oklch(from var(--seed-alt) calc(l - 0.4) calc(c - 0.05) h)
+  );
+  --alt-strong: light-dark(
+    oklch(from var(--seed-alt) calc(l - 0.15) c h),
+    oklch(from var(--seed-alt) calc(l + 0.15) c h)
+  );
+
+  --burst-centre: light-dark(white, oklch(from var(--seed-accent) 0.22 c h));
+  --burst-mid: var(--seed-accent);
+  --burst-edge: oklch(from var(--seed-accent) calc(l - 0.25) c h);
+}
+
+:root[data-palette="rose"] {
+  /* Dusty rose on softly tinted paper, with a quiet warm-grey second tone. */
+  --seed-surface: light-dark(oklch(98% 0.018 12), oklch(20% 0.02 12));
+  --seed-raised: light-dark(oklch(95% 0.026 12), oklch(26% 0.032 12));
+  --seed-accent: light-dark(oklch(53% 0.16 12), oklch(75% 0.13 12));
+  --seed-alt: light-dark(oklch(50% 0.025 20), oklch(78% 0.025 20));
+
+  --surface-reading: var(--seed-surface);
+  --surface-raised: var(--seed-raised);
+  --ink-body: light-dark(oklch(15% 0.02 10), oklch(95% 0.02 10));
+  --ink-heading: light-dark(
+    oklch(from var(--seed-accent) calc(l - 0.15) c h),
+    oklch(from var(--seed-accent) calc(l + 0.06) c h)
+  );
+  --accent: var(--seed-accent);
+  --accent-soft: oklch(from var(--seed-accent) calc(l + 0.15) calc(c - 0.06) h);
+  --alt: var(--seed-alt);
+  --alt-soft: light-dark(
+    oklch(from var(--seed-alt) calc(l + 0.3) calc(c - 0.05) h),
+    oklch(from var(--seed-alt) calc(l - 0.4) calc(c - 0.05) h)
+  );
+  --alt-strong: light-dark(
+    oklch(from var(--seed-alt) calc(l - 0.15) c h),
+    oklch(from var(--seed-alt) calc(l + 0.15) c h)
+  );
+
+  --burst-centre: light-dark(white, oklch(from var(--seed-accent) 0.22 c h));
+  --burst-mid: var(--seed-accent);
+  --burst-edge: oklch(from var(--seed-accent) calc(l - 0.25) c h);
+}
+
+:root[data-palette="sand"] {
+  /* Warm sandy paper + terracotta, with a quiet warm-grey second tone. */
+  --seed-surface: light-dark(oklch(97% 0.03 75), oklch(21% 0.028 70));
+  --seed-raised: light-dark(oklch(93.5% 0.04 75), oklch(27% 0.038 70));
+  --seed-accent: light-dark(oklch(50% 0.13 50), oklch(74% 0.13 50));
+  --seed-alt: light-dark(oklch(48% 0.03 70), oklch(76% 0.028 70));
+
+  --surface-reading: var(--seed-surface);
+  --surface-raised: var(--seed-raised);
+  --ink-body: light-dark(oklch(18% 0.02 80), oklch(95% 0.02 80));
+  --ink-heading: light-dark(
+    oklch(from var(--seed-accent) calc(l - 0.15) c h),
+    oklch(from var(--seed-accent) calc(l + 0.06) c h)
+  );
+  --accent: var(--seed-accent);
+  --accent-soft: oklch(from var(--seed-accent) calc(l + 0.15) calc(c - 0.04) h);
+  --alt: var(--seed-alt);
+  --alt-soft: light-dark(
+    oklch(from var(--seed-alt) calc(l + 0.3) calc(c - 0.1) h),
+    oklch(from var(--seed-alt) calc(l - 0.4) calc(c - 0.05) h)
+  );
+  --alt-strong: light-dark(
+    oklch(from var(--seed-alt) calc(l - 0.15) c h),
+    oklch(from var(--seed-alt) calc(l + 0.15) c h)
+  );
+
+  --burst-centre: light-dark(white, oklch(from var(--seed-accent) 0.24 c h));
+  --burst-mid: var(--seed-accent);
+  --burst-edge: oklch(from var(--seed-accent) calc(l - 0.25) c h);
+}
+
+:root[data-palette="mint"] {
+  /* Fresh mint on crisp bright paper, with a quiet cool-grey second tone. */
+  --seed-surface: light-dark(oklch(99% 0.012 165), oklch(20% 0.018 165));
+  --seed-raised: light-dark(oklch(96% 0.024 165), oklch(26% 0.034 165));
+  --seed-accent: light-dark(oklch(49% 0.13 168), oklch(74% 0.12 168));
+  --seed-alt: light-dark(oklch(50% 0.025 200), oklch(78% 0.025 200));
+
+  --surface-reading: var(--seed-surface);
+  --surface-raised: var(--seed-raised);
+  --ink-body: light-dark(oklch(15% 0.02 170), oklch(95% 0.02 170));
+  --ink-heading: light-dark(
+    oklch(from var(--seed-accent) calc(l - 0.15) c h),
+    oklch(from var(--seed-accent) calc(l + 0.06) c h)
+  );
+  --accent: var(--seed-accent);
+  --accent-soft: oklch(from var(--seed-accent) calc(l + 0.15) calc(c - 0.06) h);
+  --alt: var(--seed-alt);
+  --alt-soft: light-dark(
+    oklch(from var(--seed-alt) calc(l + 0.3) calc(c - 0.1) h),
+    oklch(from var(--seed-alt) calc(l - 0.4) calc(c - 0.05) h)
+  );
+  --alt-strong: light-dark(
+    oklch(from var(--seed-alt) calc(l - 0.15) c h),
+    oklch(from var(--seed-alt) calc(l + 0.15) c h)
+  );
+
+  --burst-centre: light-dark(white, oklch(from var(--seed-accent) 0.22 c h));
+  --burst-mid: var(--seed-accent);
+  --burst-edge: oklch(from var(--seed-accent) calc(l - 0.25) c h);
+}
+
+:root[data-palette="grape"] {
+  /* Electric purple + lime — bold and high-key. */
+  --seed-surface: light-dark(oklch(99% 0.012 300), oklch(19% 0.02 300));
+  --seed-raised: light-dark(oklch(96% 0.024 300), oklch(26% 0.034 300));
+  --seed-accent: light-dark(oklch(52% 0.22 300), oklch(72% 0.2 300));
+  --seed-alt: light-dark(oklch(52% 0.16 128), oklch(82% 0.18 128));
+
+  --surface-reading: var(--seed-surface);
+  --surface-raised: var(--seed-raised);
+  --ink-body: light-dark(oklch(15% 0.02 300), oklch(95% 0.02 300));
+  --ink-heading: light-dark(
+    oklch(from var(--seed-accent) calc(l - 0.15) c h),
+    oklch(from var(--seed-accent) calc(l + 0.06) c h)
+  );
+  --accent: var(--seed-accent);
+  --accent-soft: oklch(from var(--seed-accent) calc(l + 0.18) calc(c - 0.06) h);
+  --alt: var(--seed-alt);
+  --alt-soft: light-dark(
+    oklch(from var(--seed-alt) calc(l + 0.3) calc(c - 0.08) h),
+    oklch(from var(--seed-alt) calc(l - 0.4) calc(c - 0.05) h)
+  );
+  --alt-strong: light-dark(
+    oklch(from var(--seed-alt) calc(l - 0.15) c h),
+    oklch(from var(--seed-alt) calc(l + 0.15) c h)
+  );
+
+  --burst-centre: light-dark(white, oklch(from var(--seed-accent) 0.2 c h));
+  --burst-mid: var(--seed-accent);
+  --burst-edge: oklch(from var(--seed-accent) calc(l - 0.25) c h);
+}
+
+:root[data-palette="nintendo"] {
+  /* Nintendo cream + crimson — the Konami code easter egg theme, hidden from
+     the theme menu until unlocked (see the listener in BaseLayout.astro and
+     /js/nintendo-boot.js). Light mode is the Famicom shell colourway
+     (crimson on warm cream); dark mode is bright red on near-black. Gold
+     second tone, like the shell's gold accents. */
+  --seed-surface: light-dark(oklch(94% 0.025 80), oklch(19% 0.012 30));
+  --seed-raised: light-dark(oklch(90% 0.035 80), oklch(26% 0.02 30));
+  --seed-accent: light-dark(oklch(48% 0.19 27), oklch(68% 0.19 27));
+  --seed-alt: light-dark(oklch(48% 0.11 75), oklch(80% 0.12 80));
+
+  --surface-reading: var(--seed-surface);
+  --surface-raised: var(--seed-raised);
+  --ink-body: light-dark(oklch(22% 0.025 40), oklch(94% 0.012 80));
+  --ink-heading: light-dark(
+    oklch(from var(--seed-accent) calc(l - 0.1) c h),
+    oklch(from var(--seed-accent) calc(l + 0.06) c h)
+  );
+  --accent: var(--seed-accent);
+  --accent-soft: oklch(from var(--seed-accent) calc(l + 0.15) calc(c - 0.06) h);
+  --alt: var(--seed-alt);
+  --alt-soft: light-dark(
+    oklch(from var(--seed-alt) calc(l + 0.3) calc(c - 0.05) h),
+    oklch(from var(--seed-alt) calc(l - 0.4) calc(c - 0.05) h)
+  );
+  --alt-strong: light-dark(
+    oklch(from var(--seed-alt) calc(l - 0.15) c h),
+    oklch(from var(--seed-alt) calc(l + 0.15) c h)
+  );
+
+  --burst-centre: light-dark(white, oklch(from var(--seed-accent) 0.22 c h));
+  --burst-mid: var(--seed-accent);
+  --burst-edge: oklch(from var(--seed-accent) calc(l - 0.25) c h);
+}
+
+/* User light/dark override — color-scheme drives all the light-dark() calls
+   inside each palette block, so this is the only switch needed. */
+:root[data-mode="light"] {
+  color-scheme: light;
+}
+:root[data-mode="dark"] {
+  color-scheme: dark;
+}
+
+/* Smooth crossfades between palettes. Scoped to the themed surfaces so we
+   don't pay for transitions on the entire DOM. */
+html,
+header,
+main,
+footer,
+.avatar,
+.callout,
+.sunburst stop {
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease,
+    stop-color 0.3s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition-duration: 0s !important;
+  }
+}

@@ -1,0 +1,367 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import TableOfContents from "../../components/TableOfContents.astro";
+
+export async function getStaticPaths() {
+  const posts = (
+    await getCollection("posts", ({ data }) =>
+      import.meta.env.PROD ? !data.draft : true,
+    )
+  ).sort((a, b) => b.data.published.valueOf() - a.data.published.valueOf());
+
+  return posts.map((post, i) => ({
+    params: { slug: post.id },
+    props: {
+      post,
+      // Sorted newest-first. "Next" is the next thing to read in the archive
+      // (an older post); "Previous" is the post you'd have just come from.
+      prev: posts[i - 1],
+      next: posts[i + 1],
+    },
+  }));
+}
+
+const { post, prev, next } = Astro.props;
+const { Content, headings } = await render(post);
+
+const dateFormat = new Intl.DateTimeFormat("en-AU", { dateStyle: "long" });
+const published = post.data.published;
+const updated = post.data.updated;
+const showUpdated =
+  updated !== undefined && updated.valueOf() !== published.valueOf();
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: post.data.title,
+  description: post.data.description,
+  url: canonicalURL.href,
+  mainEntityOfPage: canonicalURL.href,
+  image: new URL("/og-default.png", Astro.site).href,
+  datePublished: published.toISOString(),
+  dateModified: (updated ?? published).toISOString(),
+  author: {
+    "@type": "Person",
+    name: "Ben Schembri",
+    url: new URL("/about", Astro.site).href,
+  },
+};
+---
+
+<BaseLayout
+  title={`${post.data.title} -- Ben Schembri`}
+  description={post.data.description}
+  ogType="article"
+  pubDate={published}
+  updatedDate={updated}
+>
+  <script
+    slot="head"
+    is:inline
+    type="application/ld+json"
+    set:html={JSON.stringify(jsonLd)}
+  />
+  <article class="post">
+    <a href="/posts" class="back-link">&larr; All posts</a>
+
+    <header class="page-head">
+      <h1>{post.data.title}</h1>
+      <p class="meta">
+        <time datetime={published.toISOString()}>
+          {dateFormat.format(published)}
+        </time>
+      </p>
+      {post.data.description && <p class="lead">{post.data.description}</p>}
+      {
+        showUpdated && (
+          <p class="meta">
+            Updated{" "}
+            <time datetime={updated!.toISOString()}>
+              {dateFormat.format(updated!)}
+            </time>
+          </p>
+        )
+      }
+    </header>
+
+    <TableOfContents headings={headings} />
+
+    <div class="post-body">
+      <Content />
+    </div>
+
+    {
+      post.data.changelog && post.data.changelog.length > 0 && (
+        <section class="changelog" aria-labelledby="changelog-heading">
+          <h2 id="changelog-heading">Changelog</h2>
+          <ul>
+            {post.data.changelog.map((entry) => (
+              <li>
+                <time datetime={entry.date.toISOString()}>
+                  {dateFormat.format(entry.date)}
+                </time>
+                {" — "}
+                {entry.change}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    {
+      (prev || next) && (
+        <nav class="post-nav" aria-label="More posts">
+          {prev ? (
+            <a
+              class="post-nav__link post-nav__link--prev"
+              href={`/posts/${prev.id}`}
+              rel="prev"
+            >
+              <span class="post-nav__label">&larr; Previous</span>
+              <span class="post-nav__title">{prev.data.title}</span>
+            </a>
+          ) : (
+            <span />
+          )}
+          {next && (
+            <a
+              class="post-nav__link post-nav__link--next"
+              href={`/posts/${next.id}`}
+              rel="next"
+            >
+              <span class="post-nav__label">Next &rarr;</span>
+              <span class="post-nav__title">{next.data.title}</span>
+            </a>
+          )}
+        </nav>
+      )
+    }
+  </article>
+</BaseLayout>
+
+<style>
+  .post {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-inline: clamp(1rem, 4vw, 2rem);
+    padding-block: clamp(2.5rem, 8vh, 5rem);
+  }
+
+  /* Spacing/size only — the link itself keeps the global wavy underline. */
+  .back-link {
+    display: inline-block;
+    margin-block-end: 2.5rem;
+    font-size: var(--font-size-fluid--1);
+  }
+
+  .page-head {
+    margin-block-end: clamp(2.5rem, 6vh, 3.5rem);
+  }
+
+  .lead {
+    font-size: var(--font-size-fluid-0);
+    max-width: 52ch;
+    margin-block-start: 0.75rem;
+    color: var(--alt-strong);
+  }
+
+  .meta {
+    margin-block-start: 0.75rem;
+    font-size: var(--font-size-fluid--1);
+    color: var(--alt);
+    font-variant-caps: all-small-caps;
+    letter-spacing: 0.05em;
+  }
+
+  /* ---- Body ---------------------------------------------------------- */
+
+  .post-body {
+    line-height: 1.7;
+  }
+
+  /* h2 opens a major section, h3 a subsection inside it. Giving h2 a clearly
+     larger top gap (and h3 a smaller one) makes that nesting legible when
+     several h3s stack under one h2 — without it the headings read as a flat
+     column. em keeps each gap proportional to the heading's own size. */
+  .post-body :global(h2) {
+    margin-block-start: 2em;
+    margin-block-end: 0.5em;
+  }
+
+  .post-body :global(h3) {
+    margin-block-start: 1.75em;
+    margin-block-end: 0.5em;
+  }
+
+  .post-body :global(p) {
+    margin-block-end: 1.25em;
+  }
+
+  /* A paragraph that directly introduces a code block or list hugs it, so the
+     example reads as part of the lead-in sentence rather than a separate beat.
+     Margins collapse to the larger of the pair, so both sides are tightened:
+     the paragraph's bottom (:has) and the block's own top (+). */
+  .post-body :global(p:has(+ pre)),
+  .post-body :global(p:has(+ ul)),
+  .post-body :global(p:has(+ ol)) {
+    margin-block-end: 0.5em;
+  }
+
+  .post-body :global(p + pre) {
+    margin-block-start: 0.5em;
+  }
+
+  /* The global reset strips list-style + padding from every ul/ol, so the
+     reading body restores them to get marker boxes back (which ::marker colours). */
+  .post-body :global(ul) {
+    list-style: disc;
+    margin-block-end: 1.25em;
+    padding-inline-start: 1.5em;
+  }
+
+  .post-body :global(ol) {
+    list-style: decimal;
+    margin-block-end: 1.25em;
+    padding-inline-start: 1.5em;
+  }
+
+  .post-body :global(li) {
+    margin-block-end: 0.4em;
+  }
+
+  /* A nested list sits inside its parent <li>, so the 1.25em list-end margin
+     (sized to separate a whole list from the following paragraph) is wrong here
+     — it stacks onto the parent li's own gap and blows the spacing out. Reset to
+     the same rhythm as sibling items so nesting reads as one even column. */
+  .post-body :global(li ul),
+  .post-body :global(li ol) {
+    margin-block: 0.4em 0;
+  }
+
+  /* Bullets and ordinals pick up the accent so list markers carry the theme
+     across every palette (same highlight family as the code borders). */
+  .post-body :global(li)::marker {
+    color: var(--accent);
+  }
+
+  /* Drop cap on the first top-level paragraph of the post body. Direct-child
+     combinator keeps it out of any nested elements like <Callout>. */
+  .post-body > :global(p:first-of-type::first-letter) {
+    font-family: var(--font-classical-humanist);
+    font-weight: 900;
+    color: var(--alt);
+    float: left;
+    font-size: 4em;
+    line-height: 0.85;
+    padding-inline-end: 0.1em;
+    padding-block-start: 0.05em;
+  }
+
+  /* Codeblock surface: padding, radius and a themed border follow the palette.
+     Syntax colours come from our single CSS-variable Shiki theme: each token
+     span carries `color: var(--syn-*)` inline, and the --syn-* roles are
+     derived from the palette seeds in tokens.css — so highlighting matches the
+     active palette and light/dark mode, switching live with no rebuild. */
+  .post-body :global(pre) {
+    padding: 1rem 1.25rem;
+    margin-block: 1.5em;
+    border-radius: var(--radius-3);
+    overflow-x: auto;
+    font-size: 0.875em;
+    border: 1px solid var(--accent);
+    background-color: var(--syn-bg);
+    color: var(--syn-fg);
+  }
+
+  /* Inline code: derive the pill background from the current surface (not
+     alt-soft, which clamps to near-white in dark mode and blows out). 15% alt
+     mixed into the reading surface gives a subtle, themed tint that lands a
+     short distance from the surface lightness in either mode. */
+  .post-body :global(:not(pre) > code) {
+    padding: 0.125em 0.375em;
+    background-color: color-mix(
+      in oklch,
+      var(--alt) 15%,
+      var(--surface-reading)
+    );
+    color: var(--alt-strong);
+    border-radius: 0.25em;
+    font-size: 0.9em;
+  }
+
+  /* ---- Changelog ----------------------------------------------------- */
+
+  .changelog {
+    margin-block-start: 4rem;
+    padding-block-start: 2rem;
+    border-block-start: 1px solid
+      color-mix(in oklch, var(--accent) 28%, transparent);
+  }
+
+  .changelog ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .changelog li {
+    margin-block-end: 0.5rem;
+    font-size: var(--font-size-fluid--1);
+  }
+
+  .changelog time {
+    font-variant-caps: all-small-caps;
+    letter-spacing: 0.05em;
+    color: var(--alt);
+  }
+
+  /* ---- Prev/next nav ------------------------------------------------- */
+
+  .post-nav {
+    margin-block-start: 4rem;
+    padding-block-start: 2rem;
+    border-block-start: 1px solid
+      color-mix(in oklch, var(--accent) 28%, transparent);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .post-nav__link {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    text-decoration: none;
+    color: var(--ink-body);
+  }
+
+  .post-nav__link--next {
+    text-align: end;
+  }
+
+  .post-nav__label {
+    font-size: var(--font-size-fluid--1);
+    font-variant-caps: all-small-caps;
+    letter-spacing: 0.05em;
+    color: var(--alt);
+    transition: color 0.2s ease;
+  }
+
+  .post-nav__title {
+    font-family: var(--font-classical-humanist);
+    font-size: var(--font-size-fluid-0);
+    line-height: 1.3;
+    color: var(--ink-heading);
+    transition: color 0.2s ease;
+  }
+
+  .post-nav__link:hover .post-nav__label,
+  .post-nav__link:focus-visible .post-nav__label,
+  .post-nav__link:hover .post-nav__title,
+  .post-nav__link:focus-visible .post-nav__title {
+    color: var(--accent);
+  }
+
+</style>

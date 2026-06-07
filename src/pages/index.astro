@@ -1,0 +1,155 @@
+---
+import PostList from "../components/PostList.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Ben Schembri",
+  url: Astro.site!.href,
+  jobTitle: "Software Engineer",
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Melbourne",
+    addressCountry: "AU",
+  },
+  nationality: [
+    { "@type": "Country", name: "Australia" },
+    { "@type": "Country", name: "Germany" },
+  ],
+  sameAs: [
+    "https://github.com/benschem",
+    "https://au.linkedin.com/in/benschembri",
+    "https://x.com/benschem",
+  ],
+};
+---
+
+<BaseLayout
+  title="Ben Schembri"
+  description="Profile for Ben Schembri, a software engineer from Melbourne Australia."
+>
+  <script
+    slot="head"
+    is:inline
+    type="application/ld+json"
+    set:html={JSON.stringify(jsonLd)}
+  />
+  <div class="home">
+    <section class="hero" aria-labelledby="hero-title">
+      <p class="eyebrow">Software Engineering · Web&nbsp;Development</p>
+      <h1 id="hero-title">I go down the rabbit holes, then write about it.</h1>
+      <p class="lead">
+        Sometimes on purpose, sometimes by accident, I keep asking questions
+        until I really understand. I try to do things the hard way at least
+        once, so that the next time I can take the shortcut knowing the
+        trade-offs.
+      </p>
+      <div class="buttons">
+        <a class="btn btn-primary" href="/posts">Read my blog</a>
+        <a class="btn btn-secondary" href="/contact">Get in touch</a>
+      </div>
+    </section>
+
+    <section class="latest" aria-labelledby="latest-title">
+      <h2 id="latest-title">Latest writing</h2>
+      <p>
+        <a class="more" href="/about">
+          About the author <span aria-hidden="true">&rarr;</span>
+        </a>
+      </p>
+      <PostList limit={3} />
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .home {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-inline: clamp(1rem, 4vw, 2rem);
+    padding-block: clamp(2.5rem, 8vh, 5rem);
+    /* Clip only the horizontal axis so the hero's decorative burst can bleed
+       off the right edge without ever spawning a horizontal scrollbar. `clip`
+       (unlike `hidden`) doesn't create a scroll container, so the page scroll
+       keeps working. */
+    overflow-x: clip;
+  }
+
+  /* ---- Hero ---------------------------------------------------------- */
+
+  .hero {
+    position: relative;
+    /* isolate so the decorative ::before can sit at z-index -1 *within* the
+       hero (behind the text) without dropping behind main's opaque surface. */
+    isolation: isolate;
+    padding-block-end: clamp(3rem, 9vh, 5.5rem);
+    margin-block-end: clamp(2.5rem, 7vh, 4rem);
+  }
+
+  /* A CSS echo of the page's sunburst: thin radial rays fanning out of the
+     top-right, masked to fade before they reach the text. Pure decoration. */
+  .hero::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: -45% -15% auto auto;
+    width: min(80vw, 34rem);
+    aspect-ratio: 1;
+    background: repeating-conic-gradient(
+      from -12deg at 50% 50%,
+      color-mix(in oklch, var(--accent) 24%, transparent) 0deg 2.6deg,
+      transparent 2.6deg 11deg
+    );
+    -webkit-mask-image: radial-gradient(
+      circle at 50% 50%,
+      #000,
+      transparent 64%
+    );
+    mask-image: radial-gradient(circle at 50% 50%, #000, transparent 64%);
+    opacity: 0.55;
+    pointer-events: none;
+  }
+
+  .eyebrow {
+    /* Monospace on purpose: a quiet "this is a developer's site" signal.
+       Mono fonts lack true small caps, so uppercase + tracking instead. */
+    font-family: var(--font-monospace);
+    font-size: var(--font-size-fluid--1);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    margin-block-end: 0.75rem;
+  }
+
+  .hero h1 {
+    font-size: var(--font-size-fluid-5);
+    line-height: 1.05;
+    margin-block-end: 1.25rem;
+    color: var(--ink-body);
+  }
+
+  .lead {
+    font-size: var(--font-size-fluid-1);
+    line-height: 1.45;
+    max-width: 52ch;
+    margin-block-end: 2rem;
+  }
+
+  .hero .buttons {
+    flex-wrap: wrap;
+  }
+
+  /* ---- Lower sections ------------------------------------------------ */
+
+  .latest > h2 {
+    margin-block-end: 0.75rem;
+  }
+
+  .latest > p {
+    font-size: var(--font-size-fluid-0);
+    margin-block-end: 0.75em;
+  }
+
+</style>

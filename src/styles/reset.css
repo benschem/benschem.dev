@@ -1,0 +1,166 @@
+/* -------------------------------------------------------------------------- */
+/*                                  CSS RESET                                 */
+/* -------------------------------------------------------------------------- */
+
+/* Opt the entire page into the user's device color scheme preference */
+:root {
+  color-scheme: light dark;
+}
+/* To prevent unwanted screen flashes during the page load with the above CSS,
+also include this HTML in the <head>, before any CSS style information: */
+/* <meta name="color-scheme" content="dark light" /> */
+
+/* Use a more-intuitive box-sizing model. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box; /* default is content-box */
+}
+
+/* Remove browser default margin */
+* {
+  margin: 0; /* default adds extra margin to h1 etc */
+}
+
+html {
+  /* Scroll to internal link instead of jump */
+  scroll-behavior: smooth;
+
+  /* Fix text resizing in landscape on mobile */
+  text-size-adjust: none;
+}
+
+/* Apply smooth scrolling. :focus-within means search jumps quickly instead */
+html:focus-within {
+  scroll-behavior: smooth;
+}
+
+/* Web Content Accessibility Guidelines states that line-height for body text should be at least 1.5. */
+body {
+  min-height: 100vh; /* in case browser does not support SVH */
+  min-height: 100svh; /* SVH instead of DVH so it ins't janky */
+  line-height: 1.5; /* default is usually 1.2 */
+  -webkit-font-smoothing: antialiased; /* Better font smoothing on webkit browsers */
+
+  /* Avoid fonts falling back to Times New Roman */
+  font-family: system-ui, sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  line-height: 1.2; /* 1.5 is a bit much for headings */
+}
+
+/* If a line doesn't have any soft wrap opportunities, and it doesn't fit, it will cause the text to overflow: */
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word; /* default is to softwrap */
+}
+
+/* Display images etc in a more intuitive way */
+img,
+video,
+canvas {
+  display: block; /* default is inline weirdly */
+  max-width: 100%; /* auto resize based on parent */
+  height: auto;
+}
+svg {
+  display: block;
+  height: auto;
+}
+picture {
+  display: block;
+  overflow: hidden;
+}
+
+/* Make it so form controls inherit typographical styles from their parents */
+input,
+button,
+textarea,
+select {
+  font: inherit; /* they don't by default */
+}
+
+/* Stop whitespace when scrolling past top or bottom */
+body {
+  overscroll-behavior: none;
+}
+
+/* Remove browser default list styles */
+ul,
+ol {
+  list-style: none;
+  padding-inline-start: 0px;
+  margin-block-start: 0px;
+  margin-block-end: 0px;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+}
+
+/* Remove browser default button styles */
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"] {
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+  cursor: pointer;
+}
+
+/* Remove browser default form styles */
+input,
+textarea,
+select {
+  background: none;
+  border: none;
+  color: inherit;
+}
+
+/* Standardise outlines for keyboard navigation */
+:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+/* If a user doesn't want motion, they won't get it — unless they explicitly
+   pick Trippy in the 🍃 menu, in which case the deliberate click beats the
+   ambient OS preference (same logic as an explicit theme pick overriding the
+   OS colour scheme). */
+@media (prefers-reduced-motion: reduce) {
+  html:not([data-motion="trippy"]),
+  html:not([data-motion="trippy"]) *,
+  html:not([data-motion="trippy"]) *::before,
+  html:not([data-motion="trippy"]) *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Same again for the explicit footer override (the 🍃 menu), which the
+   BaseHead inline script applies before first paint. Unlike the OS path,
+   the no-preference animation blocks are live here, so delays are zeroed
+   too — otherwise staggered intros would hold content at opacity: 0. */
+html[data-motion="reduced"],
+html[data-motion="reduced"] *,
+html[data-motion="reduced"] *::before,
+html[data-motion="reduced"] *::after {
+  animation-duration: 0.01ms !important;
+  animation-delay: 0s !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}

@@ -1,0 +1,73 @@
+---
+import type { MarkdownHeading } from "astro";
+
+interface Props {
+  headings: MarkdownHeading[];
+  minDepth?: number;
+  maxDepth?: number;
+}
+
+const { headings, minDepth = 2, maxDepth = 3 } = Astro.props;
+
+const items = headings.filter(
+  (h) => h.depth >= minDepth && h.depth <= maxDepth,
+);
+---
+
+{
+  items.length > 1 && (
+    <nav class="toc" aria-labelledby="toc-heading">
+      <h2 id="toc-heading">Contents</h2>
+      <ol>
+        {items.map((heading) => (
+          <li class={`depth-${heading.depth}`}>
+            <a href={`#${heading.slug}`}>{heading.text}</a>
+          </li>
+        ))}
+      </ol>
+    </nav>
+  )
+}
+
+<style>
+  .toc {
+    margin-block-end: 4rem;
+    padding: 1.25rem 1.5rem;
+    background-color: var(--surface-raised);
+    border-radius: var(--radius-3);
+    font-size: var(--font-size-fluid--1);
+  }
+
+  .toc h2 {
+    margin: 0 0 0.75rem;
+    font-size: 1em;
+    font-variant-caps: all-small-caps;
+    letter-spacing: 0.05em;
+    color: var(--ink-heading);
+  }
+
+  .toc ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    counter-reset: toc;
+  }
+
+  .toc li {
+    margin-block: 0.25em;
+    counter-increment: toc;
+  }
+
+  .toc .depth-3 {
+    margin-inline-start: 1.5em;
+  }
+
+  .toc a {
+    text-decoration: none;
+  }
+
+  .toc a:hover,
+  .toc a:focus-visible {
+    text-decoration: underline;
+  }
+</style>

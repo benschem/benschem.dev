@@ -1,0 +1,78 @@
+---
+interface Props {
+  variant?: "info" | "warning";
+  title?: string;
+}
+
+const { variant = "info", title } = Astro.props;
+
+const labels = {
+  info: "Note",
+  warning: "Heads up",
+} as const;
+
+const icons = {
+  info: "💡",
+  warning: "⚠️",
+} as const;
+---
+
+<aside class:list={["callout", variant]} role="note">
+  <p class="callout-label">
+    <span class="callout-icon" aria-hidden="true">{icons[variant]}</span>{
+      labels[variant]
+    }
+  </p>
+  {title && <p class="callout-title">{title}</p>}
+  <div class="callout-body"><slot /></div>
+</aside>
+
+<style>
+  /* Tinted sheet: the whole panel is a quiet semantic tint of the palette's
+     raised surface — blue for info, amber for warning — with a small-caps
+     label carrying the full-strength semantic colour. Tokens live in
+     tokens.css so every palette derives them from its own seeds. */
+  .callout {
+    margin-block: 2.5em;
+    padding: 1.25rem 1.5rem;
+    border-radius: var(--radius-1);
+    background-color: var(--callout-info-tint);
+  }
+
+  .callout.warning {
+    background-color: var(--callout-warning-tint);
+  }
+
+  .callout-label {
+    font-family: var(--font-classical-humanist);
+    font-weight: 900;
+    font-size: var(--font-size-fluid--2);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--callout-info);
+    margin: 0;
+  }
+
+  .callout.warning .callout-label {
+    color: var(--callout-warning);
+  }
+
+  .callout-icon {
+    margin-inline-end: 0.4em;
+    /* Emoji render at their own scale — keep them from dwarfing the
+       small-caps label text. */
+    font-size: 1.1em;
+  }
+
+  .callout-title {
+    font-family: var(--font-classical-humanist);
+    font-weight: 900;
+    font-size: var(--font-size-fluid-0);
+    color: var(--ink-heading);
+    margin: 0.25em 0;
+  }
+
+  .callout-body :global(p:last-child) {
+    margin-block-end: 0;
+  }
+</style>

@@ -1,0 +1,109 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  ogType?: "website" | "article";
+  pubDate?: Date;
+  updatedDate?: Date;
+  noIndex?: boolean;
+}
+
+const {
+  title,
+  description,
+  image = "/og-default.png",
+  ogType = "website",
+  pubDate,
+  updatedDate,
+  noIndex = false,
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const socialImageURL = new URL(image, Astro.site);
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content={Astro.generator} />
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonicalURL} />
+
+<meta
+  name="theme-color"
+  content="#ffffff"
+  media="(prefers-color-scheme: light)"
+/>
+<meta
+  name="theme-color"
+  content="#000000"
+  media="(prefers-color-scheme: dark)"
+/>
+<meta name="color-scheme" content="light dark" />
+
+{noIndex && <meta name="robots" content="noindex, nofollow" />}
+
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="icon" href="/favicon.ico" sizes="any" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+<link
+  rel="alternate"
+  type="application/rss+xml"
+  title="Ben Schembri"
+  href="/rss.xml"
+/>
+
+<meta property="og:site_name" content="Ben Schembri" />
+<meta property="og:locale" content="en_AU" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={socialImageURL} />
+<meta property="og:image:alt" content={description} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:type" content={ogType} />
+
+{
+  pubDate && (
+    <meta property="article:published_time" content={pubDate.toISOString()} />
+  )
+}
+{
+  updatedDate && (
+    <meta
+      property="article:modified_time"
+      content={updatedDate.toISOString()}
+    />
+  )
+}
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={socialImageURL} />
+<meta name="twitter:image:alt" content={description} />
+<meta name="twitter:creator" content="@benschem" />
+
+<script is:inline>
+  (() => {
+    const mode = localStorage.getItem("mode");
+    if (mode) document.documentElement.dataset.mode = mode;
+
+    const palette = localStorage.getItem("palette");
+    if (palette) document.documentElement.dataset.palette = palette;
+
+    const motion = localStorage.getItem("motion");
+    if (motion) document.documentElement.dataset.motion = motion;
+  })();
+</script>
+
+<script
+  is:inline
+  defer
+  data-domain="benschem.dev"
+  data-api="/pa-stats/api/event"
+  src="/pa-stats/js/script.outbound-links.js"></script>

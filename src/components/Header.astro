@@ -1,0 +1,138 @@
+---
+const pathname = Astro.url.pathname;
+
+const links = [
+  { href: "/", label: "Home" },
+  { href: "/posts", label: "Posts" },
+  { href: "/about", label: "About" },
+  { href: "/contact", label: "Contact" },
+];
+
+const isCurrent = (href: string) =>
+  href === "/"
+    ? pathname === "/"
+    : pathname === href || pathname.startsWith(href + "/");
+---
+
+<header>
+  <div class="site-title">
+    <a href="/" rel="home">Ben Schembri</a>
+    <strong>👨🏻‍💻 Software Engineer</strong>
+    <p>📍 Melbourne, Australia</p>
+  </div>
+
+  <nav>
+    <ul>
+      {
+        links.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              aria-current={isCurrent(link.href) ? "page" : undefined}
+            >
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+</header>
+
+<style>
+  /* Named @counter-style instead of the inline symbols() function — Safari
+     has never shipped symbols(), so it falls back to plain discs there.
+     @counter-style works in Safari 17+, Chrome 91+, Firefox 33+. */
+  @counter-style nav-emoji {
+    system: cyclic;
+    symbols: "🏡" "📚" "👋" "💬";
+    suffix: " ";
+  }
+
+  header {
+    background-color: var(--surface-raised);
+    background-clip: padding-box;
+    display: flex;
+    gap: 1rem 1rem;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    border-top: var(--border-thick) solid transparent;
+    border-right: var(--border-accent) solid transparent;
+    border-bottom: var(--border-thick) solid transparent;
+    /* The visible surface is the padding box (background-clip: padding-box), so
+       border-radius rounds the *border* box and the padding corner only rounds
+       by (radius − border-width). The right border is var(--border-accent), well
+       over 1rem, so a plain 1rem radius gets fully eaten and the corner reads as
+       sharp. Add the border width back per axis (x = inline, y = block) so the
+       visible corner is a clean 1rem. */
+    border-top-right-radius: calc(1rem + var(--border-accent))
+      calc(1rem + var(--border-thick));
+    border-bottom-right-radius: calc(1rem + var(--border-accent))
+      calc(1rem + var(--border-thick));
+    padding: 1rem;
+  }
+
+  nav {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-inline: 1rem;
+
+    & ul {
+      list-style-type: nav-emoji;
+      & li {
+        margin-block-end: 0.5rem;
+        & a[aria-current="page"] {
+          text-decoration-color: var(--alt-strong);
+        }
+      }
+    }
+  }
+
+  .site-title {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-inline-start: 1rem;
+  }
+
+  .site-title > * {
+    display: block;
+  }
+
+  .site-title a {
+    margin-block-end: 1rem;
+    text-decoration: none;
+    font-family: var(--font-classical-humanist);
+    font-weight: 900;
+    color: var(--ink-body);
+    text-wrap: balance;
+    /* A touch bigger than fluid-1, but fluid-2 (~20% up) is too big a jump */
+    font-size: calc(var(--font-size-fluid-1) * 1.3);
+  }
+
+  /* Below ~370px the nav no longer fits beside the title and flex-wrap drops
+     it onto its own row, misaligned with the title. Make that wrap deliberate:
+     stack the header and switch the nav to a compact wrapping row. The emoji
+     markers survive the flex layout because list-items keep their ::marker;
+     list-style-position: inside pulls each marker into its link's row. */
+  @media (max-width: 370px) {
+    header {
+      flex-direction: column;
+    }
+
+    nav {
+      & ul {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem 1.5rem;
+        padding-inline-start: 0;
+        list-style-position: inside;
+
+        & li {
+          margin-block-end: 0;
+        }
+      }
+    }
+  }
+</style>

@@ -1,0 +1,355 @@
+/* Opt in to cross-document view transitions: same-origin navigations get a
+   soft crossfade between pages instead of a hard cut. Content within a page
+   is never delayed — there's no entry animation. */
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.18s;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation-duration: 0s;
+  }
+}
+
+/* The reset's [data-motion="reduced"] kill rules can't reach the
+   view-transition pseudos (they hang off the root, not *), so the footer
+   motion override needs its own rule here. */
+html[data-motion="reduced"]::view-transition-old(root),
+html[data-motion="reduced"]::view-transition-new(root) {
+  animation-duration: 0s;
+}
+
+h1,
+h2,
+h3,
+p {
+  cursor: default;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-classical-humanist);
+  font-weight: 700;
+  color: var(--ink-body);
+  text-wrap: balance;
+  margin-block-end: 0.5em;
+}
+
+h1 {
+  font-size: var(--font-size-fluid-4);
+}
+
+h2 {
+  font-size: var(--font-size-fluid-3);
+  color: var(--ink-heading);
+}
+
+h3 {
+  font-size: var(--font-size-fluid-2);
+  color: var(--ink-body);
+}
+
+p {
+  font-family: var(--font-system-ui);
+  font-weight: normal;
+  font-size: var(--font-size-fluid--1);
+  color: var(--ink-body);
+}
+
+strong {
+  font-weight: 900;
+  color: var(--accent);
+}
+
+a {
+  color: var(--ink-body);
+  font-family: var(--font-system-ui);
+  cursor: pointer;
+  /* Longhands, not the `text-decoration` shorthand — Safari < 18.4 parses the
+     shorthand as a longhand (line only), so the whole declaration is dropped
+     and the wavy underline vanishes. */
+  text-decoration-line: underline;
+  text-decoration-style: wavy;
+  text-decoration-color: var(--accent);
+  /* Safari ignores thickness on wavy lines and draws its own small, tight
+     wave; Chrome/Firefox scale stroke + amplitude with it, so keep this low
+     to pull their waves in line with Safari's. */
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25em;
+
+  &:visited {
+    color: var(--ink-body);
+  }
+
+  &:hover {
+    color: var(--accent);
+  }
+
+  /* Cursor pointer on anything inside a link */
+  & * {
+    cursor: pointer;
+  }
+}
+
+/* Mark external links with a ↗. position: absolute keeps the arrow out of
+   the wavy underline (decoration doesn't propagate to out-of-flow boxes) and
+   removes the soft-wrap opportunity an inline-block would create, so the
+   arrow can never wrap to a line of its own. The anchor's end margin
+   reserves the space the out-of-flow arrow no longer takes up. */
+a[href^="http"] {
+  margin-inline-end: 0.75em;
+}
+
+a[href^="http"]::after {
+  content: "↗";
+  position: absolute;
+  margin-inline-start: 0.2em;
+  font-size: 0.85em;
+}
+
+::selection {
+  background-color: var(--alt-soft);
+  color: var(--alt-strong);
+}
+
+.btn {
+  cursor: pointer;
+  display: inline-block;
+  padding: 0.5rem 1.75rem;
+  border-radius: var(--radius-3);
+  text-decoration: none;
+  text-wrap: nowrap;
+
+  font-size: var(--font-size-fluid--1);
+  font-family: var(--font-system-ui);
+  font-weight: 900;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.btn-primary {
+  /* Flip ink colour with the accent's OKLCH lightness. The calc((0.6 - l) * 1000)
+     resolves to a large negative number when l > 0.6 (clamped to L=0 → black) and
+     a large positive number when l < 0.6 (clamped to L=1 → white) — so the text
+     stays readable on dark-accent palettes (noir red, plum wine, grape purple)
+     without per-palette overrides. Chroma=0 so we get pure black/white, not a
+     tinted version of the accent. */
+  color: oklch(from var(--accent) calc((0.6 - l) * 1000) 0 0);
+  background-color: var(--accent);
+
+  &:visited {
+    color: oklch(from var(--accent) calc((0.6 - l) * 1000) 0 0);
+  }
+
+  &:hover {
+    color: oklch(from var(--accent-soft) calc((0.6 - l) * 1000) 0 0);
+    background-color: var(--accent-soft);
+  }
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--alt);
+  border: 1px solid var(--alt);
+
+  &:visited {
+    color: var(--alt);
+  }
+}
+.btn-secondary:hover {
+  color: var(--alt-strong);
+  border-color: var(--alt-soft);
+  background-color: var(--alt-soft);
+}
+
+.buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Visually hidden until keyboard-focused — lets users skip past nav with Tab. */
+.skip-link {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+
+  &:focus {
+    position: fixed;
+    top: 0.5rem;
+    left: 0.5rem;
+    width: auto;
+    height: auto;
+    padding: 0.5rem 1rem;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+    z-index: 100;
+  }
+}
+
+:focus-visible {
+  outline: 3px solid var(--ink-heading);
+  outline-offset: 3px;
+}
+
+.btn:focus-visible {
+  outline-offset: 6px;
+}
+
+/* ---------------------------------------------------------------------------
+   Trippy mode — the third option in the footer 🍃 menu. Explicit opt-in
+   chaos: the calm default stays calm, and everything here hangs off
+   html[data-motion="trippy"], applied before first paint by the BaseHead
+   inline script. All compositor-friendly properties (transform, filter)
+   except the underline hue cycle, which is a cheap text-only repaint. */
+
+/* The fixed backdrop becomes a 150vmax square centred on the viewport — a
+   spinning square's inscribed circle covers the viewport diagonal at any
+   angle, so the corners never show through. The hue cycle only touches the
+   backdrop; content surfaces sit opaque on top, so just the chunky border
+   strips go technicolour. */
+html[data-motion="trippy"] .sunburst {
+  inset: auto;
+  top: 50%;
+  left: 50%;
+  width: 150vmax;
+  height: 150vmax;
+  animation:
+    trippy-spin 48s linear infinite,
+    trippy-hue 24s linear infinite;
+}
+
+@keyframes trippy-spin {
+  from {
+    transform: translate(-50%, -50%) rotate(0turn);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(1turn);
+  }
+}
+
+@keyframes trippy-hue {
+  from {
+    filter: hue-rotate(0deg);
+  }
+  to {
+    filter: hue-rotate(360deg);
+  }
+}
+
+/* Headings wobble; h2 runs slower and offset so the page doesn't march in
+   step. Amplitude stays small enough to keep text comfortably readable. */
+html[data-motion="trippy"] h1,
+html[data-motion="trippy"] h2 {
+  animation: trippy-wobble 2.4s ease-in-out infinite;
+}
+
+html[data-motion="trippy"] h2 {
+  animation-duration: 3.2s;
+  animation-delay: -1.6s;
+}
+
+@keyframes trippy-wobble {
+  0%,
+  100% {
+    transform: rotate(-0.8deg);
+  }
+  50% {
+    transform: rotate(0.8deg);
+  }
+}
+
+/* The wavy underlines swim through the colour wheel. Three intermediate
+   stops force the long way round — 0deg to 360deg computes to the same hue,
+   which would otherwise interpolate to nothing. */
+html[data-motion="trippy"] a {
+  animation: trippy-underline 4s linear infinite;
+}
+
+@keyframes trippy-underline {
+  0% {
+    text-decoration-color: oklch(from var(--accent) l c h);
+  }
+  33% {
+    text-decoration-color: oklch(from var(--accent) l c calc(h + 120));
+  }
+  66% {
+    text-decoration-color: oklch(from var(--accent) l c calc(h + 240));
+  }
+  100% {
+    text-decoration-color: oklch(from var(--accent) l c calc(h + 360));
+  }
+}
+
+/* External-link arrows bounce up-and-out on hover. The ::after is already
+   position: absolute, so the translate never reflows surrounding text. */
+html[data-motion="trippy"] a[href^="http"]:hover::after {
+  animation: trippy-arrow 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes trippy-arrow {
+  to {
+    translate: 0.15em -0.15em;
+  }
+}
+
+/* Squash-and-stretch boing on button hover. */
+html[data-motion="trippy"] .btn:hover {
+  animation: trippy-boing 0.45s ease;
+}
+
+@keyframes trippy-boing {
+  0%,
+  100% {
+    scale: 1;
+  }
+  30% {
+    scale: 1.15 0.85;
+  }
+  60% {
+    scale: 0.95 1.05;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Nintendo theme (Konami code easter egg) — pixel headings.                 */
+/*  The font only downloads when these rules actually apply (browsers         */
+/*  lazy-load @font-face on first use), so it costs nothing until someone     */
+/*  unlocks the theme. Latin subset, 4.7 KB.                                  */
+/* -------------------------------------------------------------------------- */
+
+@font-face {
+  font-family: "Press Start 2P";
+  src: url("/fonts/press-start-2p-latin.woff2") format("woff2");
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+2000-206F;
+}
+
+/* Press Start 2P runs enormous for its em size, so each heading steps down
+   two stops from its usual scale and gets more line-height to breathe. */
+html[data-palette="nintendo"] :is(h1, h2, h3) {
+  font-family: "Press Start 2P", var(--font-monospace);
+  line-height: 1.6;
+}
+
+html[data-palette="nintendo"] h1 {
+  font-size: var(--font-size-fluid-2);
+}
+
+html[data-palette="nintendo"] h2 {
+  font-size: var(--font-size-fluid-1);
+}
+
+html[data-palette="nintendo"] h3 {
+  font-size: var(--font-size-fluid-0);
+}

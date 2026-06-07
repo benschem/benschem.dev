@@ -1,0 +1,224 @@
+---
+import { Image } from "astro:assets";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import profilePhoto from "../../public/images/profile-photo-ben-schembri.webp";
+---
+
+<BaseLayout
+  title="About -- Ben Schembri"
+  description="About Ben Schembri, a software engineer from Melbourne Australia."
+>
+  <article class="about">
+    <header class="page-head">
+      <div class="page-head-text">
+        <h1>About me</h1>
+        <p class="lead">
+          Software engineer working in Melbourne, Australia. Curious, opinionated,
+          hands&nbsp;on.
+        </p>
+        <p class="work-rights">
+          🇦🇺🇩🇪
+          <strong>Dual Australian/German citizen</strong><br />
+          Full EU work rights, no visa sponsorship required
+        </p>
+      </div>
+      <figure class="portrait">
+        <Image src={profilePhoto} alt="Ben Schembri" width={400} height={400} />
+        <span class="speech-bubble" id="portrait-bubble" aria-hidden="true" hidden
+        ></span>
+      </figure>
+    </header>
+
+    <section aria-labelledby="day-job-title">
+      <h2 id="day-job-title">My day job</h2>
+      <p>
+        In my day job I work in the energy sector, helping to improve and
+        maintain the software infrastructure for a large network of hardware
+        connected devices. Our product is used by consumers and businesses, as
+        well as our own internal teams.
+      </p>
+    </section>
+
+    <section aria-labelledby="on-the-side-title">
+      <h2 id="on-the-side-title">On the side</h2>
+      <p>
+        I run a boutique studio building custom e-commerce stores for Australian
+        fashion and lifestyle brands that have outgrown Shopify. Plus I do the
+        odd marketing site.
+      </p>
+      <p>
+        And I sometimes teach web development at a coding bootcamp, taking
+        students from the basics of programming through to shipping their first
+        full-stack web apps.
+      </p>
+    </section>
+
+    <section aria-labelledby="what-i-work-with">
+      <h2 id="what-i-work-with">What I work with</h2>
+      <p>
+        I'm a big fan of Ruby, especially for a backend (Rails mainly, sometimes Sinatra or Roda). It's what I build with at work, in the studio, and what I teach at the bootcamp. Though for anything that needs websockets, I'd reach for NodeJS and Typescript.
+      </p>
+      <p>
+        As much as I love Rails, I dislike ERB and most eras of Rails' asset pipelines, and much prefer a separate Javascript frontend. These days I'm building with Vite and Sveltekit, but I've tried them all.
+      </p>
+      <p>
+        What language I write code in depends on what I'm doing. To me, programming languages are just different interfaces to express the same core logic and foundational concepts. I'd back myself to learn a new language or framework reasonably quickly if I wanted to, because I already know how to tell computers how to do things.
+      </p>
+    </section>
+  </article>
+</BaseLayout>
+
+<!-- Easter egg: poking the portrait earns you a speech bubble. The lines
+     escalate on repeat clicks and the last one sticks. aria-hidden because
+     it's a sight gag, not content — nothing announced, nothing focusable. -->
+<script is:inline>
+  {
+    const portrait = document.querySelector(".portrait");
+    const bubble = document.getElementById("portrait-bubble");
+    const lines = [
+      "Hey! Don't touch me!",
+      "Seriously, stop poking me.",
+      "I'm a photo, not a button.",
+      "When you gonna stop poking me? Will it be soon?",
+    ];
+    let pokes = 0;
+    let timer;
+    portrait.addEventListener("click", () => {
+      bubble.textContent = lines[Math.min(pokes, lines.length - 1)];
+      pokes++;
+      bubble.hidden = false;
+      // Restart the pop animation when the bubble is already showing.
+      bubble.classList.remove("pop");
+      void bubble.offsetWidth;
+      bubble.classList.add("pop");
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        bubble.hidden = true;
+      }, 2500);
+    });
+  }
+</script>
+
+<style>
+  .about {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-inline: clamp(1rem, 4vw, 2rem);
+    padding-block: clamp(2.5rem, 8vh, 5rem);
+    line-height: 1.7;
+  }
+
+  .page-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.5rem 2rem;
+    margin-block-end: 2.5rem;
+  }
+
+  /* Same radial burst frame the photo wore in the header, scaled up. */
+  .portrait {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    width: 160px;
+    flex-shrink: 0;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    background: radial-gradient(
+      circle at center,
+      var(--burst-centre),
+      var(--burst-mid)
+    );
+  }
+
+  .portrait img {
+    aspect-ratio: 1 / 1;
+    border-radius: 0.25rem;
+    width: 100%;
+    height: auto;
+  }
+
+  /* Lets the text block wrap below the portrait when there isn't room
+     for both side by side, instead of squishing. */
+  .page-head-text {
+    flex: 1;
+    min-width: 20ch;
+  }
+
+  .lead {
+    font-size: var(--font-size-fluid-0);
+    margin-block-start: 0.25rem;
+    max-width: 52ch;
+  }
+
+  /* Right-to-work note for recruiters — borrows the tinted-sheet look
+     from the post callouts, scaled down to fit the page head. */
+  .work-rights {
+    width: fit-content;
+    max-width: 100%;
+    margin-block-start: 1rem;
+    padding: 0.6rem 0.9rem;
+    border-radius: var(--radius-1);
+    background-color: var(--callout-info-tint);
+    font-size: var(--font-size-fluid--1);
+    line-height: 1.5;
+  }
+
+  h2 {
+    margin-block-start: 2.5em;
+    margin-block-end: 0.5em;
+  }
+
+  p + p {
+    margin-block-start: 1rem;
+  }
+
+  /* Easter egg speech bubble — floats above the portrait with a little
+     tail. Sized to its text so the longer lines don't wrap awkwardly. */
+  .speech-bubble {
+    position: absolute;
+    bottom: calc(100% + 0.75rem);
+    left: 50%;
+    transform: translateX(-50%);
+    width: max-content;
+    max-width: 14rem;
+    padding: 0.4rem 0.7rem;
+    border-radius: var(--radius-3);
+    background: var(--surface-raised);
+    color: var(--ink-body);
+    border: 1px solid var(--accent);
+    font-size: var(--font-size-fluid--1);
+    line-height: 1.4;
+    text-align: center;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .speech-bubble::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 0.4rem solid transparent;
+    border-top-color: var(--accent);
+  }
+
+  .speech-bubble.pop {
+    animation: bubble-pop 0.15s ease-out;
+  }
+
+  @keyframes bubble-pop {
+    from {
+      transform: translateX(-50%) scale(0.7);
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .speech-bubble.pop {
+      animation: none;
+    }
+  }
+
+</style>

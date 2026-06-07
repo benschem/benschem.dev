@@ -1,0 +1,65 @@
+<!-- Source for public/og-default.png.
+     Regenerate with: rsvg-convert -w 1200 -h 630 src/assets/og-default.svg -o public/og-default.png
+     Colours are the light-mode "sky" palette seeds from tokens.css, pre-resolved
+     to hex because a static PNG can't read CSS custom properties. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <!-- Fade the rays out before they reach the text, like the hero's mask. -->
+    <radialGradient id="fade" cx="1110" cy="-40" r="950" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff" stop-opacity="0.9"/>
+      <stop offset="0.62" stop-color="#fff" stop-opacity="0"/>
+    </radialGradient>
+    <mask id="ray-mask">
+      <rect width="1200" height="630" fill="url(#fade)"/>
+    </mask>
+  </defs>
+
+  <rect width="1200" height="630" fill="#f5fdff"/>
+
+  <!-- Sunburst echo, top-right -->
+  <g fill="#006ab4" opacity="0.34" mask="url(#ray-mask)">
+      <path d="M1110 -40 L2039.2 -237.5 L2047.2 -195.2 Z"/>
+      <path d="M1110 -40 L2059.9 -56.6 L2059.6 -13.5 Z"/>
+      <path d="M1110 -40 L2045.6 125.0 L2037.1 167.2 Z"/>
+      <path d="M1110 -40 L1996.9 300.4 L1980.5 340.3 Z"/>
+      <path d="M1110 -40 L1915.6 463.4 L1892.0 499.5 Z"/>
+      <path d="M1110 -40 L1804.8 607.9 L1774.7 638.7 Z"/>
+      <path d="M1110 -40 L1668.4 728.6 L1633.0 753.1 Z"/>
+      <path d="M1110 -40 L1511.5 821.0 L1472.0 838.3 Z"/>
+      <path d="M1110 -40 L1339.8 881.8 L1297.8 891.3 Z"/>
+      <path d="M1110 -40 L1159.7 908.7 L1116.6 910.0 Z"/>
+      <path d="M1110 -40 L977.8 900.8 L935.2 893.8 Z"/>
+      <path d="M1110 -40 L800.7 858.2 L760.3 843.3 Z"/>
+      <path d="M1110 -40 L635.0 782.7 L598.2 760.3 Z"/>
+      <path d="M1110 -40 L486.7 677.0 L454.9 648.0 Z"/>
+      <path d="M1110 -40 L361.4 544.9 L335.6 510.3 Z"/>
+      <path d="M1110 -40 L263.5 391.3 L244.9 352.4 Z"/>
+      <path d="M1110 -40 L196.8 221.9 L185.9 180.2 Z"/>
+      <path d="M1110 -40 L163.6 42.8 L160.8 -0.2 Z"/>
+      <path d="M1110 -40 L165.2 -139.3 L170.7 -182.1 Z"/>
+      <path d="M1110 -40 L201.5 -317.8 L215.0 -358.7 Z"/>
+      <path d="M1110 -40 L271.2 -486.0 L292.3 -523.6 Z"/>
+      <path d="M1110 -40 L371.7 -637.9 L399.6 -670.7 Z"/>
+      <path d="M1110 -40 L499.4 -767.7 L533.0 -794.7 Z"/>
+      <path d="M1110 -40 L649.4 -870.9 L687.6 -890.9 Z"/>
+      <path d="M1110 -40 L816.4 -943.5 L857.7 -955.9 Z"/>
+      <path d="M1110 -40 L994.2 -982.9 L1037.1 -987.2 Z"/>
+      <path d="M1110 -40 L1176.3 -987.7 L1219.2 -983.7 Z"/>
+      <path d="M1110 -40 L1355.9 -957.6 L1397.3 -945.5 Z"/>
+      <path d="M1110 -40 L1526.5 -893.9 L1564.8 -874.1 Z"/>
+      <path d="M1110 -40 L1681.7 -798.7 L1715.6 -772.0 Z"/>
+      <path d="M1110 -40 L1816.0 -675.7 L1844.1 -643.0 Z"/>
+      <path d="M1110 -40 L1924.3 -529.3 L1945.7 -491.8 Z"/>
+      <path d="M1110 -40 L2002.7 -364.9 L2016.5 -324.1 Z"/>
+  </g>
+
+  <!-- Chunky accent strip, like main's border-left against the sunburst -->
+  <rect x="0" y="0" width="26" height="630" fill="#006ab4"/>
+
+  <g font-family="Optima, sans-serif" text-anchor="start">
+    <text x="100" y="208" font-size="44" font-weight="700" fill="#b83500">Software engineering writing</text>
+    <text x="94" y="330" font-size="104" font-weight="900" fill="#110904">Ben Schembri</text>
+    <text x="100" y="404" font-size="34" fill="#110904" opacity="0.75">Curious · Opinionated · Hands on</text>
+  </g>
+  <text x="100" y="528" font-family="Menlo, monospace" font-size="34" font-weight="700" fill="#006ab4">benschem.dev</text>
+</svg>

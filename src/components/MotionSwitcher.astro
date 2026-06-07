@@ -1,0 +1,238 @@
+---
+/* Mirrors ThemeSwitcher: same hover/focus menu mechanics, radio rows, tick.
+   "Normal" (id: system) follows prefers-reduced-motion; "Off" forces animations off via
+   the html[data-motion="reduced"] kill rules in reset.css and global.css;
+   "Trippy" opts into the html[data-motion="trippy"] chaos in global.css.
+   The choice persists in localStorage and is applied before first paint by
+   the inline script in BaseHead. */
+const options = [
+  { id: "system", label: "Normal" },
+  { id: "trippy", label: "Trippy" },
+  { id: "reduced", label: "Off" },
+];
+---
+
+<div class="motion-switcher">
+  <button
+    type="button"
+    class="motion-toggle"
+    aria-label="Switch animation preference"
+    aria-haspopup="true"
+    aria-expanded="false"
+    title="Animations: Normal"
+  >
+    🍃
+  </button>
+
+  <ul class="motion-menu" role="menu" aria-labelledby="motion-menu-heading">
+    <li role="presentation" id="motion-menu-heading" class="menu-heading">
+      Animations
+    </li>
+    {
+      options.map((o) => (
+        <li role="none">
+          <button
+            type="button"
+            role="menuitemradio"
+            aria-checked="false"
+            class="motion-option"
+            data-motion={o.id}
+          >
+            {o.label}
+          </button>
+        </li>
+      ))
+    }
+  </ul>
+</div>
+
+<script is:inline>
+  const motionRoot = document.querySelector(".motion-switcher");
+  const motionToggle = motionRoot.querySelector(".motion-toggle");
+  const motionOptions = [...motionRoot.querySelectorAll(".motion-option")];
+
+  const currentMotion = () =>
+    document.documentElement.dataset.motion ?? "system";
+  const motionLabels = { system: "Normal", reduced: "Off", trippy: "Trippy" };
+  const motionLabel = (m) => `Animations: ${motionLabels[m] ?? "Normal"}`;
+
+  const syncMotion = () => {
+    const c = currentMotion();
+    motionToggle.title = motionLabel(c);
+    motionOptions.forEach((o) =>
+      o.setAttribute("aria-checked", String(o.dataset.motion === c)),
+    );
+  };
+  syncMotion();
+
+  motionOptions.forEach((o) =>
+    o.addEventListener("click", () => {
+      const next = o.dataset.motion;
+      if (next === "system") {
+        // No stored override — fall back to prefers-reduced-motion.
+        delete document.documentElement.dataset.motion;
+        localStorage.removeItem("motion");
+      } else {
+        document.documentElement.dataset.motion = next;
+        localStorage.setItem("motion", next);
+      }
+      syncMotion();
+      motionToggle.focus(); // return focus to the trigger; blur closes the menu
+    }),
+  );
+
+  // Keep aria-expanded honest for assistive tech: focus opens (via CSS
+  // :focus-within), so mirror that. Hover is a mouse-only affordance.
+  motionRoot.addEventListener("focusin", () =>
+    motionToggle.setAttribute("aria-expanded", "true"),
+  );
+  motionRoot.addEventListener("focusout", (e) => {
+    if (!motionRoot.contains(e.relatedTarget))
+      motionToggle.setAttribute("aria-expanded", "false");
+  });
+  motionRoot.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") motionToggle.focus();
+  });
+</script>
+
+<style>
+  .motion-switcher {
+    position: relative;
+    display: inline-flex;
+  }
+
+  /* Deliberately demoted next to the ThemeSwitcher — smaller and faded so it
+     reads as an easter egg rather than a primary control. */
+  .motion-toggle {
+    font-size: 1rem;
+    line-height: 1;
+    width: 1.75rem;
+    height: 1.75rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+    opacity: 0.55;
+  }
+
+  .motion-toggle:hover,
+  .motion-switcher:focus-within .motion-toggle {
+    background-color: var(--accent-soft);
+    opacity: 1;
+  }
+
+  /* While trippy mode is on, the leaf joins in (and stays fully visible so
+     it's findable to turn the chaos back off). */
+  :global(html[data-motion="trippy"]) .motion-toggle {
+    opacity: 1;
+    animation: leaf-sway 1.6s ease-in-out infinite;
+  }
+
+  @keyframes leaf-sway {
+    0%,
+    100% {
+      transform: rotate(-14deg);
+    }
+    50% {
+      transform: rotate(14deg);
+    }
+  }
+
+  .motion-menu {
+    position: absolute;
+    bottom: calc(100% + 0.5rem); /* footer sits at the bottom — open upward */
+    left: 0;
+    z-index: 10;
+    display: none;
+    flex-direction: column;
+    gap: 0.125rem;
+    min-width: max-content;
+    margin: 0;
+    padding: 0.375rem;
+    list-style: none;
+    background-color: var(--surface-raised);
+    border: 1px solid var(--accent-soft);
+    border-radius: var(--radius-3);
+    box-shadow: 0 0.5rem 1.5rem -0.5rem rgb(0 0 0 / 0.35);
+  }
+
+  /* Transparent bridge over the gap between menu and toggle, so the pointer
+     stays within the hover region while travelling up into the menu. */
+  .motion-menu::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    height: 0.5rem;
+  }
+
+  /* Reveal on hover (mouse) and focus-within (keyboard + touch). The hover
+     rule stands down while the sibling theme menu is held open by focus, so
+     the two overlapping menus can never show at once. */
+  :global(html:not(:has(.theme-switcher:focus-within)))
+    .motion-switcher:hover
+    .motion-menu,
+  .motion-switcher:focus-within .motion-menu {
+    display: flex;
+  }
+
+  /* Same small-caps treatment as the footer copyright. Slightly faded so the
+     options read as the interactive rows and the heading as furniture. */
+  .menu-heading {
+    padding: 0.2rem 0.6rem 0.3rem 0.4rem;
+    font-size: var(--font-size-fluid--1);
+    font-variant-caps: all-small-caps;
+    letter-spacing: 0.05em;
+    color: color-mix(in oklab, var(--ink-body) 70%, transparent);
+    user-select: none;
+  }
+
+  .motion-option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.3rem 0.6rem 0.3rem 0.4rem;
+    border-radius: var(--radius-1);
+    font: inherit;
+    font-size: var(--font-size-fluid--1);
+    text-align: left;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  /* Mix accent into the surface rather than using --accent-soft: that keeps
+     the background near the surface lightness, so --ink-body stays legible in
+     both light and dark mode (accent-soft is a light tint that loses contrast
+     against near-white ink in dark mode). */
+  .motion-option:hover,
+  .motion-option:focus-visible {
+    background-color: color-mix(
+      in oklab,
+      var(--accent) 22%,
+      var(--surface-raised)
+    );
+  }
+
+  /* Selected state uses colour + tick rather than font-weight, so the row
+     width never changes and the menu can't reflow on selection. */
+  .motion-option[aria-checked="true"] {
+    color: var(--accent);
+  }
+
+  /* Reserve the tick slot on every row (transparent until checked) so the
+     menu's max-content width doesn't shift when a longer name is selected. */
+  .motion-option::after {
+    content: "✓";
+    margin-left: auto;
+    padding-left: 0.75rem;
+    color: transparent;
+    font-weight: 700;
+  }
+
+  .motion-option[aria-checked="true"]::after {
+    color: var(--accent);
+  }
+</style>

@@ -1,0 +1,222 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const updated = new Date("2026-06-03");
+const dateFormat = new Intl.DateTimeFormat("en-AU", { dateStyle: "long" });
+
+const sections: {
+  title: string;
+  items: { label: string; name: string; note: string }[];
+}[] = [
+  {
+    title: "Software",
+    items: [
+      {
+        label: "Editing code",
+        name: "VSCode",
+        note: "I've tried to switch to Neovim but it didn't stick.",
+      },
+      {
+        label: "Terminal",
+        name: "Mac Terminal",
+        note: "I don't have enough RAM. iTerm at work.",
+      },
+      {
+        label: "Shell",
+        name: "Zsh",
+        note: "No plugin manager, it's all handwritten. Starship prompt.",
+      },
+      {
+        label: "Containers",
+        name: "Orbstack",
+        note: "The amount of things I run at once is silly.",
+      },
+      {
+        label: "Browsing",
+        name: "Safari",
+        note: "Keychain, Handoff and confirmation codes keep me here.",
+      },
+      {
+        label: "Debugging",
+        name: "Firefox",
+        note: "Vastly prefer the dev tools compared to Safari.",
+      },
+      {
+        label: "AI Tooling",
+        name: "Claude Code Max",
+        note: "I love it and hate it at the same time.",
+      },
+      {
+        label: "Listening to music",
+        name: "Spotify",
+        note: "Indie pop, house, pop punk, metalcore.",
+      },
+      {
+        label: "Chatting",
+        name: "Slack",
+        note: "On average I add two emojis per day.",
+      },
+    ],
+  },
+  {
+    title: "Hardware",
+    items: [
+      {
+        label: "Laptop",
+        name: "Macbook",
+        note: "Windows is hot garbage and Apple Silicon is amazing.",
+      },
+      {
+        label: "Desktop",
+        name: "Custom build",
+        note: "Ageing gaming and media editing machine.",
+      },
+      {
+        label: "Monitor",
+        name: "34\" Ultrawide",
+        note: "Plus a second vertical monitor.",
+      },
+      {
+        label: "Keyboard",
+        name: "Keychron K3",
+        note: "I'm eyeing off a split keyboard next.",
+      },
+      {
+        label: "Pointer",
+        name: "Apple Trackpad",
+        note: "I'm a trackpad guy, the gestures are so good.",
+      },
+      {
+        label: "Media Server",
+        name: "Raspberry Pi",
+        note: "Tiny but mighty paired with an Apple TV.",
+      },
+    ],
+  },
+  {
+    title: "Services",
+    items: [
+      {
+        label: "Static hosting",
+        name: "Netlify",
+        note: "It's free, batteries included."
+      },
+      {
+        label: "VPS hosting",
+        name: "Digitial Ocean",
+        note: "Nothing wrong with keeping it old school."
+      },
+      {
+        label: "Hosting at work",
+        name: "AWS ECS",
+        note: "Containerise the world. Learn all the acronyms."
+      },
+      {
+        label: "Analytics",
+        name: "Plausible",
+        note: "Self hosted, privacy focused and performant."
+      },
+      {
+        label: "Domain names",
+        name: "VentraIP & Porkbun",
+        note: "One for `.com.au` and one for the rest."
+      }
+    ]
+  }
+];
+---
+
+<BaseLayout
+  title="Uses -- Ben Schembri"
+  description="The tools I use on the daily."
+>
+  <article class="uses">
+    <header class="page-head">
+      <h1>Uses</h1>
+      <p class="meta">
+        Last updated <time datetime={updated.toISOString()}
+          >{dateFormat.format(updated)}</time
+        >
+      </p>
+      <p class="lead">
+        The stuff I use on the daily. Inspired by <a
+          href="https://uses.tech"
+          target="_blank"
+          rel="noopener noreferrer">uses.tech</a
+        >.
+      </p>
+    </header>
+
+    {
+      sections.map((section) => (
+        <section>
+          <h2>{section.title}</h2>
+          <ul class="items">
+            {section.items.map((item) => (
+              <li>
+                {/* {item.label && {item.label}:{" "}<strong>{item.name}</strong> - {item.note}} */}
+                {item.label && <>{item.label}: </>}
+                <strong>{item.name}</strong> - {item.note}
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))
+    }
+
+    <h2>Contact Me</h2>
+    <p>
+      Questions? <a href="/contact">Get in touch</a>.
+    </p>
+  </article>
+</BaseLayout>
+
+<style>
+  .uses {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-inline: clamp(1rem, 4vw, 2rem);
+    padding-block: clamp(2.5rem, 8vh, 5rem);
+    line-height: 1.7;
+  }
+
+  .page-head {
+    margin-block-end: 2.5rem;
+  }
+
+  .meta {
+    margin-block-start: 0.75rem;
+    font-size: var(--font-size-fluid--1);
+    color: var(--alt);
+    font-variant-caps: all-small-caps;
+    letter-spacing: 0.05em;
+  }
+
+  .lead {
+    font-size: var(--font-size-fluid-0);
+    margin-block-start: 0.25rem;
+    max-width: 52ch;
+  }
+
+  h2 {
+    margin-block-start: 2.5em;
+    margin-block-end: 0.5em;
+  }
+
+  /* Same list treatment as the post reading body: the global reset strips
+     list-style + padding, so restore them to get marker boxes back. */
+  .items {
+    list-style: disc;
+    padding-inline-start: 1.5em;
+  }
+
+  .items li {
+    margin-block-end: 0.4em;
+  }
+
+  /* Bullets pick up the accent so list markers carry the theme. */
+  .items li::marker {
+    color: var(--accent);
+  }
+
+</style>

@@ -1,0 +1,224 @@
+---
+title: How this site is built and hosted
+description: My decision process for picking the tech stack and hosting when starting a new project, and why this blog is a static site on free hosting.
+published: 2026-06-04
+draft: false
+---
+
+import Callout from "../components/Callout.astro";
+
+Given that you can basically build any software in any way that you want if you're dedicated enough, there are always an overwhelming amount of options when it's time to start a new project.
+
+I could handwrite every HTML page or use a server-side framework or a static site generator. I could build a monolith or microservices. I could use a managed platform or self host everything. Not all of the options would be the right choice for every project. So how does one make a good choice?
+
+For me, it all hinges on: what's the simplest way to actually finish and ship the thing, with the least trade-offs and the minimum number of moving parts?
+
+## Questions to ask when starting any project
+
+### What am I building?
+
+I always make sure I have a clear idea of _what_ I'm building before diving in. Am I building for the content web[^1] or is it an app?
+
+I think about the state, how interactive it is, how it's updated, does it need forms, what sort of traffic is it expecting?
+
+Let's **describe this site** in that lens:
+
+- The only content is blog posts written in markdown
+- Visitors read the content, they don't interact in any other way (yet)
+- The site only changes when I update something or post a new article
+- A contact form would be nice but is not essential
+- Low traffic expected (🥲)
+
+### Does it need a backend?
+
+The best move is to not host a running language at all.
+
+Static HTML can be served directly for free and read by any browser. Modern browsers can run full apps locally without breaking a sweat, and even persist data locally in localStorage or IndexDB.
+
+So when would I add a backend?
+
+Nothing on the frontend can be kept private or trusted, because users can inspect the source code and change it.
+
+So if what I'm building needs:
+
+- User login with accounts
+- Restricted actions per user
+- Restricted data per users
+- Financial transactions
+- Shared state between devices
+- User submitted input
+- Too much data to ship to the browser
+- More compute than the local machine could provide
+
+Then I'd probably want a dedicated backend.
+
+But for this blog, I'm not doing any of that, so **it doesn't need one**.
+
+### What language and framework should I write the backend in?
+
+For other projects, if I am choosing a backend, I first consider whether my project is going to be CPU-heavy or I/O-heavy. I also think about the consumers of my backend and how much traffic am I expecting.
+
+A backend built in an interpreted language like Ruby or Javascript will need all the source code files, thousands of dependency files, a pre-installed runtime and an active process waiting to parse, interpret and execute app code upon request.
+
+A backend built in a compiled language like Rust or Go needs nothing installed, as the entire app is a single binary file that sits active in memory, ready to immediately process and execute requests without needing to parse and interpret anything.
+
+The language itself is not necessarily the determining factor in how and where it's hosted - the memory footprint, RAM requirements, boot up time and deployment process all play a bigger part.
+
+**Static sites** like this blog are the easiest though, because there's no need for a running process at all - point a webserver at a file and it will read the file directly from memory and send those exact bytes straight to the browser.
+
+### Where does the data live?
+
+There's always data. What is it, where should it live and when and how does it change?
+
+More often than not, the answer is to host a database alongside your backend, or use a managed service. If I need a database, PostgreSQL is the default, although sometimes the answer is SQLite, and occasionally JSON or CSV is enough.
+
+But if there's no need for a database at all, that's even better. Like this blog - the data is the blog posts, which can live **in the GitHub repo as markdown files**.
+
+### Where will I host the backend and data?
+
+Even though I just decided that this site doesn't need a backend, I still need _something_ that I can route requests to that can respond by serving my static HTML files.
+
+There was a time when I wanted to self-host everything, and I got a lot of joy out of playing sysadmin and managing my very own pet servers, making sure they were secure and healthy.
+
+These days the less time I spend managing or thinking about a server the better - there's other things I'd rather be doing! If I must self-host, then I want that infrastructure defined as code - no more snowflake servers.
+
+<Callout variant="info" title="Snowflakes vs blueprints">
+  You may have heard the expression "pets vs cattle" referring to servers. I
+  prefer "snowflakes vs blueprints", but it's the same idea. Snowflake servers
+  are unique and tend to drift over time as you tinker with them. They're
+  impossible to reproduce exactly if they break. Blueprints define a server
+  configuration, so that it can be scaled or replaced by spinning up a brand
+  new, identical clone.
+</Callout>
+
+An increasingly attractive hosting option is to make use of "serverless" functions, where the need to manage a server at all is abstracted away. These are often essentially free depending on usage, sometimes at the cost of warmup time.
+
+There are also Platforms As A Service (PaaS) that will manage everything for you, à la Heroku (although Heroku wouldn't be my first choice these days).
+
+But this blog is just static pages, and I've been able to host static pages for free since the days of Geocities. Nowadays we're spoiled for choice with Github Pages, Vercel, Netlify, Cloudflare Pages and more.
+
+I've gone with **Netlify** as I've had good experiences with them in the past.
+
+They have a very generous free-tier traffic and usage limit that this little site would never come close to hitting. They can also be setup to deploy via git push with a CI/CD pipeline. They also provide a CDN, a staging domain, automated SSL cert provisioning and renewal, and a contact form backend for no effort. Those are all things I could set up myself, but why go to the effort when Netlify does them out of the box? This isn't even an ad, I promise! (Netlify if you do want to pay me to advertise for you, please reach out and I'll say more nice things!)
+
+### How much am I willing to spend?
+
+This blog can be hosted **for free** effectively forever if it stays as lightweight static pages[^2]. But for other projects, a big consideration is always the price of hosting.
+
+Renting an actual VPS will cost a fixed amount, whereas going "serverless" can often be free to a certain level, but maybe at the expense of warm up time, less control, more abstractions and the risk of bill shock.
+
+Paying for a managed service is usually the most expensive, but most hands off option.
+
+I don't mind paying for hosting, but only when there's a reason to. If what I'm building can be hosted for free and with little setup, then it seems crazy not to do that. If the project outgrows the free hosting then I can always move it to a cheap VPS and if it outgrows that, I can scale it horizontally and/or vertically and then consider moving it to AWS. At that point your project is probably making money so it's a good problem to have.
+
+## So how am I going to build this site?
+
+### What's the north star?
+
+You can fight me on this, but for the content web there _is_ a correct way to serve a site in 2026 for the page to render in the browser as fast as possible. And we should all be striving for that, because it reduces bounce rate, [helps SEO](/posts/what-actually-matters-for-seo-for-developers) and makes visitors happy.
+
+**This is the way:**
+
+- Serve static HTML directly to the browser
+- Send as few bytes as possible to the browser
+  - Use brotli compression
+  - Use modern `.avif`/`.webp` image formats with size variants
+  - Use subsetted `.woff2` fonts for smaller filesize
+  - Ship as little JS as possible and defer and tree shake what you do ship
+- Minimize latency
+  - Reduce server response time by using a Content Delivery Network (CDN)
+  - Use content-hashed assets so you can cache them forever
+- Avoid network requests you don't need
+  - Only talk to a server when trust, truth or gravity[^3] demands it
+  - Use few or no third party scripts
+  - Lazily fetch anything that's not shown on screen after the page renders
+
+Looking at that list, there's some work that has to be done to achieve it all: render the HTML, compress the bytes, generate the image variants, hash the assets.
+
+This work takes time when speed is of the essence.
+
+The question becomes when should that work happen?
+
+- Before visitors ask for the page (build time) - nobody waits.
+- While visitors wait for the page (on the server per-request/on the browser blocking render) - everybody waits
+- After visitors are looking at the page (deferred/lazy) - nobody waits, but they see it happen
+
+### Why a static site generator (SSG)?
+
+According to my criteria above, **doing the work once at build time** is the north star.
+
+A site that does all its work ahead of time and ships the result as plain files is a static site, and the tool that builds it is a static site generator (SSG).
+
+The original version of this site was only a single page. One hand-written HTML, CSS and JavaScript file. No build tooling.
+
+```
+v1/
+  ├── index.html
+  ├── scripts.js
+  ├── styles.css
+  ├── img/
+```
+
+I could continue to write each page by hand, but a static site generator allows me to use templates, components, write posts in markdown and generally improves the developer experience whilst still outputting static HTML pages.
+
+### Which SSG should I choose?
+
+SSGs come in many languages and flavours. These are the ones I've heard of:
+
+- Astro (JSX / JavaScript)
+- Bridgetown (Ruby)
+- Eleventy (Vanilla JavaScript)
+- Gatsby (React / JavaScript)
+- Hugo (Go)
+- Jekyll (Ruby)
+- Middleman (Ruby)
+- Next (React / JavaScript)
+- Nuxt (Vue / JavaScript)
+- Pelican (Python)
+- SolidStart (Solid / Javascript)
+- SvelteKit (Svelte / JavaScript)
+- Zola (Rust)
+
+Ideally we want to send zero JavaScript to the client - or as little as possible if we must. This little blog certainly doesn't need a heavy client-side component library like React, Vue, or Svelte - so we can rule out Next, Nuxt, SolidStart and Sveltekit immediately.
+
+Gatsby, Middleman, Jekyll and Pelican are all basically legacy tech at this point. Their communities have largely moved on, and plugins frequently break or suffer from security vulnerabilities. None would be the ideal choice in 2026 and I'm crossing them all off the list.
+
+Hugo seems complicated and Zola looks interesting but I am not familiar with Go or Rust and I just want to build the site, not learn a new language ecosystem, so I'm crossing them both out.
+
+I love Eleventy and have used it extensively in the past, but it's so barebones that I always find myself rebuilding features that ship by default in other SSGs. I could go and reuse things from my previous projects, but Astro would give me most of the same with less hassle.
+
+Which leaves **Astro and Bridgetown**. They both do everything I need out of the box and both are great tools. Which should I choose for this site?
+
+### Bridgetown
+
+Bridgetown is Ruby and Bundler, using ERB or Liquid for templating, with Node, npm/pnpm and ESBuild for the frontend asset pipeline.
+
+Bridgetown is the spiritual successor to the original Ruby SSG, Jekyll, and has grown into more of a full-stack framework rather than just a page builder. It ships with an optional Roda backend that can serve dynamic routes alongside static pages - which is very cool - but solves a problem I don't have, since this site has no backend.
+
+I do love the Ruby ecosystem, but I've never liked writing ERB - the `<%= %>` tags get messy fast, logic is spread all over the place, partials are annoying, and editor support is lacking. Liquid also feels limiting once you're used to real components.
+
+For this project, pulling in Ruby as well as Node makes Bridgetown feel heavier than I need, plus I really don't want to write ERB or liquid.
+
+### Astro
+
+Astro is Node, JavaScript and npm/pnpm/yarn/bun, using `.astro` files for templating, with Vite (which uses ESBuild) for the frontend asset pipeline.
+
+Astro helped pioneer and popularise a frontend architecture pattern called "Islands Architecture"[^4] as a reaction to the way SPA frameworks ship an entire JavaScript runtime to the browser just to render static content.
+
+The `.astro` component format is great. It's a superset of HTML with a script section on top, adding components, props, and layouts. No ERB soup, no JSX ceremony.
+
+It also comes with support for the `.mdx` markdown format out of the box, which means I can write posts in markdown but still drop in real components like the callout boxes scattered through my posts whenever plain text isn't enough.
+
+It's exactly the developer experience I was after.
+
+### My Choices
+
+**Astro on Netlify.**
+
+[^1]: The "content web" means blogs, docs, marketing material, news sites - anything that revolves around delivering written, audio, or visual information to users as opposed to a full-blown "app".
+
+[^2]: By my (admittedly rough) calculations, for this lightweight blog to hit Netlify's 100GB per month bandwidth usage, it'd need ~5 million visits per month - which would place it in the top ~1% of all websites globally.
+
+[^3]: "Gravity" in this context means there's too much data to ship to the browser or more compute needed than the local machine could provide.
+
+[^4]: "Islands architecture" works by rendering the majority of your page to static HTML with smaller "islands" of JavaScript added when interactivity or personalisation is needed on the page.
