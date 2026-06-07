@@ -16,7 +16,11 @@ export default defineConfig({
     mdx(),
     sitemap({
       // /teapot is an easter egg - you stumble on it, you don't get a map to it
-      filter: (page) => page !== "https://benschem.dev/teapot/",
+      // /thanks is the form-success page - it's noindex, so listing it in the
+      // sitemap would be contradictory (and GSC flags it as an error)
+      filter: (page) =>
+        page !== "https://benschem.dev/teapot/" &&
+        page !== "https://benschem.dev/thanks/",
     }),
   ],
   markdown: {
