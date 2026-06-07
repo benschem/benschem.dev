@@ -75,6 +75,29 @@ const props = Astro.props;
 
     <Footer />
 
+    <!-- Konami listener — ↑↑↓↓←→←→BA unlocks the Nintendo theme. Just a
+         stub: the boot sequence, chime, and reveal live in
+         /js/nintendo-boot.js and are only fetched on success. Never calls
+         preventDefault, so arrows still scroll and typing is untouched. -->
+    <script is:inline>
+      {
+        const seq =
+          "ArrowUp ArrowUp ArrowDown ArrowDown ArrowLeft ArrowRight ArrowLeft ArrowRight b a".split(
+            " ",
+          );
+        let i = 0;
+        addEventListener("keydown", (e) => {
+          if (e.metaKey || e.ctrlKey || e.altKey) return;
+          const k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+          i = k === seq[i] ? i + 1 : k === seq[0] ? 1 : 0;
+          if (i === seq.length) {
+            i = 0;
+            import("/js/nintendo-boot.js").then((m) => m.boot());
+          }
+        });
+      }
+    </script>
+
     <!-- Repaint the sunburst when the OS flips light/dark. Its gradient stops
          read theme tokens via var(), which do recompute on a system scheme
          change — but the SVG gradient paint server isn't invalidated on that

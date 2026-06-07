@@ -320,3 +320,36 @@ html[data-motion="trippy"] .btn:hover {
     scale: 0.95 1.05;
   }
 }
+
+/* -------------------------------------------------------------------------- */
+/*  Nintendo theme (Konami code easter egg) — pixel headings.                 */
+/*  The font only downloads when these rules actually apply (browsers         */
+/*  lazy-load @font-face on first use), so it costs nothing until someone     */
+/*  unlocks the theme. Latin subset, 4.7 KB.                                  */
+/* -------------------------------------------------------------------------- */
+
+@font-face {
+  font-family: "Press Start 2P";
+  src: url("/fonts/press-start-2p-latin.woff2") format("woff2");
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+2000-206F;
+}
+
+/* Press Start 2P runs enormous for its em size, so each heading steps down
+   two stops from its usual scale and gets more line-height to breathe. */
+html[data-palette="nintendo"] :is(h1, h2, h3) {
+  font-family: "Press Start 2P", var(--font-monospace);
+  line-height: 1.6;
+}
+
+html[data-palette="nintendo"] h1 {
+  font-size: var(--font-size-fluid-2);
+}
+
+html[data-palette="nintendo"] h2 {
+  font-size: var(--font-size-fluid-1);
+}
+
+html[data-palette="nintendo"] h3 {
+  font-size: var(--font-size-fluid-0);
+}

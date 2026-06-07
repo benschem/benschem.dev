@@ -507,6 +507,41 @@
   --burst-edge: oklch(from var(--seed-accent) calc(l - 0.25) c h);
 }
 
+:root[data-palette="nintendo"] {
+  /* Nintendo cream + crimson — the Konami code easter egg theme, hidden from
+     the theme menu until unlocked (see the listener in BaseLayout.astro and
+     /js/nintendo-boot.js). Light mode is the Famicom shell colourway
+     (crimson on warm cream); dark mode is bright red on near-black. Gold
+     second tone, like the shell's gold accents. */
+  --seed-surface: light-dark(oklch(94% 0.025 80), oklch(19% 0.012 30));
+  --seed-raised: light-dark(oklch(90% 0.035 80), oklch(26% 0.02 30));
+  --seed-accent: light-dark(oklch(48% 0.19 27), oklch(68% 0.19 27));
+  --seed-alt: light-dark(oklch(48% 0.11 75), oklch(80% 0.12 80));
+
+  --surface-reading: var(--seed-surface);
+  --surface-raised: var(--seed-raised);
+  --ink-body: light-dark(oklch(22% 0.025 40), oklch(94% 0.012 80));
+  --ink-heading: light-dark(
+    oklch(from var(--seed-accent) calc(l - 0.1) c h),
+    oklch(from var(--seed-accent) calc(l + 0.06) c h)
+  );
+  --accent: var(--seed-accent);
+  --accent-soft: oklch(from var(--seed-accent) calc(l + 0.15) calc(c - 0.06) h);
+  --alt: var(--seed-alt);
+  --alt-soft: light-dark(
+    oklch(from var(--seed-alt) calc(l + 0.3) calc(c - 0.05) h),
+    oklch(from var(--seed-alt) calc(l - 0.4) calc(c - 0.05) h)
+  );
+  --alt-strong: light-dark(
+    oklch(from var(--seed-alt) calc(l - 0.15) c h),
+    oklch(from var(--seed-alt) calc(l + 0.15) c h)
+  );
+
+  --burst-centre: light-dark(white, oklch(from var(--seed-accent) 0.22 c h));
+  --burst-mid: var(--seed-accent);
+  --burst-edge: oklch(from var(--seed-accent) calc(l - 0.25) c h);
+}
+
 /* User light/dark override — color-scheme drives all the light-dark() calls
    inside each palette block, so this is the only switch needed. */
 :root[data-mode="light"] {

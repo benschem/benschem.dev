@@ -53,6 +53,15 @@ const themes = [
     accent: "light-dark(oklch(50% 0.13 50), oklch(74% 0.13 50))",
     alt: "light-dark(oklch(48% 0.03 70), oklch(76% 0.028 70))",
   },
+  {
+    // Konami code easter egg — sits last, under its own "Bonus" heading,
+    // and stays hidden until unlocked (see the listener in BaseLayout.astro
+    // + /js/nintendo-boot.js).
+    id: "nintendo",
+    accent: "light-dark(oklch(48% 0.19 27), oklch(68% 0.19 27))",
+    alt: "light-dark(oklch(48% 0.11 75), oklch(80% 0.12 80))",
+    locked: true,
+  },
 ];
 
 const label = (id: string) => `${id[0].toUpperCase()}${id.slice(1)}`;
@@ -76,19 +85,37 @@ const label = (id: string) => `${id[0].toUpperCase()}${id.slice(1)}`;
     </li>
     {
       themes.map((t) => (
-        <li role="none">
-          <button
-            type="button"
-            role="menuitemradio"
-            aria-checked="false"
-            class="theme-option"
-            data-theme={t.id}
-            style={`--swatch-accent: ${t.accent}; --swatch-alt: ${t.alt};`}
+        <>
+          {/* Locked themes get a section heading of their own — revealed
+              together with the row once unlocked. */}
+          {t.locked && (
+            <li
+              role="presentation"
+              class="menu-heading"
+              data-locked
+              hidden
+            >
+              Bonus
+            </li>
+          )}
+          <li
+            role="none"
+            hidden={t.locked}
+            data-locked={t.locked ? "" : undefined}
           >
-            <span class="swatch" aria-hidden="true" />
-            {label(t.id)}
-          </button>
-        </li>
+            <button
+              type="button"
+              role="menuitemradio"
+              aria-checked="false"
+              class="theme-option"
+              data-theme={t.id}
+              style={`--swatch-accent: ${t.accent}; --swatch-alt: ${t.alt};`}
+            >
+              <span class="swatch" aria-hidden="true" />
+              {label(t.id)}
+            </button>
+          </li>
+        </>
       ))
     }
   </ul>
@@ -110,6 +137,21 @@ const label = (id: string) => `${id[0].toUpperCase()}${id.slice(1)}`;
     );
   };
   sync();
+
+  // Locked rows (the Konami-code Nintendo theme and its "Bonus" heading)
+  // reveal once unlocked — either earlier in some past visit (localStorage)
+  // or just now (the boot script dispatches nintendo:unlock after switching
+  // the palette).
+  const locked = [...root.querySelectorAll("li[data-locked]")];
+  const reveal = () => {
+    if (localStorage.getItem("nintendo") !== "unlocked") return;
+    locked.forEach((li) => (li.hidden = false));
+  };
+  reveal();
+  window.addEventListener("nintendo:unlock", () => {
+    reveal();
+    sync();
+  });
 
   options.forEach((o) =>
     o.addEventListener("click", () => {
