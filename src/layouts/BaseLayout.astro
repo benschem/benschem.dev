@@ -75,6 +75,29 @@ const props = Astro.props;
 
     <Footer />
 
+    <!-- Console bug easter egg for anyone who opens DevTools. The email domain is
+         stored reversed and reassembled at runtime so the address never
+         appears as a literal in the page source — spam harvesters regex the
+         raw HTML/JS but don't execute it. -->
+    <!-- The art lives in an inert text/plain block (the browser never executes
+         or renders it) so no character needs escaping — the art's backticks
+         and backslashes would mangle any flavour of JS string literal. -->
+    <script type="text/plain" id="bug-art">
+           ( )_( )
+        '-/' . . '\-`
+         | .  .  .|
+       '-|' .  . '|-`
+        '-\.____./-`
+    </script>
+    <script is:inline>
+      const bug = document.getElementById("bug-art").textContent;
+      const email = "benschembri@" + "moc.liamg".split("").reverse().join("");
+      console.log(
+        `%c${bug}\nYou've found a bug! And I suck at ASCII art. But seriously, if you find a real bug, let me know: ${email}`,
+        "font-family: monospace",
+      );
+    </script>
+
     <!-- Konami listener — ↑↑↓↓←→←→BA unlocks the Nintendo theme. Just a
          stub: the boot sequence, chime, and reveal live in
          /js/nintendo-boot.js and are only fetched on success. Never calls
