@@ -59,9 +59,14 @@ function splitLastWord(text: string): [string, string] {
   }
   {
     hasMore && (
-      <a class="view-all" href="/posts">
-        View all <span class="tail">posts <span aria-hidden="true">&rarr;</span></span>
-      </a>
+      <div class="links">
+        <a href="/posts">
+          View all <span class="tail">posts <span aria-hidden="true">&rarr;</span></span>
+        </a>
+        <a href="/about">
+          About the author<span aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
     )
   }
 </div>
@@ -128,10 +133,11 @@ function splitLastWord(text: string): [string, string] {
     }
   }
 
-  /* Spacing only — the link itself keeps the global wavy underline. */
-  .view-all {
-    display: inline-block;
+  .links {
     margin-block-start: 1.75rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
   }
 
   /* Glues the last word to its trailing arrow so the arrow never
